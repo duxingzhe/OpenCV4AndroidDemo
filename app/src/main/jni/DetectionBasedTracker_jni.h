@@ -1,0 +1,8 @@
+//
+// Created by Administrator on 2019/6/20.
+//
+
+#ifndef _DETECTIONBASEDTRACKER_JNI_H
+#define _DETECTIONBASEDTRACKER_JNI_H
+
+#endif //_DETECTIONBASEDTRACKER_JNI_H
