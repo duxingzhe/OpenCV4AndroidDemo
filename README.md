@@ -8,6 +8,8 @@ Study and put mathematics and algorithm into practice.
 
 #### How to compile
 
+Android NDK r15c
+
 ```
 mkdir <your opencv path>/build
 cd build
