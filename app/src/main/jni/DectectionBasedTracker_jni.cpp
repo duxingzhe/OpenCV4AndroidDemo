@@ -49,3 +49,21 @@ private:
     CascadeDetectorAdapter();
     cv::Ptr<cv::CascadeClassifier> Detector;
 };
+
+struct DetectorAgregator
+{
+    cv::Ptr<CascadeDetectorAdapter> mainDetector;
+    cv::Ptr<CascadeDetectorAdapter> trackingDetector;
+
+    cv::Ptr<CascadeDetectorAdapter> tracker;
+    DetectorAgregator(cv::Ptr<CascadeDetectorAdapter>& _mainDetector, cv::Ptr<CascadeDetectorAdapter>& _trackingDetector):
+        mainDetector(_mainDetector),
+        trackingDetector(_trackingDetector)
+    {
+        CV_Assert(_mainDetector);
+        CV_Assert(_trackingDetector);
+
+        DetectionBasedTracker::Parameters DetectorParams;
+        tracker=makePtr<DetectionBasedTracker>(mainDetector, trackingDetector);
+    }
+};
