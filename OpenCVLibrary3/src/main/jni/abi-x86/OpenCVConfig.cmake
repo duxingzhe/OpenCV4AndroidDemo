@@ -113,7 +113,7 @@ if(NOT TARGET ippicv)
   add_library(ippicv STATIC IMPORTED)
   set_target_properties(ippicv PROPERTIES
     IMPORTED_LINK_INTERFACE_LIBRARIES ""
-    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/sdk/native/3rdparty/libs/x86/libippicv.a"
+    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/src/main/jniLibs/3rdparty/libs/x86/libippicv.a"
   )
 endif()
 
@@ -126,7 +126,7 @@ set(OpenCV_SHARED OFF)
 set(OpenCV_USE_MANGLED_PATHS FALSE)
 
 set(OpenCV_LIB_COMPONENTS opencv_video;opencv_highgui;opencv_videoio;opencv_objdetect;opencv_superres;opencv_ml;opencv_shape;opencv_stitching;opencv_calib3d;opencv_videostab;opencv_features2d;opencv_dnn;opencv_photo;opencv_flann;opencv_core;opencv_imgcodecs;opencv_imgproc;opencv_java)
-set(OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/sdk/native/jni/include" "${OpenCV_INSTALL_PATH}/sdk/native/jni/include/opencv")
+set(OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/src/main/jni/include" "${OpenCV_INSTALL_PATH}/src/main/jni/include/opencv")
 
 if(NOT TARGET opencv_core)
   include(${CMAKE_CURRENT_LIST_DIR}/OpenCVModules${OpenCV_MODULES_SUFFIX}.cmake)
