@@ -67,3 +67,8 @@ struct DetectorAgregator
         tracker=makePtr<DetectionBasedTracker>(mainDetector, trackingDetector);
     }
 };
+
+JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject(JNIEnv *env, jclass, jstring jFileName, jint faceSize)
+{
+
+}
