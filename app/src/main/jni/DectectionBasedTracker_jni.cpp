@@ -70,5 +70,39 @@ struct DetectorAgregator
 
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject(JNIEnv *env, jclass, jstring jFileName, jint faceSize)
 {
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject enter");
+    const char* jnamestr=env->GetStringUTFChars(jFileName, NULL);
+    string stdFileName(jnamestr);
+    jlong result=0;
 
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject");
+
+    try
+    {
+        cv::Ptr<CascadeDetectorAdapter> mainDetector=makePtr<CascadeDetectorAdapter>(makePtr<CascadeClassifier>(stdFileName));
+        cv::Ptr<CascadeDetectorAdapter> trackingDetector=makePtr<CascadeDetectorAdapter>(makePtr<CascadeClassifier>(stdFileName));
+        result=(jlong)new DetectorAgregator(mainDetector, trackingDetector);
+        if(faceSize>0)
+        {
+            mainDetector->setMinObjectSize(Size(faceSize, faceSize));
+        }
+    }
+    catch(const cv::Exception& e)
+    {
+        LOGD("nativeCreateObject caught cv::Exception: %s", e.what());
+        jclass jexception=env->FindClass("org/opencv/core/CvException");
+        if(!jexception)
+            jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, e.what());
+    }
+    catch(...)
+    {
+        LOGD("nativeCreateObject caught cv::Exception: %s", e.what());
+        jclass jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, "Unknown exception in JNI code of DetectionBasedTracker.nativeCreateObject()");
+        return 0;
+    }
+
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject exit");
+    return result;
 }
