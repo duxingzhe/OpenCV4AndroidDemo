@@ -55,7 +55,7 @@ struct DetectorAgregator
     cv::Ptr<CascadeDetectorAdapter> mainDetector;
     cv::Ptr<CascadeDetectorAdapter> trackingDetector;
 
-    cv::Ptr<CascadeDetectorAdapter> tracker;
+    cv::Ptr<DetectionBasedTracker> tracker;
     DetectorAgregator(cv::Ptr<CascadeDetectorAdapter>& _mainDetector, cv::Ptr<CascadeDetectorAdapter>& _trackingDetector):
         mainDetector(_mainDetector),
         trackingDetector(_trackingDetector)
@@ -97,7 +97,7 @@ JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreat
     }
     catch(...)
     {
-        LOGD("nativeCreateObject caught cv::Exception: %s", e.what());
+        LOGD("nativeCreateObject caught unknown Exception");
         jclass jexception=env->FindClass("java/lang/Exception");
         env->ThrowNew(jexception, "Unknown exception in JNI code of DetectionBasedTracker.nativeCreateObject()");
         return 0;
@@ -105,4 +105,33 @@ JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreat
 
     LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject exit");
     return result;
+}
+
+JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject start");
+
+    try
+    {
+        if(thiz!=0)
+        {
+            ((DetectorAgregator*)thiz)->tracker->stop();
+            delete (DetectorAgregator*)thiz;
+        }
+    }
+    catch(const cv::Exception& e)
+    {
+        LOGD("nativeDestroyObject caught cv::Exception: %s", e.what());
+        jclass jexception=env->FindClass("org/opencv/core/CvException");
+        if(!jexception)
+            jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, e.what());
+    }
+    catch(...)
+    {
+        LOGD("nativeDestroyObject caught unknown exception");
+        jclass jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, "Unknown exception in JNI code of DetectionBasedTracker.nativeDestroyObject()");
+    }
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject exit");
 }

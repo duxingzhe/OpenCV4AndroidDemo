@@ -13,7 +13,7 @@ extern "C"
 #endif
 
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreateObject(JNIEnv *, jclass, jstring, jint);
-JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject(JNIEnv *, jclass, jlong);
+JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject(JNIEnv *, jclass, jlong);
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart(JNIEnv *, jclass, jlong);
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStop(JNIEnv *, jclass, jlong);
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFaceSize(JNIEnv *, jclass, jlong, jint);
