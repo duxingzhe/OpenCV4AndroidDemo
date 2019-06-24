@@ -154,7 +154,7 @@ JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart(
     }
     catch(...)
     {
-        LOGD("nativeStart cuahgt unknown exception");
+        LOGD("nativeStart caught unknown exception");
         jclass jexception=env->FindClass("java/lang/Exception");
         env->ThrowNew(jexception, "Unknown in JNI code of DetectionBasedTracker.nativeStart");
     }
