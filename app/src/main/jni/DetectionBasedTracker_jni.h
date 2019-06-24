@@ -16,7 +16,7 @@ JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeCreat
 JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject(JNIEnv *, jclass, jlong);
 JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart(JNIEnv *, jclass, jlong);
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStop(JNIEnv *, jclass, jlong);
-JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFaceSize(JNIEnv *, jclass, jlong, jint);
+JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFaceSize(JNIEnv *, jclass, jlong, jint);
 JNIEXPORT jlong JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDetect(JNIEnv *, jclass, jlong, jlong, jlong);
 
 };
