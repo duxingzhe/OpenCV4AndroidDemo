@@ -135,3 +135,28 @@ JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestro
     }
     LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeDestroyObject exit");
 }
+
+JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart(JNIEnv *env, jclass, jlong thiz)
+{
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart");
+
+    try
+    {
+        ((DetectorAgregator *)thiz)->tracker->run();
+    }
+    catch(const cv::Exception& e)
+    {
+        LOGD("nativeStart caught cv::Exception: %s", e.what());
+        jclass jexception=env->FindClass("org/opencv/core/CvException");
+        if(!jexception)
+            jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, e.what());
+    }
+    catch(...)
+    {
+        LOGD("nativeStart cuahgt unknown exception");
+        jclass jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, "Unknown in JNI code of DetectionBasedTracker.nativeStart");
+    }
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart exit");
+}
