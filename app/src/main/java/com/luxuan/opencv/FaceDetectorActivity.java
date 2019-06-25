@@ -49,10 +49,8 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
 
         @Override
         public void onManagerConnected(int status) {
-            switch(status)
-            {
+            switch(status) {
                 case LoaderCallbackInterface.SUCCESS:
-                {
                     Log.i(TAG, "OpenCV loaded successfully");
 
                     System.loadLibrary("detection_based_tracker");
@@ -87,12 +85,10 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
                         Log.e(TAG, "Failed to load cascade. Exception thrown: "+ e);
                     }
                     mOpenCvCamerView.enableView();
-                }
-                break;
+                    break;
                 default:
-                {
                     super.onManagerConnected(status);
-                }break;
+                    break;
             }
         }
     };
