@@ -214,7 +214,7 @@ JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFac
     LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFaceSize -- END");
 }
 
-JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectoinBasedTracker_nativeDetect(JNIEnv *env, jclass clazz, jlong thiz, jlong imageGray, jlong faces)
+JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeDetect(JNIEnv *env, jclass clazz, jlong thiz, jlong imageGray, jlong faces)
 {
     LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeDetect start");
 
