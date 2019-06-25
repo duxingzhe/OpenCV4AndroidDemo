@@ -161,6 +161,31 @@ JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart(
     LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeStart exit");
 }
 
+JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeStop(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker_nativeStop");
+
+    try
+    {
+        ((DetectorAgregator*)thiz)->tracker->stop();
+    }
+    catch(const cv::Exception &e)
+    {
+        LOGD("nativeStop caught cv::Exception: %s", e.what());
+        jclass jexception=env->FindClass("org/opencv/core/CvException");
+        if(!jexception)
+            jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, e.what());
+    }
+    catch(...)
+    {
+        LOGD("nativeStop caught unknown exception");
+        jclass jexception=env->FindClass("java/lang/Exception");
+        env->ThrowNew(jexception, "Unknown exception in JNI code of DetectionBasedTracker.nativeStop()");
+    }
+    LOGD("Java_com_luxuan_opencv_DetectionBasedTracker.nativeStop exit");
+}
+
 JNIEXPORT void JNICALL Java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFaceSize(JNIEnv *env, jclass, jlong thiz, jint faceSize)
 {
     LOGD("java_com_luxuan_opencv_DetectionBasedTracker_nativeSetFaceSize -- BEGIN");
