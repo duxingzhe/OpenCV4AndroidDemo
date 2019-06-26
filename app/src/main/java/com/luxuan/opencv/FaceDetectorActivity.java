@@ -5,12 +5,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.File;
@@ -43,7 +48,7 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
     private float mRelativeFaceSize=0.2f;
     private int mAbsoluteFaceSize=0;
 
-    private CameraBridgeViewBase mOpenCvCamerView;
+    private CameraBridgeViewBase mOpenCvCameraView;
 
     private BaseLoaderCallback mLoaderCallback=new BaseLoaderCallback(this){
 
@@ -84,7 +89,7 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
                         e.printStackTrace();
                         Log.e(TAG, "Failed to load cascade. Exception thrown: "+ e);
                     }
-                    mOpenCvCamerView.enableView();
+                    mOpenCvCameraView.enableView();
                     break;
                 default:
                     super.onManagerConnected(status);
@@ -93,10 +98,26 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
         }
     };
 
+    public FaceDetectorActivity(){
+        mDetectorName=new String[2];
+        mDetectorName[JAVA_DETECTOR]="Java";
+        mDetectorName[NATIVE_DETECTOR]="Native (tracking)";
+
+        Log.i(TAG, "Instantiated new "+ this.getClass());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        setContentView(R.layout.activity_face_detect);
+
+        mOpenCvCameraView=(CameraBridgeViewBase)findViewById(R.id.fd_activity_surface_view);
+        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+        mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
     @Override
@@ -110,5 +131,36 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
     public void onCameraViewStopped(){
         mGray.release();
         mRgba.release();
+    }
+
+    public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame){
+        mRgba=inputFrame.rgba();
+        mGray=inputFrame.gray();
+
+        if(mAbsoluteFaceSize==0){
+            int height=mGray.rows();
+            if(Math.round(height*mRelativeFaceSize)>0){
+                mAbsoluteFaceSize=Math.round(height*mRelativeFaceSize);
+            }
+            mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
+        }
+
+        MatOfRect faces=new MatOfRect();
+
+        if(mDetectorType==JAVA_DETECTOR){
+            if(mJavaDetector!=null)
+                mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2,
+                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+        }else if(mDetectorType==NATIVE_DETECTOR){
+            if(mNativeDetector!=null){
+                mNativeDetector.detect(mGray, faces);
+            }
+        }
+
+        Rect[] facesArray=faces.toArray();
+        for(int i=0;i<facesArray.length;i++)
+            Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+
+        return mRgba;
     }
 }
