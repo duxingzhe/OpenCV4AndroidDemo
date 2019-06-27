@@ -235,7 +235,7 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
                 Log.i(TAG, "Detection Based Tracker enabled");
                 mNativeDetector.start();
             }else{
-                Log.i(TAG, "Cascade detctor enbled");
+                Log.i(TAG, "Cascade detector enabled");
                 mNativeDetector.stop();
             }
         }
