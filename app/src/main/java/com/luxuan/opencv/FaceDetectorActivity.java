@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -121,6 +122,31 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        if(mOpenCvCameraView!=null)
+            mOpenCvCameraView.disableView();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(!OpenCVLoader.initDebug()){
+            Log.d(TAG,"Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_4_0, this, mLoaderCallback);
+        }else{
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        mOpenCvCameraView.disableView();
+    }
+
+    @Override
     public void onCameraViewStarted(int width, int height)
     {
         mGray=new Mat();
@@ -133,6 +159,7 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
         mRgba.release();
     }
 
+    @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame){
         mRgba=inputFrame.rgba();
         mGray=inputFrame.gray();
