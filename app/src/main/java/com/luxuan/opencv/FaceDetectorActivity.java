@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -189,5 +190,54 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
             Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
 
         return mRgba;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        Log.i(TAG, "called onCreateOptionsMenu");
+        mItemFace50=menu.add("Face size 50%");
+        mItemFace40=menu.add("Face size 40%");
+        mItemFace30=menu.add("Face size 30%");
+        mItemFace20=menu.add("Face size 20%");
+        mItemType=menu.add(mDetectorName[mDetectorType]);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        Log.i(TAG, "called onOptionsItemSelected; slectedItem item: "+item);
+        if(item==mItemFace50){
+            setMinFaceSize(0.5f);
+        }else if(item==mItemFace40){
+            setMinFaceSize(0.4f);
+        }else if(item==mItemFace30){
+            setMinFaceSize(0.3f);
+        }else if(item==mItemFace20){
+            setMinFaceSize(0.2f);
+        }else if(item==mItemType){
+            int tmpDetectorType=(mDetectorType+1)%mDetectorName.length;
+            item.setTitle(mDetectorName[tmpDetectorType]);
+            setDetectorType(tmpDetectorType);
+        }
+        return true;
+    }
+
+    private void setMinFaceSize(float faceSize){
+        mRelativeFaceSize=faceSize;
+        mAbsoluteFaceSize=0;
+    }
+
+    private void setDetectorType(int type){
+        if(mDetectorType!=type){
+            mDetectorType=type;
+
+            if(type==NATIVE_DETECTOR){
+                Log.i(TAG, "Detection Based Tracker enabled");
+                mNativeDetector.start();
+            }else{
+                Log.i(TAG, "Cascade detctor enbled");
+                mNativeDetector.stop();
+            }
+        }
     }
 }
