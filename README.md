@@ -39,5 +39,5 @@ x86_64
 cmake -DCMAKE_INSTALL_PREFIX=<install-prefix>/android/x86_64 -DCMAKE_TOOLCHAIN_FILE=../platforms/android/android.toolchain.cmake -DANDROID_NDK=<ndk path> -DCMAKE_BUILD_TYPE=Release -DANDROID_ABI=x86_64 -DANDROID_NATIVE_API_LEVEL=21  ..
 ```
 
-![](https://github.com/duxingzhe/OpenCV4AndroidDemo/blob/master/qr/alipay_qr.jpg)
-![](https://github.com/duxingzhe/OpenCV4AndroidDemo/blob/master/qr/weixin_qr.png)
+![](./qr/alipay_qr.jpg)
+![](./qr/weixin_qr.png)
