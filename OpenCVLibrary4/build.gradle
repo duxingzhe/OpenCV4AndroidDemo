@@ -10,6 +10,12 @@ android {
         versionName "4.1.0"
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs/libs']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

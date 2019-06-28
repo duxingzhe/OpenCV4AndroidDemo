@@ -64,7 +64,7 @@ struct DetectorAgregator
         CV_Assert(_trackingDetector);
 
         DetectionBasedTracker::Parameters DetectorParams;
-        tracker=makePtr<DetectionBasedTracker>(mainDetector, trackingDetector);
+        tracker=makePtr<DetectionBasedTracker>(mainDetector, trackingDetector, DetectorParams);
     }
 };
 

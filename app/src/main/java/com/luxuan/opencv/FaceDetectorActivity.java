@@ -1,8 +1,12 @@
 package com.luxuan.opencv;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +53,8 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
 
     private float mRelativeFaceSize=0.2f;
     private int mAbsoluteFaceSize=0;
+
+    int PERMISSIONS_REQUEST_CAMERA =10011;
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
@@ -120,6 +126,18 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
         mOpenCvCameraView=(CameraBridgeViewBase)findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
+
+        /*
+         * 如果是6.0以上才去判断是否需要判断运行时权限,6.0以下不考虑
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
+                return;
+            }
+        }
     }
 
     @Override
