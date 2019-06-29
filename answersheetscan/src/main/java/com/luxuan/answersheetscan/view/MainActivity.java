@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -42,27 +44,79 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onDestroy(){
+        super.onDestroy();
+        mBitmaps.clear();
+        mTitles.clear();
+        mFile=null;
+        refreshData();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private void initOpenCV(){
+        mPresenter.initOpenCV();
     }
 
+    private void initData(){
+        mPresenter=new MainPresenterImpl(this);
+    }
+
+    private void initView(){
+        findViewById(R.id.btn_take_photo).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                mPresenter.takePhoto();
+            }
+        });
+
+        findViewById(R.id.btn_view_album).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                mPresenter.viewAlbum();
+            }
+        });
+
+        findViewById(R.id.btn_deal_photo).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                if(mFile==null){
+                    ToastUtils.showToast(MainActivity.this, "请先通过相机或相册传入图片");
+                    return;
+                }
+                if(mBitmaps.size()>1){
+                    Bitmap srcBitmap=mBitmaps.get(0);
+                    String srcTitle=mTitles.get(0);
+                    mBitmaps.clear();
+                    mBitmaps.add(srcBitmap);
+                    mTitles.clear();
+                    mTitles.add(srcTitle);
+                    mAdapter.notifyDataSetChanged();
+                }
+                showProgress("读取原图", 0, 0);
+                mPresenter.dealWithPhoto(mFile);
+            }
+        });
+
+        findViewById(R.id.btn_view_answer).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                ToastUtils.showToast(MainActivity.this, "请先通过相机或相册传入图片");
+                return;
+            }
+            if(mAnswers.size()==0){
+                ToastUtils.showToast(MainActivity.this, "请先处理图片");
+                return;
+            }
+            ResultActivity.startAction(MainActivity.this);
+        });
+
+        RecyclerView rvResult=findViewById(R.id.rv_result);
+        rvResult.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter=new ImageResultAdapter(this, mBitmaps, mTitles);
+        rvResult.setAdapter(mAdapter);
+    }
 
     private void requestPermission(){
         if(!EasyPermissions.hasPermissions(this, PermissionUtils.permissions)){

@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/ColorMain"
+        android:gravity="center"
+        android:text="答题卡识别"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_take_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="相机"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btn_view_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="相册"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btn_deal_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="处理"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btn_view_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="答案"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
 
 </LinearLayout>
