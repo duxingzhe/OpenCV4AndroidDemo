@@ -1,12 +1,14 @@
 package com.luxuan.answersheetscan.view;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -116,6 +118,77 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         rvResult.setLayoutManager(new LinearLayoutManager(this));
         mAdapter=new ImageResultAdapter(this, mBitmaps, mTitles);
         rvResult.setAdapter(mAdapter);
+    }
+
+    public void onPhotoGet(File file){
+        mPresenter.cropPhoto(file);
+    }
+
+    public void onPhotoCrop(File file, String title){
+        Log.e(TAG, file.getAbsolutePath());
+        mFile=file;
+        mBitmaps.clear();
+        mBitmaps.add(BitmapFactory.decodeFile(file.getAbsolutePath()));
+        mTitles.clear();
+        mTitles.add(title);
+        mAnswers.clear();
+        refreshData();
+    }
+
+    public void onPhotoDealStart(String title, int current, int total){
+        showProgress(title, current, total);
+    }
+
+    public void onPhotoDealComplete(Bitmap bitmap, List<AnswerSheetItemModel> answers, String title, int current, int total, boolean success){
+        if(success){
+            if(bitmap!=null){
+                mBitmaps.add(bitmap);
+                mTitles.add(title);
+                refreshData();
+            }
+            if(answers!=null&&answers.size()>0){
+                mAnswers.clear();
+                mAnswers.addAll(answers);
+            }
+        }else{
+            ToastUtils.showToast(this, title);
+        }
+
+        hideProgress(current ,total);
+    }
+
+    private void hideProgress(int current, int total){
+        if(mProgressDialog==null){
+            return;
+        }
+        if(current==total){
+            mProgressDialog.dismiss();
+        }
+    }
+
+    private void showProgress(String title, int current, int total){
+        if(mProgressDialog==null){
+            mProgressDialog=new DealPhotoProgressDialog(this);
+        }
+        if(!mProgressDialog.isShowing()){
+            mProgressDialog.show();
+        }
+        mProgressDialog.setDealProgress(title, current, total);
+    }
+
+    private void refreshData(){
+        if(mAdapter==null){
+            return;
+        }
+        try{
+            if(mBitmaps.size()>1){
+                mAdapter.notifyItemInserted(mBitmaps.size()-1);
+            }else{
+                mAdapter.notifyDataSetChanged();
+            }
+        }catch(Exception e){
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void requestPermission(){
