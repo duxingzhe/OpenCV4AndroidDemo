@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.luxuan.answersheetscan.R;
-import com.luxuan.answersheetscan.model.AnswerSheetItemModel;
+import com.luxuan.answersheetscan.model.AnswerSheetModel;
 
 import java.util.List;
 
 public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final List<AnswerSheetItemModel> mAnswers;
+    private final List<AnswerSheetModel> mAnswers;
 
-    public AnswerAdapter(Context context, List<AnswerSheetItemModel> answers){
+    public AnswerAdapter(Context context, List<AnswerSheetModel> answers){
         mContext=context;
         mAnswers=answers;
     }
