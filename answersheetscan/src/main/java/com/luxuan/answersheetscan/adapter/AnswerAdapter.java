@@ -17,9 +17,9 @@ import java.util.List;
 public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final List<AnswerSheetModel> mAnswers;
+    private final List<AnswerSheetModel.AnswerSheetItemModel> mAnswers;
 
-    public AnswerAdapter(Context context, List<AnswerSheetModel> answers){
+    public AnswerAdapter(Context context, List<AnswerSheetModel.AnswerSheetItemModel> answers){
         mContext=context;
         mAnswers=answers;
     }
@@ -32,7 +32,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position){
-        AnswerSheeItemModel answer=mAnswers.get(position);
+        AnswerSheetModel.AnswerSheetItemModel answer=mAnswers.get(position);
         holder.mTvIndex.setText("第"+answer.index+"题");
         StringBuilder answerSb=new StringBuilder();
         if(answer.checkA){
@@ -52,7 +52,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
             holder.mTvAnswer.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
             holder.mTvAnswer.setText("无");
         }else{
-            holder.mTvAnswer.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_ligth));
+            holder.mTvAnswer.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
             holder.mTvAnswer.setText(answerStr);
         }
         holder.mTvFactorA.setText("A值："+answer.factorA);

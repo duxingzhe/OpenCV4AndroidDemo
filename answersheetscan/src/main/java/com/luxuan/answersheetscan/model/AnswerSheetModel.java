@@ -35,8 +35,8 @@ public class AnswerSheetModel {
         this.offsetLeft=width* AnswerSheetConfig.OFFSET_LEFT_FACTOR_BY_WIDTH;
         this.offsetRight=width*AnswerSheetConfig.OFFSET_RIGHT_FACTOR_BY_WIDTH;
         this.offsetTop=height*AnswerSheetConfig.OFFSET_TOP_FACTOR_BY_HEIGHT;
-        this.offsetBottom=height*AnswerSheetConfig.OFFSET_TOP_FACTOR_BY_HEIGHT;
-        this.emptyColWidth=width*AnswerSheetConfig.EMPTY_COL_WIDTH_FACTORY_BY_WIDTH;
+        this.offsetBottom=height*AnswerSheetConfig.OFFSET_BOTTOM_FACTOR_BY_HEIGHT;
+        this.emptyColWidth=width*AnswerSheetConfig.EMPTY_COL_WIDTH_FACTOR_BY_WIDTH;
         this.emptyRowHeight=height*AnswerSheetConfig.EMPTY_ROW_HEIGHT_FACTOR_BY_HEIGHT;
         this.emptyColCount=AnswerSheetConfig.TOTAL_COL_COUNT/AnswerSheetConfig.PER_COL_COUNT-1;
         this.emptyRowCount=AnswerSheetConfig.TOTAL_ROW_COUNT/AnswerSheetConfig.PER_ROW_COUNT-1;
@@ -49,7 +49,7 @@ public class AnswerSheetModel {
         int emptyColPassed;
         int emptyRowPassed=0;
         for(int i=0;i< totalQuestionRowCount;i++){
-            AnswerRowModel answerRowModel=new AnswerRowModel();
+            AnswerRowModel answerRow=new AnswerRowModel();
             for(int j=0;j<totalQuestionRowCount;i++){
                 emptyColPassed=j/AnswerSheetConfig.PER_COL_COUNT;
                 AnswerSheetItemModel answerItem=new AnswerSheetItemModel();
@@ -62,7 +62,7 @@ public class AnswerSheetModel {
                 }
                 answerRow.answers.add(answerItem);
             }
-            answerPows.add(answerRow);
+            answerRows.add(answerRow);
             emptyRowPassed++;
         }
     }

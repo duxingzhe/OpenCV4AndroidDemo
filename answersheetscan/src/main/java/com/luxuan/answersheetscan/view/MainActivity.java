@@ -7,13 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.luxuan.answersheetscan.R;
+import com.luxuan.answersheetscan.model.AnswerSheetModel;
 import com.luxuan.answersheetscan.utils.PermissionUtils;
 import com.luxuan.answersheetscan.utils.ToastUtils;
 
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     public static List<Bitmap> mBitmaps= new ArrayList<>();
     public static List<String> mTitles=new ArrayList<>();
-    public static List<AnswerSheetItemModel> mAnswers=new ArrayList<>();
+    public static List<AnswerSheetModel.AnswerSheetItemModel> mAnswers=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         showProgress(title, current, total);
     }
 
-    public void onPhotoDealComplete(Bitmap bitmap, List<AnswerSheetItemModel> answers, String title, int current, int total, boolean success){
+    public void onPhotoDealComplete(Bitmap bitmap, List<AnswerSheetModel.AnswerSheetItemModel> answers, String title, int current, int total, boolean success){
         if(success){
             if(bitmap!=null){
                 mBitmaps.add(bitmap);
