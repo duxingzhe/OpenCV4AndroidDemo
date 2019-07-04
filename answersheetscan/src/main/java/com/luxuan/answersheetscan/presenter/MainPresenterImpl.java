@@ -1,6 +1,11 @@
 package com.luxuan.answersheetscan.presenter;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.luxuan.answersheetscan.view.MainActivity;
@@ -60,6 +65,65 @@ public class MainPresenterImpl implements MainPresenter {
         }else{
             Log.e(TAG,"OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
+    @Override
+    public void handleActivityResult(int requestCode, int resultCode, Intent data){
+        switch(requestCode){
+            case GALLERY_REQUEST_CODE:
+                if(data!=null){
+                    Uri uri=data.getData();
+                    if(uri!=null){
+                        if(NEED_CROP){
+                            crop(uri);
+                        }else{
+                            String path=getPicPathInGallery(uri);
+                            if(TextUtils.isEmpty(path)){
+                                mTempFile=null;
+                            }else{
+                                mTempFile=new File(path);
+                                mActivity.onPhotoGet(mTempFile);
+                            }
+                        }
+                    }
+                }
+                break;
+            case CAMERA_REQUEST_CODE:
+                if(hasSdCard()){
+                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                        mTempFile=new File(Environment.getExternalStorageDirectory(), mPhotoFileName);
+                        if(mTempFile.exists()&&mTempFile.length()>0){
+                            if(NEED_CROP){
+                                crop(getImageContentUri(mActivity, mTempFile));
+                            }else{
+                                mActivity.onPhotoGet(mTempFile);
+                            }
+                        }
+                    }else{
+                        mTempFile=new File(Environment.getExternalStorageDirectory(), mPhotoFileName);
+                        if(mTempFile.exists()&&mTempFile.length()>0){
+                            if(NEED_CROP){
+                                crop(Uri.fromFile(mTempFile));
+                            }else{
+                                mActivity.onPhotoGet(mTempFile);
+                            }
+                        }
+                    }
+                }
+                break;
+            case CROP_REQUEST_CODE:
+                if(resultCode== Activity.RESULT_OK){
+                    File file=new File(mCropImgPath);
+                    mActivity.onPhotoGet(file);
+                }
+                break;
+            case ADVANCE_CROP_REQUEST_CODE:
+                if(resultCode==Activity.RESULT_OK &&data!=null){
+                    String cropPath=data.getStringExtra("cropPath");
+                    mActivity.onPhotoGet(new File(cropPath), "原图");
+                }
+                break;
         }
     }
 }
