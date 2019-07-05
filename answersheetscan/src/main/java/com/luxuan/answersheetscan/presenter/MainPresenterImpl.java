@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -124,6 +126,24 @@ public class MainPresenterImpl implements MainPresenter {
                     mActivity.onPhotoGet(new File(cropPath), "原图");
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void takePhoto(){
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent.resolveActivity(mActivity.getPackageManager())!=null){
+            File photoFile=null;
+            try{
+                photoFile=creatImageFile();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            if(photoFile!=null){
+                Uri photoURI= FileProvider.getUriForFile(mActivity, "com.luxuan.fileprovider", photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                mActivity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
+            }
         }
     }
 }
