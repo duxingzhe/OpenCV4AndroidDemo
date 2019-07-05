@@ -146,4 +146,18 @@ public class MainPresenterImpl implements MainPresenter {
             }
         }
     }
+
+    @Override
+    public void viewAlbum(){
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        mActivity.startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    @Override
+    public void cropPhoto(File file){
+        Intent intent=new Intent(mActivity, CropActivity.class);
+        intent.putExtra("filePath", file.getAbsolutePath());
+        mActivity.startActivityForResult(intent, ADVANCE_CROP_REQUEST_CODE);
+    }
 }
