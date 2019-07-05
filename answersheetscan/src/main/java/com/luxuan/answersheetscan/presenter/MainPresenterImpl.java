@@ -2,6 +2,8 @@ package com.luxuan.answersheetscan.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -10,12 +12,16 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.luxuan.answersheetscan.model.AnswerSheetModel;
+import com.luxuan.answersheetscan.utils.ThreadUtils;
 import com.luxuan.answersheetscan.view.MainActivity;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.InstallCallbackInterface;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
 
 import java.io.File;
 
@@ -159,5 +165,42 @@ public class MainPresenterImpl implements MainPresenter {
         Intent intent=new Intent(mActivity, CropActivity.class);
         intent.putExtra("filePath", file.getAbsolutePath());
         mActivity.startActivityForResult(intent, ADVANCE_CROP_REQUEST_CODE);
+    }
+
+    @Override
+    public void dealWithPhoto(final File file){
+        final int total=5;
+
+        ThreadUtils.runOnSubThread(new Runnable(){
+            @Override
+            public void run(){
+                Bitmap srcBitmap= BitmapFactory.decodeFile(file.getAbsolutePath());
+
+                if(srcBitmap==null){
+                    return;
+                }
+
+                Mat srcMat=new Mat();
+                Utils.bitmapToMat(srcBitmap, srcMat);
+
+                AnswerSheetModel answerSheet=new AnswerSheetModel(srcMat.width(), srcMat.height());
+
+                Mat grayMat=doGray(srcBitmap, srcMat, 1, total);
+
+                Mat blurMat=doBlur(srcBitmap, grayMat, 2, total);
+
+                Mat binaryMat=doBinary(srcBitmap, blurMat, 3, total);
+
+                Mat measureMat=doMeasure(srcBitmap, binaryMat, answerSheet, 4, total);
+
+                checkAnswer(measureMat, answerSheet, 5, total);
+
+                srcMat.release();
+                grayMat.release();
+                blurMat.release();
+                binaryMat.release();
+                measureMat.release();
+            }
+        });
     }
 }
