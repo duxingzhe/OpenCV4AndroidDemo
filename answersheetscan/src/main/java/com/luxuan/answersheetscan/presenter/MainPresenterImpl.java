@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
@@ -294,5 +295,21 @@ public class MainPresenterImpl implements MainPresenter {
         }catch(Exception e){
             stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
         }
+    }
+
+    @NonNull
+    private Mat doMeasure(Bitmap srcBitmap, Mat preMat, AnswerSheetModel answerSheet, int current,int total){
+        final String stepName="内容分析";
+        stepDealStart(current, total, stepName);
+        final Bitmap measureBitmap=createBitmapAsSrc(srcBitmap);
+        Mat measureMat=preMat.clone();
+        try{
+            calcReferenceAxis(measureMat, answerSheet);
+            Utils.matToBitmap(measureMat, measureBitmap);
+            stepDealComplete(current, total, stepName, measureBitmap, null, true);
+        }catch(Exception e){
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+        }
+        return measureMat;
     }
 }
