@@ -12,6 +12,7 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.luxuan.answersheetscan.config.AnswerSheetConfig;
 import com.luxuan.answersheetscan.model.AnswerSheetModel;
 import com.luxuan.answersheetscan.utils.ThreadUtils;
 import com.luxuan.answersheetscan.view.MainActivity;
@@ -21,7 +22,11 @@ import org.opencv.android.InstallCallbackInterface;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
 
 import java.io.File;
 
@@ -202,5 +207,54 @@ public class MainPresenterImpl implements MainPresenter {
                 measureMat.release();
             }
         });
+    }
+
+    private void checkAnswer(Mat preMat, AnswerSheetModel answerSheet, int current, int total){
+        final String stempName="识别填涂位置";
+        stepDealStart(current, total, stempName);
+        try{
+            for(int i=0;i<answerSheet.answerRows.size();i++){
+                AnswerSheetModel.AnswerRowModel answerRow=answerSheet.answerRows.get(i);
+                for(int j=0;j<answerRow.answers.size();j++){
+                    AnswerSheetModel.AnswerSheetItemModel answerItem=answerRow.answers.get(j);
+                    for(int k=0;k<answerItem.points.length;k++) {
+                        if(k%2==0&&k<answerItem.points.length-1){
+                            Point tlPoint=answerItem.points[k];
+                            Point brPoint=answerItem.points[k+1];
+                            float offsetX=answerSheet.answerWidth* AnswerSheetConfig.OPTION_SHRINK_FACTOR;
+                            float offsetY=answerSheet.answerHeight* AnswerSheetConfig.OPTION_SHRINK_FACTOR;
+                            Point targetTlPoint=new Point(tlPoint.x+offsetX, tlPoint.y+offsetY);
+                            Point targetBrPoint=new Point(brPoint.x-offsetX, brPoint.y-offsetY);
+                            Mat roiMat=preMat.submat(new Rect(targetTlPoint, targetBrPoint));
+                            MatOfDouble meanMat=new MatOfDouble();
+                            MatOfDouble stdDevMat=new MatOfDouble();
+                            double[] mean=new double[1];
+                            double[] stdDev=new double[1];
+                            Core.meanStdDev(roiMat, meanMat, stdDevMat);
+                            meanMat.get(0, 0, mean);
+                            stdDevMat.get(0,0, stdDev);
+                            float factor=formatDouble(mean[0]0);
+                            switch(k/2){
+                                case 0:
+                                    answerItem.factorA=factor;
+                                    break;
+                                case 1:
+                                    answerItem.factorB=factor;
+                                    break;
+                                case 2:
+                                    answerItem.factorC=factor;
+                                    break;
+                                case 3:
+                                    answerItem.factorD=factor;
+                                    break;
+                            }
+                            meanMat.release();
+                            stdDevMat.release();
+                            roiMat.release();
+                        }
+                    }
+                }
+            }
+        }
     }
 }
