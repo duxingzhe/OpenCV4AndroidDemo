@@ -29,6 +29,9 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MainPresenterImpl implements MainPresenter {
 
@@ -210,8 +213,8 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     private void checkAnswer(Mat preMat, AnswerSheetModel answerSheet, int current, int total){
-        final String stempName="识别填涂位置";
-        stepDealStart(current, total, stempName);
+        final String stepName="识别填涂位置";
+        stepDealStart(current, total, stepName);
         try{
             for(int i=0;i<answerSheet.answerRows.size();i++){
                 AnswerSheetModel.AnswerRowModel answerRow=answerSheet.answerRows.get(i);
@@ -255,6 +258,41 @@ public class MainPresenterImpl implements MainPresenter {
                     }
                 }
             }
+            List<AnswerSheetModel.AnswerSheetItemModel> answers=new ArrayList<>();
+            List<Float> factors=new ArrayList<>();
+            for(AnswerSheetModel.AnswerRowModel answerRow: answerSheet.answerRows){
+                for(AnswerSheetModel.AnswerSheetItemModel answer: answerRow.answers){
+                    factors.add(answer.factorA);
+                    factors.add(answer.factorB);
+                    factors.add(answer.factorC);
+                    factors.add(answer.factorD);
+                }
+            }
+
+            Collections.sort(factors);
+            float maxFactor=factors.get(factors.size()-1)>255F*AnswerSheetConfig.LIMIT_ACCEPT_MAX_FACTOR?255F*AnswerSheetConfig.LIMIT_ACCEPT_MAX_FACTOR:factors.get(factors.size()-1);
+            float minFactor=factors.get(0);
+            float limitMaxFactor=maxFactor*AnswerSheetConfig.LIMIT_ACCEPT_MAX_FACTOR;
+            boolean limitMaxFactorIsValid=(maxFactor-minFactor)>255F*AnswerSheetConfig.LIMIT_ACCEPT_MIN_FACTOR;
+            for(AnswerSheetModel.AnswerRowModel answerRow : answerSheet.answerRows){
+                for(AnswerSheetModel.AnswerSheetItemModel answer: answerRow.answers){
+                    answer.checkA=answer.factorA>limitMaxFactor&&limitMaxFactorIsValid;
+                    answer.checkB=answer.factorB>limitMaxFactor&&limitMaxFactorIsValid;
+                    answer.checkC=answer.factorC>limitMaxFactor&&limitMaxFactorIsValid;
+                    answer.checkD=answer.factorD>limitMaxFactor&&limitMaxFactorIsValid;
+                    if(!answer.checkA&&!answer.checkB&&!answer.checkC&&!answer.checkD){
+                        float totalFactors=answer.factorA+answer.factorB+answer.factorC+answer.factorD;
+                        answer.checkA=answer.factorA>totalFactors*AnswerSheetConfig.LIMIT_ACCEPT_TOTAL_PERCENT_FACTOR&&answer.factorB>maxFactor *AnswerSheetConfig.LIMIT_RECHECK_MIN_FACTOR&&limitMaxFactorIsValid;
+                        answer.checkB=answer.factorB>totalFactors*AnswerSheetConfig.LIMIT_ACCEPT_TOTAL_PERCENT_FACTOR&&answer.factorB>maxFactor *AnswerSheetConfig.LIMIT_RECHECK_MIN_FACTOR&&limitMaxFactorIsValid;
+                        answer.checkC=answer.factorC>totalFactors*AnswerSheetConfig.LIMIT_ACCEPT_TOTAL_PERCENT_FACTOR&&answer.factorB>maxFactor *AnswerSheetConfig.LIMIT_RECHECK_MIN_FACTOR&&limitMaxFactorIsValid;
+                        answer.checkD=answer.factorD>totalFactors*AnswerSheetConfig.LIMIT_ACCEPT_TOTAL_PERCENT_FACTOR&&answer.factorB>maxFactor *AnswerSheetConfig.LIMIT_RECHECK_MIN_FACTOR&&limitMaxFactorIsValid;
+                    }
+                    answers.add(answer);
+                }
+            }
+            stepDealComplete(current,total, stepName, null, answers, true);
+        }catch(Exception e){
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
         }
     }
 }
