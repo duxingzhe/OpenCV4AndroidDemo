@@ -351,4 +351,22 @@ public class MainPresenterImpl implements MainPresenter {
 
         return blurMat;
     }
+
+    @NonNull
+    private Mat doGray(Bitmap srcBitmap, Mat preMat, final int current, final int total){
+        final String stepName="灰度化";
+        stepDealStart(current, total, stepName);
+        final Bitmap grayBitmap=createBitmapAsSrc(srcBitmap);
+        Mat grayMat=new Mat();
+        try{
+            Imgproc.cvtColor(preMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+            Utils.matToBitmap(grayMat, grayBitmap);
+            stepDealComplete(current, total, stepName, grayBitmap, null, true);
+        }catch(Exception e){
+            grayMat.release();
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+        }
+
+        return grayMat;
+    }
 }
