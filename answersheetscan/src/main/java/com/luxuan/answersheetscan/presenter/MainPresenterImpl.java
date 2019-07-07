@@ -28,6 +28,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -309,6 +310,7 @@ public class MainPresenterImpl implements MainPresenter {
             Utils.matToBitmap(measureMat, measureBitmap);
             stepDealComplete(current, total, stepName, measureBitmap, null, true);
         }catch(Exception e){
+            measureMat.release();
             stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
         }
         return measureMat;
@@ -330,5 +332,23 @@ public class MainPresenterImpl implements MainPresenter {
         }
 
         return binaryMat;
+    }
+
+    @NonNull
+    private Mat doBlur(Bitmap srcBitmap, Mat preMat, final int current, final int total){
+        final String stepName="高斯模糊降噪";
+        stepDealStart(current, total, stepName);
+        final Bitmap blurBitmap=createBitmapAsSrc(srcBitmap);
+        Mat blurMat=new Mat();
+        try{
+            Imgproc.GaussianBlur(preMat, blurMat, new Size(3,3), 0);
+            Utils.matToBitmap(blurMat, blurBitmap);
+            stepDealComplete(current, total, stepName, binaryBitmap);
+        }catch(Exception e){
+            blurMat.release();
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+        }
+
+        return blurMat;
     }
 }
