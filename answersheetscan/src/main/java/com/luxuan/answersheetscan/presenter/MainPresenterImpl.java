@@ -28,6 +28,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -311,5 +312,23 @@ public class MainPresenterImpl implements MainPresenter {
             stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
         }
         return measureMat;
+    }
+
+    @NonNull
+    private Mat doBinary(Bitmap srcBitmap, Mat preMat, final int current, final int total){
+        final String stepName="二值化";
+        stepDealStart(current, total, stepName);
+        final Bitmap binaryBitmap=createBitmapAsSrc(srcBitmap);
+        Mat binaryMat=new Mat();
+        try{
+            Imgproc.adaptiveThreshold(preMat, binaryMat, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 255, 40);
+            Utils.matToBitmap(binaryMat, binaryBitmap);
+            stepDealComplete(current, total, stepName, binaryBitmap);
+        }catch(Exception e){
+            binaryMat.release();
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+        }
+
+        return binaryMat;
     }
 }
