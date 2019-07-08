@@ -155,7 +155,7 @@ public class MainPresenterImpl implements MainPresenter {
         if(intent.resolveActivity(mActivity.getPackageManager())!=null){
             File photoFile=null;
             try{
-                photoFile=creatImageFile();
+                photoFile=createImageFile();
             }catch(Exception e){
                 e.printStackTrace();
             }
