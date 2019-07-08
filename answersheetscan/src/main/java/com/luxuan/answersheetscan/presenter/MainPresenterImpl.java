@@ -369,4 +369,35 @@ public class MainPresenterImpl implements MainPresenter {
 
         return grayMat;
     }
+
+    private void calcReferenceAxis(Mat measureMat, AnswerSheetModel answerSheet){
+        Imgproc.line(measureMat, new Point(0, answerSheet.offsetTop), new Point(answerSheet.width, answerSheet.offsetTop), getLineColorWhite());
+        Imgproc.line(measureMat, new Point(0, answerSheet.height-answerSheet.offsetBottom), new Point(answerSheet.width, answerSheet.height-answerSheet.offsetBottom, getLineColorWhite()));
+        for(int i=1;i<=AnswerSheetConfig.TOTAL_ROW_COUNT;i++){
+            int preEmptyRowCount=i/AnswerSheetConfig.PER_ROW_COUNT;
+            float marginTop=answerSheet.offsetTop+i*answerSheet.answerHeight+preEmptyRowCount*answerSheet.emptyRowHeight;
+            if(i<AnswerSheetConfig.TOTAL_ROW_COUNT)
+            {
+                if(i%AnswerSheetConfig.PER_ROW_COUNT==0){
+                    Imgproc.line(measureMat, new Point(0, marginTop-answerSheet.emptyRowHeight), new Point(answerSheet.width, marginTop-answerSheet.emptyRowHeight), getLineColorWhite());
+                }
+                Imgproc.line(measureMat, new Point(0, marginTop), new Point(answerSheet.width, marginTop), getLineColorWhite());
+            }
+        }
+
+        Imgproc.line(measureMat, new Point(answerSheet.offsetLeft, 0), new Point(answerSheet.offsetLeft, answerSheet.height), getLineColorWhite());
+        Imgproc.line(measureMat, new Point(answerSheet.width-answerSheet.offsetRight,0), new Point(answerSheet.width - answerSheet.offsetRight, answerSheet.height), getLineColorWhite());
+
+        for(int i=1;i<=AnswerSheetConfig.TOTAL_COL_COUNT;i++){
+            int preEmptyColCount=i/AnswerSheetConfig.PER_COL_COUNT;
+            float marginLeft=answerSheet.offsetLeft+i*answerSheet.answerWidth+preEmptyColCount*answerSheet.emptyColWidth;
+
+            if(i<AnswerSheetConfig.TOTAL_COL_COUNT){
+                if(i%AnswerSheetConfig.PER_COL_COUNT==0){
+                    Imgproc.line(measureMat, new Point(marginLeft-answerSheet.emptyColWidth,0), new Point(marginLeft-answerSheet.emptyColWidth, answerSheet.height), getLineColorWhite());
+                }
+                Imgproc.line(measureMat, new Point(marginLeft, 0), new Point(marginLeft, answerSheet.height), getLineColorWhite());
+            }
+        }
+    }
 }
