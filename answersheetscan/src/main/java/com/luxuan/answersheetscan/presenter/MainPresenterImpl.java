@@ -33,9 +33,11 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class MainPresenterImpl implements MainPresenter {
 
@@ -312,7 +314,7 @@ public class MainPresenterImpl implements MainPresenter {
             stepDealComplete(current, total, stepName, measureBitmap, null, true);
         }catch(Exception e){
             measureMat.release();
-            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage(),null, null, false);
         }
         return measureMat;
     }
@@ -326,10 +328,10 @@ public class MainPresenterImpl implements MainPresenter {
         try{
             Imgproc.adaptiveThreshold(preMat, binaryMat, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 255, 40);
             Utils.matToBitmap(binaryMat, binaryBitmap);
-            stepDealComplete(current, total, stepName, binaryBitmap);
+            stepDealComplete(current, total, stepName, binaryBitmap,null,true);
         }catch(Exception e){
             binaryMat.release();
-            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage(),null, null, false);
         }
 
         return binaryMat;
@@ -344,10 +346,10 @@ public class MainPresenterImpl implements MainPresenter {
         try{
             Imgproc.GaussianBlur(preMat, blurMat, new Size(3,3), 0);
             Utils.matToBitmap(blurMat, blurBitmap);
-            stepDealComplete(current, total, stepName, binaryBitmap);
+            stepDealComplete(current, total, stepName, blurBitmap,null,true);
         }catch(Exception e){
             blurMat.release();
-            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage(),null,null, false);
         }
 
         return blurMat;
@@ -365,7 +367,7 @@ public class MainPresenterImpl implements MainPresenter {
             stepDealComplete(current, total, stepName, grayBitmap, null, true);
         }catch(Exception e){
             grayMat.release();
-            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage(),null,null, false);
         }
 
         return grayMat;
@@ -373,7 +375,7 @@ public class MainPresenterImpl implements MainPresenter {
 
     private void calcReferenceAxis(Mat measureMat, AnswerSheetModel answerSheet){
         Imgproc.line(measureMat, new Point(0, answerSheet.offsetTop), new Point(answerSheet.width, answerSheet.offsetTop), getLineColorWhite());
-        Imgproc.line(measureMat, new Point(0, answerSheet.height-answerSheet.offsetBottom), new Point(answerSheet.width, answerSheet.height-answerSheet.offsetBottom, getLineColorWhite()));
+        Imgproc.line(measureMat, new Point(0, answerSheet.height-answerSheet.offsetBottom), new Point(answerSheet.width, answerSheet.height-answerSheet.offsetBottom), getLineColorWhite());
         for(int i=1;i<=AnswerSheetConfig.TOTAL_ROW_COUNT;i++){
             int preEmptyRowCount=i/AnswerSheetConfig.PER_ROW_COUNT;
             float marginTop=answerSheet.offsetTop+i*answerSheet.answerHeight+preEmptyRowCount*answerSheet.emptyRowHeight;
@@ -432,5 +434,34 @@ public class MainPresenterImpl implements MainPresenter {
                 mActivity.onPhotoDealComplete(stepName, current, total);
             }
         });
+    }
+
+    private File createImageFile(){
+        String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new java.util.Date());
+        String imageFileName="IMG_"+timeStamp;
+        File image=new File(Environment.getExternalStorageDirectory()+File.separator+imageFileName+".png");
+        mPhotoFileName=image.getAbsolutePath().substring(image.getAbsolutePath().lastIndexOf("/")+1);
+        return image;
+    }
+
+    private void crop(Uri uri){
+        if(!mTempFileDir.exists()){
+            mTempFileDir.mkdirs();
+        }
+
+        mCropFile=new File(mTempFileDir, getPhotoFileName());
+
+        Intent intent=new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("scale", true);
+        intent.putExtra("scaleUpIfNeeded", true);
+
+        intent.putExtra("outputFormat", "PNG");
+        intent.putExtra("noFaceDetection", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCropFile));
+        mCropImgPath=mCropFile.getAbsolutePath();
+        mActivity.startActivityForResult(intent, CROP_REQUEST_CODE);
     }
 }
