@@ -28,6 +28,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
@@ -399,5 +400,37 @@ public class MainPresenterImpl implements MainPresenter {
                 Imgproc.line(measureMat, new Point(marginLeft, 0), new Point(marginLeft, answerSheet.height), getLineColorWhite());
             }
         }
+    }
+
+    @NonNull
+    public float formatDouble(double value){
+        return (float)Math.round(value*100)/100;
+    }
+
+    @NonNull
+    private Scalar getLineColorWhite(){
+        return new Scalar(255,255,255);
+    }
+
+    private Bitmap createBitmapAsSrc(Bitmap srcBitmap){
+        return Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), srcBitmap.getConfig());
+    }
+
+    private void stepDealComplete(final int current, final int total, final String stepName, final Bitmap resultBitmap, final List<AnswerSheetModel.AnswerSheetItemModel> answers, final boolean success){
+        ThreadUtils.runOnUIThread(new Runnable(){
+            @Override
+            public void run(){
+                mActivity.onPhotoDealComplete(resultBitmap, answers, stepName, current, total, success);
+            }
+        });
+    }
+
+    private void stepDealStart(final int current, final int total, final String stepName){
+        ThreadUtils.runOnUIThread(new Runnable(){
+            @Override
+            public void run(){
+                mActivity.onPhotoDealComplete(stepName, current, total);
+            }
+        });
     }
 }
