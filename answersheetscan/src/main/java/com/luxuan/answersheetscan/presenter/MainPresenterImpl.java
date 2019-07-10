@@ -303,7 +303,7 @@ public class MainPresenterImpl implements MainPresenter {
             }
             stepDealComplete(current,total, stepName, null, answers, true);
         }catch(Exception e){
-            stepDealComplete(current, total, stepName+"失败： "+e.getMessage());
+            stepDealComplete(current, total, stepName+"失败： "+e.getMessage(),null, null, false);
         }
     }
 
