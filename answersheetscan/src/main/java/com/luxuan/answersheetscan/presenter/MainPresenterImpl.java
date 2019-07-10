@@ -40,6 +40,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -470,7 +471,7 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     private String getPhotoFileName(){
-        Date date=newDate(System.currentTimeMillis());
+        Date date=new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat=new SimpleDateFormat("'IMG'_yyyyMMddHHmmss");
         return dateFormat.format(date)+".png";
     }
