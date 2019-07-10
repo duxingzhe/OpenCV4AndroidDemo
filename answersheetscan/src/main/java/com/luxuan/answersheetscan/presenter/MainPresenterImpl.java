@@ -1,7 +1,10 @@
 package com.luxuan.answersheetscan.presenter;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -463,5 +466,46 @@ public class MainPresenterImpl implements MainPresenter {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCropFile));
         mCropImgPath=mCropFile.getAbsolutePath();
         mActivity.startActivityForResult(intent, CROP_REQUEST_CODE);
+    }
+
+    private String getPhotoFileName(){
+        Date date=newDate(System.currentTimeMillis());
+        SimpleDateFormat dateFormat=new SimpleDateFormat("'IMG'_yyyyMMddHHmmss");
+        return dateFormat.format(date)+".png";
+    }
+
+    private boolean hasSdcard(){
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    private static Uri getImageContentUri(Context context, File imageFile){
+        String filePath=imageFile.getAbsolutePath();
+        Cursor cursor=context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID},
+                MediaStore.Images.Media.DATA+"=?",
+                new String[]{filePath}, null
+        );
+        if(cursor!=null&&cursor.moveToFirst()){
+            int id=cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri=Uri.parse("content://media/external/images/media");
+            cursor.close();
+            return Uri.withAppendedPath(baseUri, ""+id);
+        }else{
+            if(imageFile.exists()){
+                ContentValues values=new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                if(cursor!=null){
+                    cursor.close();
+                }
+
+                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+            }else{
+                if(cursor!=null){
+                    cursor.close();
+                }
+                return null;
+            }
+        }
     }
 }
