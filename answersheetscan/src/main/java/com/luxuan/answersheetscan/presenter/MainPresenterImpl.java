@@ -3,6 +3,7 @@ package com.luxuan.answersheetscan.presenter;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -507,5 +508,22 @@ public class MainPresenterImpl implements MainPresenter {
                 return null;
             }
         }
+    }
+
+    private String getPicPathInGallery(Uri uri){
+        String path="";
+        if(!TextUtils.isEmpty(uri.getAuthority())){
+            Cursor cursor;
+            CursorLoader cursorLoader=new CursorLoader(mActivity,uri,null, null, null,null);
+            cursor=cursorLoader.loadInBackground();
+            if(cursor!=null){
+                int column_index=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                path=cursor.getString(column_index);
+            }
+        }else{
+            path=uri.getPath();
+        }
+        return path;
     }
 }
