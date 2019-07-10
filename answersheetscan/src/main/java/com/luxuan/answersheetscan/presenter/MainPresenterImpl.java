@@ -20,6 +20,7 @@ import android.util.Log;
 import com.luxuan.answersheetscan.config.AnswerSheetConfig;
 import com.luxuan.answersheetscan.model.AnswerSheetModel;
 import com.luxuan.answersheetscan.utils.ThreadUtils;
+import com.luxuan.answersheetscan.view.CropActivity;
 import com.luxuan.answersheetscan.view.MainActivity;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -476,7 +477,7 @@ public class MainPresenterImpl implements MainPresenter {
         return dateFormat.format(date)+".png";
     }
 
-    private boolean hasSdcard(){
+    private boolean hasSdCard(){
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 

@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.luxuan.answersheetscan.R;
 import com.luxuan.answersheetscan.model.AnswerSheetModel;
+import com.luxuan.answersheetscan.presenter.MainPresenter;
+import com.luxuan.answersheetscan.presenter.MainPresenterImpl;
 import com.luxuan.answersheetscan.utils.PermissionUtils;
 import com.luxuan.answersheetscan.utils.ToastUtils;
 
