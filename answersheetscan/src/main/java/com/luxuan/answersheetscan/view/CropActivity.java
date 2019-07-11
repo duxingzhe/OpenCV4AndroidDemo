@@ -59,4 +59,12 @@ public class CropActivity extends Activity {
 
         mPresenter.analyzeSrcBitmap(getIntent().getStringExtra("filePath"));
     }
+
+    private void showProgress(String content){
+        if(mProgressDialog==null){
+            mProgressDialog=new SimpleProgressDialog(this);
+        }
+        mProgressDialog.show();
+        mProgressDialog.setContent(content);
+    }
 }
