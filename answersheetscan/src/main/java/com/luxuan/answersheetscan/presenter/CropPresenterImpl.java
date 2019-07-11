@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Environment;
 
 import com.luxuan.answersheetscan.utils.ThreadUtils;
+import com.luxuan.answersheetscan.view.CropActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
