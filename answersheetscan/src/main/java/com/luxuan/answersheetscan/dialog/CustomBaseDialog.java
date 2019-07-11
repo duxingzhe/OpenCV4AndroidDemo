@@ -2,5 +2,5 @@ package com.luxuan.answersheetscan.dialog;
 
 import android.app.Dialog;
 
-public class CustomBaseDialog extends Dialog {
+public abstract class CustomBaseDialog extends Dialog {
 }
