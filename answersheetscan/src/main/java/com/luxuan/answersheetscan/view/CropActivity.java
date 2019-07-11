@@ -1,11 +1,15 @@
 package com.luxuan.answersheetscan.view;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.luxuan.answersheetscan.R;
+import com.luxuan.answersheetscan.dialog.SimpleProgressDialog;
 import com.luxuan.answersheetscan.presenter.CropPresenter;
 import com.luxuan.answersheetscan.presenter.CropPresenterImpl;
 import com.luxuan.answersheetscan.utils.ToastUtils;
@@ -66,5 +70,39 @@ public class CropActivity extends Activity {
         }
         mProgressDialog.show();
         mProgressDialog.setContent(content);
+    }
+
+    private void hideProgress(){
+        if(mProgressDialog!=null){
+            mProgressDialog.dismiss();
+        }
+    }
+
+    public void onAnalyzeSrcBitmapBegin(){
+        showProgress("Bitmap解码");
+    }
+
+    public void onAnalyzeSrcBitmapComplete(Bitmap bitmap, Point[] points){
+        hideProgress();
+        mImageViewCrop.setImageToCrop(bitmap);
+        mImageViewCrop.setCropPoints(points);
+    }
+
+    public void onCropBegin(){
+        showProgress("图片裁剪及分析");
+    }
+
+    public void onCropComplete(String cropPath){
+        hideProgress();
+        Intent intent=new Intent();
+        intent.putExtra("cropPath", cropPath);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void onCropError(Exception e){
+        setResult(RESULT_CANCELED);
+        ToastUtils.showToast(this, e.getMessage());
+        finish();
     }
 }
