@@ -48,6 +48,11 @@ public class ImageResultAdapter extends RecyclerView.Adapter<ImageResultAdapter.
         });
     }
 
+    @Override
+    public int getItemCount(){
+        return mBitmaps==null?0:mBitmaps.size();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView mTextViewTitle;
         public ImageView mImageViewResult;
