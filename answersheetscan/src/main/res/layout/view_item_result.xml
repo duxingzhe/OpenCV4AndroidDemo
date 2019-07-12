@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_step"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Step1:"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/iv_result"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
