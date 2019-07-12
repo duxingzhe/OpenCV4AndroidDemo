@@ -104,14 +104,16 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
             @Override
             public void onClick(View view){
-                ToastUtils.showToast(MainActivity.this, "请先通过相机或相册传入图片");
-                return;
+                if(mFile==null) {
+                    ToastUtils.showToast(MainActivity.this, "请先通过相机或相册传入图片");
+                    return;
+                }
+                if(mAnswers.size()==0){
+                    ToastUtils.showToast(MainActivity.this, "请先处理图片");
+                    return;
+                }
+                ResultActivity.startAction(MainActivity.this);
             }
-            if(mAnswers.size()==0){
-                ToastUtils.showToast(MainActivity.this, "请先处理图片");
-                return;
-            }
-            ResultActivity.startAction(MainActivity.this);
         });
 
         RecyclerView rvResult=findViewById(R.id.rv_result);
