@@ -149,7 +149,7 @@ public class MainPresenterImpl implements MainPresenter {
             case ADVANCE_CROP_REQUEST_CODE:
                 if(resultCode==Activity.RESULT_OK &&data!=null){
                     String cropPath=data.getStringExtra("cropPath");
-                    mActivity.onPhotoGet(new File(cropPath), "原图");
+                    mActivity.onPhotoCrop(new File(cropPath), "原图");
                 }
                 break;
         }
@@ -248,7 +248,7 @@ public class MainPresenterImpl implements MainPresenter {
                             Core.meanStdDev(roiMat, meanMat, stdDevMat);
                             meanMat.get(0, 0, mean);
                             stdDevMat.get(0,0, stdDev);
-                            float factor=formatDouble(mean[0]0);
+                            float factor=formatDouble(mean[0]);
                             switch(k/2){
                                 case 0:
                                     answerItem.factorA=factor;
@@ -437,7 +437,7 @@ public class MainPresenterImpl implements MainPresenter {
         ThreadUtils.runOnUIThread(new Runnable(){
             @Override
             public void run(){
-                mActivity.onPhotoDealComplete(stepName, current, total);
+                mActivity.onPhotoDealStart(stepName, current, total);
             }
         });
     }
