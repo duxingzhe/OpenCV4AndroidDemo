@@ -72,7 +72,7 @@ public class CropPresenterImpl implements CropPresenter {
         ThreadUtils.runOnSubThread(new Runnable(){
             @Override
             public void run(){
-                final Bitmap bitmap= BitmapFactory.decodeFile(fielPaht);
+                final Bitmap bitmap= BitmapFactory.decodeFile(filePath);
                 int width=bitmap.getWidth();
                 int height=bitmap.getHeight();
                 final Point[] points=new Point[4];
