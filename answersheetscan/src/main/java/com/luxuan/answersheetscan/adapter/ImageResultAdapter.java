@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.luxuan.answersheetscan.R;
 import com.luxuan.answersheetscan.utils.BitmapUtils;
+import com.luxuan.answersheetscan.view.PhotoActivity;
 
 import java.util.List;
 
