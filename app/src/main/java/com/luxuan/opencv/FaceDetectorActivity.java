@@ -54,7 +54,7 @@ public class FaceDetectorActivity extends Activity implements CameraBridgeViewBa
     private float mRelativeFaceSize=0.2f;
     private int mAbsoluteFaceSize=0;
 
-    int PERMISSIONS_REQUEST_CAMERA =10011;
+    private static final int PERMISSIONS_REQUEST_CAMERA =10011;
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
