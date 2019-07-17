@@ -7,11 +7,16 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
+import org.opencv.android.Utils
+import org.opencv.core.CvType
+import org.opencv.core.Mat
+import org.opencv.imgproc.Imgproc
 
 class MainActivity : AppCompatActivity() {
 
@@ -100,4 +105,28 @@ class MainActivity : AppCompatActivity() {
         return !grantResults.contains(PackageManager.PERMISSION_DENIED)
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray){
+        when(requestCode){
+            CAMERA_REQUEST -> {
+                if(hasAllPermissionGranted(grantResults)){
+                    Log.d("111", "onRequestPermissionsResult: OK")
+                }else{
+                    Toast.makeText(this, "请打开定位设置", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun convertGray(){
+        val src=Mat()
+        val temp=Mat()
+        val dst= Mat()
+        val newBitmap=selectbp?.copy(Bitmap.Config.ARGB_8888, true)
+        Utils.bitmapToMat(newBitmap, src)
+        Imgproc.cvtColor(src, temp, Imgproc.COLOR_BGRA2BGR)
+        Log.i("CV", "image type:" + (temp.type()== CvType.CV_8UC3))
+        Imgproc.cvtColor(temp, dst, Imgproc.COLOR_BGR2GRAY)
+        Utils.matToBitmap(dst, newBitmap)
+        resultPic.setImageBitmap(newBitmap)
+    }
 }
