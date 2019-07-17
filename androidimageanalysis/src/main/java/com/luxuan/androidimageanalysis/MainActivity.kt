@@ -1,9 +1,11 @@
 package com.luxuan.androidimageanalysis
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -114,6 +116,44 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "请打开定位设置", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==PICK_IMAGE_REQUEST && resultCode== Activity.RESULT_OK && data!=null && data.data!=null) {
+            val uri=data.data
+            try{
+                Log.d("image-tag", "start to decode selected image now...")
+                val input=contentResolver.openInputStream(uri!!)
+                val options= BitmapFactory.Options()
+                options.inJustDecodeBounds=true
+                BitmapFactory.decodeStream(input, null, options)
+                val raw_width=options.outWidth
+                val raw_height=options.outHeight
+                val max=Math.max(raw_width, raw_height)
+                var newWidth=raw_width
+                var newHeight=raw_height
+                var inSampleSize=1
+                val max_size=1024.0
+                if(max>max_size){
+                    newWidth=raw_width/2
+                    newHeight=raw_height/2
+                    while(newWidth/inSampleSize>max_size||newHeight/inSampleSize>max_size){
+                        inSampleSize*=2
+                    }
+                }
+
+                options.inSampleSize=inSampleSize
+                options.inJustDecodeBounds=false
+                options.inPreferredConfig=Bitmap.Config.ARGB_8888
+                selectbp=BitmapFactory.decodeStream(contentResolver.openInputStream(rui), null, options)
+
+                sourcePic.setImageBitmap(selectbp)
+            }catch(e: Exception){
+                e.printStackTrace()
+            }
+
         }
     }
 
