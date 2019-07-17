@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun selectImage(){
+    private fun selectImg() {
         val intent=Intent()
         intent.type="image/*"
         intent.action=Intent.ACTION_GET_CONTENT
