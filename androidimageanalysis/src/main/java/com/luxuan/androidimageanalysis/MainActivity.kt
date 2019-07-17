@@ -80,4 +80,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun staticLoadCVLibraries(){
+        val load =OpenCVLoader.initDebug()
+        if(load){
+            mOpenCVCallBack.onManagerConnected(LoaderCallbackInterface.SUCCESS)
+        }else{
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mOpenCVCallBack)
+        }
+    }
+
+    private fun selectImage(){
+        val intent=Intent()
+        intent.type="image/*"
+        intent.action=Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "选择图像..."),PICK_IMAGE_REQUEST)
+    }
+
+    private fun hasAllPermissionGranted(grantResults: IntArray): Boolean{
+        return !grantResults.contains(PackageManager.PERMISSION_DENIED)
+    }
+
 }
