@@ -1,11 +1,21 @@
 package com.luxuan.androidimageanalysis
 
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.os.MessageQueue
+import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_image_analysis.*
+import java.io.File
 import java.util.concurrent.Executor
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.ThreadFactory
 
 class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
 
@@ -47,4 +57,62 @@ class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
         }
     }
 
+    private var idleHandler: MessageQueue.IdleHandler= MessageQueue.IdleHandler{
+        if(classifer==null){
+            classifer=TensorFlowImageClassifier.create(this@ImageAnalysisActivity.assets, MODEL_FILE, LABEL_FILE,
+                    INPUT_SIZE, IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
+        }
+
+        executor= ScheduledThreadPoolExecutor(1, ThreadFactory{ r->
+            var thread=Thread(r)
+            thread.isDaemon=true
+            thread.name="ThreadPool-ImageClassifier"
+            thread
+        })
+
+        false
+    }
+
+    override fun onClick(view: View){
+        when(view.id){
+            R.id.ivChoose->choosePicture()
+            R.id.ivTakePhoto->takePhoto()
+            else->{
+
+            }
+        }
+    }
+
+    private fun choosePicture(){
+        val intent=Intent(Intent.ACTION_GET_CONTENT)
+        intent.type="image/*"
+        startActivityForResult(intent, PICTURE_REQUEST_CODE)
+    }
+
+    private fun takePhoto(){
+        openSystemCamera()
+    }
+
+    private fun openSystemCamera(){
+        val takePhotoIntent= Intent()
+        takePhotoIntent.action= MediaStore.ACTION_IMAGE_CAPTURE
+
+        if(takePhotoIntent.resolveActivity(packageManager)==null){
+            Toast.makeText(this, "当前系统没有可用的相机应用", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val fileName="TF_"+System.currentTimeMillis()+".jpg"
+        val photoFile= File(FileUtil.getPhotoCacheFolder(), fileName)
+
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
+            currentTakePhotoUri= FileProvider.getUriForFile(this, "com.luxuan.androidimageanalysis", photoFile)
+            takePhotoIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }else{
+            currentTakePhotoUri=Uri.fromFile(photoFile)
+        }
+
+        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentTakePhotoUri)
+        startActivityForResult(takePhotoIntent, TAKE_PHOTO_REQUEST_CODE)
+    }
 }
