@@ -2,10 +2,15 @@ package com.luxuan.androidimageanalysis
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
+import android.os.MessageQueue
 import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_camera.*
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Mat
 import java.util.concurrent.Executor
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.ThreadFactory
 
 class CameraActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListener {
 
@@ -21,11 +26,33 @@ class CameraActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewLis
     private val LABEL_FILE="file:///android_asset/model/imagenet_comp_label_strings.txt"
 
     private var executor: Executor?=null
-    private var currentTakePhotoUri: Uri?=null
-    private var classifer: Classifier?=null
+    private var classifier: Classifier?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+
+        cameraView.setCameraIndex(0)
+        cameraView.enableFpsMeter()
+        cameraView.setCvCameraViewListener(this)
+        cameraView.enableView()
+
+        Looper.myQueue().addIdleHandler(idleHandler)
+    }
+
+    private var idleHandler: MessageQueue.IdleHandler=MessageQueue.IdleHandler{
+        if(classifier==null){
+            classifier=TensorFlowImageClassifier.create(this@CameraActivity.assets,
+                    MODEL_FILE, LABEL_FILE, INPUT_SIZE, IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
+        }
+
+        executor= ScheduledThreadPoolExecutor(1, ThreadFactory{ r->
+            val thread=Thread(r)
+            thread.isDaemon=true
+            thread.name="ThreadPool-ImageClassifier"
+            thread
+        })
+
+        false
     }
 }
