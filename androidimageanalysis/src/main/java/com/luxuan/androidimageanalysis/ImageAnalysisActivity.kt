@@ -106,7 +106,7 @@ class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
         val photoFile= File(FileUtil.getPhotoCacheFolder(), fileName)
 
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
-            currentTakePhotoUri= FileProvider.getUriForFile(this, "com.luxuan.androidimageanalysis", photoFile)
+            currentTakePhotoUri= FileProvider.getUriForFile(this, "com.luxuan.androidimageanalysis.file", photoFile)
             takePhotoIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }else{
             currentTakePhotoUri=Uri.fromFile(photoFile)
