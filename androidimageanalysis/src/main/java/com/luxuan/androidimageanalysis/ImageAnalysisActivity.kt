@@ -2,6 +2,7 @@ package com.luxuan.androidimageanalysis
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -36,7 +37,7 @@ class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
     private val IMAGE_STD=1f
     private val INPUT_NAME="input"
     private val OUTPUT_NAME="output"
-    private val MODEL_FILE="file:///android_asset/model/tensorflow_pb"
+    private val MODEL_FILE="file:///android_asset/model/tensorflow_inception_graph.pb"
     private val LABEL_FILE="file:///android_asset/model/imagenet_comp_label_strings.txt"
 
     private var executor: Executor?=null
@@ -155,6 +156,17 @@ class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
                 e.printStackTrace()
             }
         }
+    }
+
+    @Throws(IOException::class)
+    private fun getScaledBitmap(bitmap: Bitmap, size: Int): Bitmap{
+        val width=bitmap.width
+        val height=bitmap.height
+        val scaleWidth=size.toFloat()/width
+        val scaleHeight=size.toFloat()/height
+        val matrix= Matrix()
+        matrix.postScale(scaleWidth, scaleHeight)
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
     }
 
 }
