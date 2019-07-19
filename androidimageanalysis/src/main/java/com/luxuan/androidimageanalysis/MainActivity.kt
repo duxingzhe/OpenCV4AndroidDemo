@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                 options.inSampleSize=inSampleSize
                 options.inJustDecodeBounds=false
                 options.inPreferredConfig=Bitmap.Config.ARGB_8888
-                selectbp=BitmapFactory.decodeStream(contentResolver.openInputStream(rui), null, options)
+                selectbp=BitmapFactory.decodeStream(contentResolver.openInputStream(uri), null, options)
 
                 sourcePic.setImageBitmap(selectbp)
             }catch(e: Exception){
