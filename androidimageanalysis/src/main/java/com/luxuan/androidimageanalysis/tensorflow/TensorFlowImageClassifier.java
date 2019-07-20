@@ -48,11 +48,6 @@ public class TensorFlowImageClassifier implements Classifier {
             String inputName,
             String outputName){
         TensorFlowImageClassifier c=new TensorFlowImageClassifier();
-
-        final Operation operation =c.inferenceInterface.graphOperation(outputName);
-        final int numClasses=(int)operation.output(0).shape().size(1);
-        Log.i(TAG, "Read "+c.labels.size()+" labels, output layer size is "+numClasses);
-
         c.inputName=inputName;
         c.outputName=outputName;
 
@@ -69,6 +64,12 @@ public class TensorFlowImageClassifier implements Classifier {
         }catch(IOException e){
             throw new RuntimeException("Problem reading label file!", e);
         }
+
+        c.inferenceInterface=new TensorFlowInferenceInterface(assetManager, modelFilename);
+
+        final Operation operation =c.inferenceInterface.graphOperation(outputName);
+        final int numClasses=(int)operation.output(0).shape().size(1);
+        Log.i(TAG, "Read "+c.labels.size()+" labels, output layer size is "+numClasses);
 
         c.inputSize=inputSize;
         c.imageMean=imageMean;
