@@ -1,6 +1,8 @@
 package com.luxuan.androidimageanalysis.tensorflow;
 
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.os.Trace;
 import android.util.Log;
 
 import org.tensorflow.Operation;
@@ -9,6 +11,10 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Vector;
 
 public class TensorFlowImageClassifier implements Classifier {
@@ -81,6 +87,56 @@ public class TensorFlowImageClassifier implements Classifier {
         c.outputs=new float[numClasses];
 
         return c;
+    }
+
+    @Override
+    public List<Recognition> recognizeImage(final Bitmap bitmap){
+        Trace.beginSection("recognizeImage");
+
+        Trace.beginSection("preprocessBitmap");
+
+        bitmap.getPixels(intValues, 0, bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        for(int i=0;i<intValues.length;i++){
+            final int val=intValues[i];
+
+            floatValues[i*3]=(((val>>16)&0xFF)-imageMean)/imageStd;
+            floatValues[i*3+1]=(((val>>8)&0xFF)-imageMean)/imageStd;
+            floatValues[i*3+2]=((val&0xFF)-imageMean)/imageStd;
+        }
+
+        Trace.endSection();
+
+        Trace.beginSection("feed");
+        inferenceInterface.feed(inputName, floatValues, 1, inputSize, inputSize, 3);
+        Trace.endSection();
+
+        Trace.beginSection("fetch");
+        inferenceInterface.fetch(outputName, outputs);
+        Trace.endSection();
+
+        PriorityQueue<Recognition> pq= new PriorityQueue<>(3, new Comparator<Recognition>(){
+
+            @Override
+            public int compare(Recognition lhs, Recognition rhs){
+                return Float.compare(rhs.getConfidence(), lhs.getConfidence());
+            }
+        });
+
+        for(int i=0;i<outputs.length;i++){
+            if(outputs[i]>THRESHOLD){
+                pq.add(new Recognition(""+i, labels.size()>i?labels.get(i):"unknown", outputs[i], null));
+            }
+        }
+
+        final ArrayList<Recognition> recognitions=new ArrayList<>();
+        int recognitionsSize=Math.min(pq.size(), MAX_RESULTS);
+        for(int i=0;i<recognitionsSize;i++){
+            recognitions.add(pq.poll());
+        }
+
+        Trace.endSection();
+        return recognitions;
     }
 
 }

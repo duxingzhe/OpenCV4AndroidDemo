@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.os.MessageQueue
 import android.support.v7.app.AppCompatActivity
+import com.luxuan.androidimageanalysis.tensorflow.TensorFlowImageClassifier
 import kotlinx.android.synthetic.main.activity_camera.*
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Mat
@@ -41,7 +42,7 @@ class CameraActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewLis
 
     private var idleHandler: MessageQueue.IdleHandler=MessageQueue.IdleHandler{
         if(classifier==null){
-            classifier=TensorFlowImageClassifier.create(this@CameraActivity.assets,
+            classifier= TensorFlowImageClassifier.create(this@CameraActivity.assets,
                     MODEL_FILE, LABEL_FILE, INPUT_SIZE, IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
         }
 
