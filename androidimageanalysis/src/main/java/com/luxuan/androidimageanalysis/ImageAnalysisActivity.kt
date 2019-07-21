@@ -18,6 +18,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.luxuan.androidimageanalysis.tensorflow.Classifier
+import com.luxuan.androidimageanalysis.tensorflow.TensorFlowImageClassifier
 import kotlinx.android.synthetic.main.activity_image_analysis.*
 import java.io.File
 import java.io.IOException
@@ -42,7 +45,7 @@ class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
 
     private var executor: Executor?=null
     private var currentTakePhotoUri: Uri?=null
-    private var classifer: Classifier?=null
+    private var classifier: Classifier?=null
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -66,8 +69,8 @@ class ImageAnalysisActivity: AppCompatActivity(), View.OnClickListener{
     }
 
     private var idleHandler: MessageQueue.IdleHandler= MessageQueue.IdleHandler{
-        if(classifer==null){
-            classifer=TensorFlowImageClassifier.create(this@ImageAnalysisActivity.assets, MODEL_FILE, LABEL_FILE,
+        if(classifier==null){
+            classifier= TensorFlowImageClassifier.create(this@ImageAnalysisActivity.assets, MODEL_FILE, LABEL_FILE,
                     INPUT_SIZE, IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
         }
 
