@@ -69,9 +69,9 @@ public interface Classifier {
 
     List<Recognition> recognizeImage(Bitmap bitmap);
 
-    void enableStateLogging(final boolean debug);
+    void enableStatsLogging(final boolean debug);
 
-    String getSateString();
+    String getStatsString();
 
     void close();
 }

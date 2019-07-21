@@ -1,13 +1,20 @@
 package com.luxuan.androidimageanalysis
 
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
 import android.os.Looper
 import android.os.MessageQueue
 import android.support.v7.app.AppCompatActivity
+import com.luxuan.androidimageanalysis.tensorflow.Classifier
 import com.luxuan.androidimageanalysis.tensorflow.TensorFlowImageClassifier
 import kotlinx.android.synthetic.main.activity_camera.*
 import org.opencv.android.CameraBridgeViewBase
+import org.opencv.android.Utils
+import org.opencv.core.CvType
 import org.opencv.core.Mat
+import org.opencv.imgproc.Imgproc
+import java.io.IOException
 import java.util.concurrent.Executor
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.ThreadFactory
@@ -54,5 +61,41 @@ class CameraActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewLis
         })
 
         false
+    }
+
+    override fun onCameraViewStarted(width: Int, height:Int){
+        grayscaleImage=Mat(height, width, CvType.CV_8UC4)
+        absoluteFaceSize=(height*0.2).toInt()
+    }
+
+    override fun onCameraViewStopped(){
+        grayscaleImage?.release()
+    }
+
+    override fun onCameraFrame(inputFrame: Mat): Mat{
+        Imgproc.cvtColor(inputFrame, grayscaleImage, Imgproc.COLOR_RGBA2RGB)
+
+        executor?.execute{
+            val bmpCanny= Bitmap.createBitmap(inputFrame.cols(), inputFrame.rows(), Bitmap.Config.ARGB_8888)
+            Utils.matToBitmap(inputFrame, bmpCanny)
+            val croppedBitmap=getScaleBitmap(bmpCanny, INPUT_SIZE)
+            val results=classifier?.recognizeImage(croppedBitmap)
+            runOnUiThread{
+                tvInfo.text=results.toString()
+            }
+        }
+
+        return inputFrame
+    }
+
+    @Throws(IOException::class)
+    private fun getScaleBitmap(bitmap: Bitmap, size:Int): Bitmap{
+        val width=bitmap.width
+        val height=bitmap.height
+        val scaleWidth=size.toFloat()/width
+        val scaleHeight=size.toFloat()/height
+        val matrix= Matrix()
+        matrix.postScale(scaleWidth, scaleHeight)
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
     }
 }

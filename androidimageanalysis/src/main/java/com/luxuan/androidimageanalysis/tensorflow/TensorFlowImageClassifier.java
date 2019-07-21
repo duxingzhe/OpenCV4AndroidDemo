@@ -36,7 +36,7 @@ public class TensorFlowImageClassifier implements Classifier {
     private float[] outputs;
     private String[] outputNames;
 
-    private boolean logStates=false;
+    private boolean logStats=false;
 
     private TensorFlowInferenceInterface inferenceInterface;
 
@@ -95,7 +95,7 @@ public class TensorFlowImageClassifier implements Classifier {
 
         Trace.beginSection("preprocessBitmap");
 
-        bitmap.getPixels(intValues, 0, bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
 
         for(int i=0;i<intValues.length;i++){
             final int val=intValues[i];
@@ -137,6 +137,21 @@ public class TensorFlowImageClassifier implements Classifier {
 
         Trace.endSection();
         return recognitions;
+    }
+
+    @Override
+    public void enableStatsLogging(boolean logStats){
+        this.logStats=logStats;
+    }
+
+    @Override
+    public String getStatsString(){
+        return inferenceInterface.getStatString();
+    }
+
+    @Override
+    public void close(){
+        inferenceInterface.close();
     }
 
 }
