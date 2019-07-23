@@ -55,5 +55,4 @@ androidimageanalysis：图像分析（使用Tensorflow on Android）
 
 如果本项目对你的学习和开发有所帮助，欢迎上一份茶水钱
 
-![](./qr/alipay_qr.jpg)
-![](./qr/weixin_qr.png)
+<img src="./qr/alipay_qr.jpg" width="300"> <img src="./qr/weixin_qr.png" width="300">
