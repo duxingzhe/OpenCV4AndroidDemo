@@ -113,7 +113,7 @@ if(NOT TARGET ippicv)
   add_library(ippicv STATIC IMPORTED)
   set_target_properties(ippicv PROPERTIES
     IMPORTED_LINK_INTERFACE_LIBRARIES ""
-    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/sdk/native/3rdparty/libs/x86/libippicv.a"
+    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/src/main/3rdparty/libs/x86/libippicv.a"
   )
 endif()
 
@@ -126,7 +126,7 @@ set(OpenCV_SHARED OFF)
 set(OpenCV_USE_MANGLED_PATHS FALSE)
 
 set(OpenCV_LIB_COMPONENTS opencv_video;opencv_shape;opencv_highgui;opencv_videostab;opencv_calib3d;opencv_core;opencv_imgcodecs;opencv_ml;opencv_dnn;opencv_features2d;opencv_flann;opencv_photo;opencv_videoio;opencv_superres;opencv_imgproc;opencv_stitching;opencv_objdetect;opencv_java)
-set(__OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/sdk/native/jni/include" "${OpenCV_INSTALL_PATH}/sdk/native/jni/include/opencv")
+set(__OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/src/main/jni/include" "${OpenCV_INSTALL_PATH}/src/main/jni/include/opencv")
 
 set(OpenCV_INCLUDE_DIRS "")
 foreach(d ${__OpenCV_INCLUDE_DIRS})
