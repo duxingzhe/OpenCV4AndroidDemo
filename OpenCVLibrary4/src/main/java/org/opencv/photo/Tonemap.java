@@ -7,8 +7,9 @@ import org.opencv.core.Algorithm;
 import org.opencv.core.Mat;
 
 // C++: class Tonemap
-//javadoc: Tonemap
-
+/**
+ * Base class for tonemapping algorithms - tools that are used to map HDR image to 8-bit range.
+ */
 public class Tonemap extends Algorithm {
 
     protected Tonemap(long addr) { super(addr); }
@@ -20,13 +21,8 @@ public class Tonemap extends Algorithm {
     // C++:  float cv::Tonemap::getGamma()
     //
 
-    //javadoc: Tonemap::getGamma()
-    public  float getGamma()
-    {
-        
-        float retVal = getGamma_0(nativeObj);
-        
-        return retVal;
+    public float getGamma() {
+        return getGamma_0(nativeObj);
     }
 
 
@@ -34,13 +30,14 @@ public class Tonemap extends Algorithm {
     // C++:  void cv::Tonemap::process(Mat src, Mat& dst)
     //
 
-    //javadoc: Tonemap::process(src, dst)
-    public  void process(Mat src, Mat dst)
-    {
-        
+    /**
+     * Tonemaps image
+     *
+     *     @param src source image - CV_32FC3 Mat (float 32 bits 3 channels)
+     *     @param dst destination image - CV_32FC3 Mat with values in [0, 1] range
+     */
+    public void process(Mat src, Mat dst) {
         process_0(nativeObj, src.nativeObj, dst.nativeObj);
-        
-        return;
     }
 
 
@@ -48,13 +45,8 @@ public class Tonemap extends Algorithm {
     // C++:  void cv::Tonemap::setGamma(float gamma)
     //
 
-    //javadoc: Tonemap::setGamma(gamma)
-    public  void setGamma(float gamma)
-    {
-        
+    public void setGamma(float gamma) {
         setGamma_0(nativeObj, gamma);
-        
-        return;
     }
 
 

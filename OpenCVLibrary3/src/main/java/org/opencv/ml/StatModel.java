@@ -8,8 +8,9 @@ import org.opencv.core.Mat;
 import org.opencv.ml.TrainData;
 
 // C++: class StatModel
-//javadoc: StatModel
-
+/**
+ * Base class for statistical models in OpenCV ML.
+ */
 public class StatModel extends Algorithm {
 
     protected StatModel(long addr) { super(addr); }
@@ -29,13 +30,8 @@ public class StatModel extends Algorithm {
     // C++:  bool cv::ml::StatModel::empty()
     //
 
-    //javadoc: StatModel::empty()
-    public  boolean empty()
-    {
-        
-        boolean retVal = empty_0(nativeObj);
-        
-        return retVal;
+    public boolean empty() {
+        return empty_0(nativeObj);
     }
 
 
@@ -43,13 +39,12 @@ public class StatModel extends Algorithm {
     // C++:  bool cv::ml::StatModel::isClassifier()
     //
 
-    //javadoc: StatModel::isClassifier()
-    public  boolean isClassifier()
-    {
-        
-        boolean retVal = isClassifier_0(nativeObj);
-        
-        return retVal;
+    /**
+     * Returns true if the model is classifier
+     * @return automatically generated
+     */
+    public boolean isClassifier() {
+        return isClassifier_0(nativeObj);
     }
 
 
@@ -57,13 +52,12 @@ public class StatModel extends Algorithm {
     // C++:  bool cv::ml::StatModel::isTrained()
     //
 
-    //javadoc: StatModel::isTrained()
-    public  boolean isTrained()
-    {
-        
-        boolean retVal = isTrained_0(nativeObj);
-        
-        return retVal;
+    /**
+     * Returns true if the model is trained
+     * @return automatically generated
+     */
+    public boolean isTrained() {
+        return isTrained_0(nativeObj);
     }
 
 
@@ -71,13 +65,16 @@ public class StatModel extends Algorithm {
     // C++:  bool cv::ml::StatModel::train(Mat samples, int layout, Mat responses)
     //
 
-    //javadoc: StatModel::train(samples, layout, responses)
-    public  boolean train(Mat samples, int layout, Mat responses)
-    {
-        
-        boolean retVal = train_0(nativeObj, samples.nativeObj, layout, responses.nativeObj);
-        
-        return retVal;
+    /**
+     * Trains the statistical model
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     * @return automatically generated
+     */
+    public boolean train(Mat samples, int layout, Mat responses) {
+        return train_0(nativeObj, samples.nativeObj, layout, responses.nativeObj);
     }
 
 
@@ -85,22 +82,29 @@ public class StatModel extends Algorithm {
     // C++:  bool cv::ml::StatModel::train(Ptr_TrainData trainData, int flags = 0)
     //
 
-    //javadoc: StatModel::train(trainData, flags)
-    public  boolean train(TrainData trainData, int flags)
-    {
-        
-        boolean retVal = train_1(nativeObj, trainData.getNativeObjAddr(), flags);
-        
-        return retVal;
+    /**
+     * Trains the statistical model
+     *
+     *     @param trainData training data that can be loaded from file using TrainData::loadFromCSV or
+     *         created with TrainData::create.
+     *     @param flags optional flags, depending on the model. Some of the models can be updated with the
+     *         new training samples, not completely overwritten (such as NormalBayesClassifier or ANN_MLP).
+     * @return automatically generated
+     */
+    public boolean train(TrainData trainData, int flags) {
+        return train_1(nativeObj, trainData.getNativeObjAddr(), flags);
     }
 
-    //javadoc: StatModel::train(trainData)
-    public  boolean train(TrainData trainData)
-    {
-        
-        boolean retVal = train_2(nativeObj, trainData.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains the statistical model
+     *
+     *     @param trainData training data that can be loaded from file using TrainData::loadFromCSV or
+     *         created with TrainData::create.
+     *         new training samples, not completely overwritten (such as NormalBayesClassifier or ANN_MLP).
+     * @return automatically generated
+     */
+    public boolean train(TrainData trainData) {
+        return train_2(nativeObj, trainData.getNativeObjAddr());
     }
 
 
@@ -108,13 +112,23 @@ public class StatModel extends Algorithm {
     // C++:  float cv::ml::StatModel::calcError(Ptr_TrainData data, bool test, Mat& resp)
     //
 
-    //javadoc: StatModel::calcError(data, test, resp)
-    public  float calcError(TrainData data, boolean test, Mat resp)
-    {
-        
-        float retVal = calcError_0(nativeObj, data.getNativeObjAddr(), test, resp.nativeObj);
-        
-        return retVal;
+    /**
+     * Computes error on the training or test dataset
+     *
+     *     @param data the training data
+     *     @param test if true, the error is computed over the test subset of the data, otherwise it's
+     *         computed over the training subset of the data. Please note that if you loaded a completely
+     *         different dataset to evaluate already trained classifier, you will probably want not to set
+     *         the test subset at all with TrainData::setTrainTestSplitRatio and specify test=false, so
+     *         that the error is computed for the whole new set. Yes, this sounds a bit confusing.
+     *     @param resp the optional output responses.
+     *
+     *     The method uses StatModel::predict to compute the error. For regression models the error is
+     *     computed as RMS, for classifiers - as a percent of missclassified samples (0%-100%).
+     * @return automatically generated
+     */
+    public float calcError(TrainData data, boolean test, Mat resp) {
+        return calcError_0(nativeObj, data.getNativeObjAddr(), test, resp.nativeObj);
     }
 
 
@@ -122,31 +136,37 @@ public class StatModel extends Algorithm {
     // C++:  float cv::ml::StatModel::predict(Mat samples, Mat& results = Mat(), int flags = 0)
     //
 
-    //javadoc: StatModel::predict(samples, results, flags)
-    public  float predict(Mat samples, Mat results, int flags)
-    {
-        
-        float retVal = predict_0(nativeObj, samples.nativeObj, results.nativeObj, flags);
-        
-        return retVal;
+    /**
+     * Predicts response(s) for the provided sample(s)
+     *
+     *     @param samples The input samples, floating-point matrix
+     *     @param results The optional output matrix of results.
+     *     @param flags The optional flags, model-dependent. See cv::ml::StatModel::Flags.
+     * @return automatically generated
+     */
+    public float predict(Mat samples, Mat results, int flags) {
+        return predict_0(nativeObj, samples.nativeObj, results.nativeObj, flags);
     }
 
-    //javadoc: StatModel::predict(samples, results)
-    public  float predict(Mat samples, Mat results)
-    {
-        
-        float retVal = predict_1(nativeObj, samples.nativeObj, results.nativeObj);
-        
-        return retVal;
+    /**
+     * Predicts response(s) for the provided sample(s)
+     *
+     *     @param samples The input samples, floating-point matrix
+     *     @param results The optional output matrix of results.
+     * @return automatically generated
+     */
+    public float predict(Mat samples, Mat results) {
+        return predict_1(nativeObj, samples.nativeObj, results.nativeObj);
     }
 
-    //javadoc: StatModel::predict(samples)
-    public  float predict(Mat samples)
-    {
-        
-        float retVal = predict_2(nativeObj, samples.nativeObj);
-        
-        return retVal;
+    /**
+     * Predicts response(s) for the provided sample(s)
+     *
+     *     @param samples The input samples, floating-point matrix
+     * @return automatically generated
+     */
+    public float predict(Mat samples) {
+        return predict_2(nativeObj, samples.nativeObj);
     }
 
 
@@ -154,13 +174,12 @@ public class StatModel extends Algorithm {
     // C++:  int cv::ml::StatModel::getVarCount()
     //
 
-    //javadoc: StatModel::getVarCount()
-    public  int getVarCount()
-    {
-        
-        int retVal = getVarCount_0(nativeObj);
-        
-        return retVal;
+    /**
+     * Returns the number of variables in training samples
+     * @return automatically generated
+     */
+    public int getVarCount() {
+        return getVarCount_0(nativeObj);
     }
 
 

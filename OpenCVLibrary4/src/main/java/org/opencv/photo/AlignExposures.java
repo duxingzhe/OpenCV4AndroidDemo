@@ -10,8 +10,9 @@ import org.opencv.core.Mat;
 import org.opencv.utils.Converters;
 
 // C++: class AlignExposures
-//javadoc: AlignExposures
-
+/**
+ * The base class for algorithms that align images of the same scene with different exposures
+ */
 public class AlignExposures extends Algorithm {
 
     protected AlignExposures(long addr) { super(addr); }
@@ -23,14 +24,19 @@ public class AlignExposures extends Algorithm {
     // C++:  void cv::AlignExposures::process(vector_Mat src, vector_Mat dst, Mat times, Mat response)
     //
 
-    //javadoc: AlignExposures::process(src, dst, times, response)
-    public  void process(List<Mat> src, List<Mat> dst, Mat times, Mat response)
-    {
+    /**
+     * Aligns images
+     *
+     *     @param src vector of input images
+     *     @param dst vector of aligned images
+     *     @param times vector of exposure time values for each image
+     *     @param response 256x1 matrix with inverse camera response function for each pixel value, it should
+     *     have the same number of channels as images.
+     */
+    public void process(List<Mat> src, List<Mat> dst, Mat times, Mat response) {
         Mat src_mat = Converters.vector_Mat_to_Mat(src);
         Mat dst_mat = Converters.vector_Mat_to_Mat(dst);
         process_0(nativeObj, src_mat.nativeObj, dst_mat.nativeObj, times.nativeObj, response.nativeObj);
-        
-        return;
     }
 
 

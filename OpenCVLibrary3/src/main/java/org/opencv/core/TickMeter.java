@@ -6,8 +6,33 @@ package org.opencv.core;
 
 
 // C++: class TickMeter
-//javadoc: TickMeter
-
+/**
+ * a Class to measure passing time.
+ *
+ * The class computes passing time by counting the number of ticks per second. That is, the following code computes the
+ * execution time in seconds:
+ * <code>
+ * TickMeter tm;
+ * tm.start();
+ * // do something ...
+ * tm.stop();
+ * std::cout &lt;&lt; tm.getTimeSec();
+ * </code>
+ *
+ * It is also possible to compute the average time over multiple runs:
+ * <code>
+ * TickMeter tm;
+ * for (int i = 0; i &lt; 100; i++)
+ * {
+ *     tm.start();
+ *     // do something ...
+ *     tm.stop();
+ * }
+ * double average_time = tm.getTimeSec() / tm.getCounter();
+ * std::cout &lt;&lt; "Average time in second per iteration is: " &lt;&lt; average_time &lt;&lt; std::endl;
+ * </code>
+ * SEE: getTickCount, getTickFrequency
+ */
 public class TickMeter {
 
     protected final long nativeObj;
@@ -22,13 +47,8 @@ public class TickMeter {
     // C++:   cv::TickMeter::TickMeter()
     //
 
-    //javadoc: TickMeter::TickMeter()
-    public   TickMeter()
-    {
-        
+    public TickMeter() {
         nativeObj = TickMeter_0();
-        
-        return;
     }
 
 
@@ -36,13 +56,12 @@ public class TickMeter {
     // C++:  double cv::TickMeter::getTimeMicro()
     //
 
-    //javadoc: TickMeter::getTimeMicro()
-    public  double getTimeMicro()
-    {
-        
-        double retVal = getTimeMicro_0(nativeObj);
-        
-        return retVal;
+    /**
+     * returns passed time in microseconds.
+     * @return automatically generated
+     */
+    public double getTimeMicro() {
+        return getTimeMicro_0(nativeObj);
     }
 
 
@@ -50,13 +69,12 @@ public class TickMeter {
     // C++:  double cv::TickMeter::getTimeMilli()
     //
 
-    //javadoc: TickMeter::getTimeMilli()
-    public  double getTimeMilli()
-    {
-        
-        double retVal = getTimeMilli_0(nativeObj);
-        
-        return retVal;
+    /**
+     * returns passed time in milliseconds.
+     * @return automatically generated
+     */
+    public double getTimeMilli() {
+        return getTimeMilli_0(nativeObj);
     }
 
 
@@ -64,13 +82,12 @@ public class TickMeter {
     // C++:  double cv::TickMeter::getTimeSec()
     //
 
-    //javadoc: TickMeter::getTimeSec()
-    public  double getTimeSec()
-    {
-        
-        double retVal = getTimeSec_0(nativeObj);
-        
-        return retVal;
+    /**
+     * returns passed time in seconds.
+     * @return automatically generated
+     */
+    public double getTimeSec() {
+        return getTimeSec_0(nativeObj);
     }
 
 
@@ -78,13 +95,12 @@ public class TickMeter {
     // C++:  int64 cv::TickMeter::getCounter()
     //
 
-    //javadoc: TickMeter::getCounter()
-    public  long getCounter()
-    {
-        
-        long retVal = getCounter_0(nativeObj);
-        
-        return retVal;
+    /**
+     * returns internal counter value.
+     * @return automatically generated
+     */
+    public long getCounter() {
+        return getCounter_0(nativeObj);
     }
 
 
@@ -92,13 +108,12 @@ public class TickMeter {
     // C++:  int64 cv::TickMeter::getTimeTicks()
     //
 
-    //javadoc: TickMeter::getTimeTicks()
-    public  long getTimeTicks()
-    {
-        
-        long retVal = getTimeTicks_0(nativeObj);
-        
-        return retVal;
+    /**
+     * returns counted ticks.
+     * @return automatically generated
+     */
+    public long getTimeTicks() {
+        return getTimeTicks_0(nativeObj);
     }
 
 
@@ -106,13 +121,11 @@ public class TickMeter {
     // C++:  void cv::TickMeter::reset()
     //
 
-    //javadoc: TickMeter::reset()
-    public  void reset()
-    {
-        
+    /**
+     * resets internal values.
+     */
+    public void reset() {
         reset_0(nativeObj);
-        
-        return;
     }
 
 
@@ -120,13 +133,11 @@ public class TickMeter {
     // C++:  void cv::TickMeter::start()
     //
 
-    //javadoc: TickMeter::start()
-    public  void start()
-    {
-        
+    /**
+     * starts counting ticks.
+     */
+    public void start() {
         start_0(nativeObj);
-        
-        return;
     }
 
 
@@ -134,13 +145,11 @@ public class TickMeter {
     // C++:  void cv::TickMeter::stop()
     //
 
-    //javadoc: TickMeter::stop()
-    public  void stop()
-    {
-        
+    /**
+     * stops counting ticks.
+     */
+    public void stop() {
         stop_0(nativeObj);
-        
-        return;
     }
 
 

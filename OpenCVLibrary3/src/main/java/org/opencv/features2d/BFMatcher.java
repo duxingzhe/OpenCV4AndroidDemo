@@ -7,8 +7,13 @@ import org.opencv.features2d.BFMatcher;
 import org.opencv.features2d.DescriptorMatcher;
 
 // C++: class BFMatcher
-//javadoc: BFMatcher
-
+/**
+ * Brute-force descriptor matcher.
+ *
+ * For each descriptor in the first set, this matcher finds the closest descriptor in the second set
+ * by trying each one. This descriptor matcher supports masking permissible matches of descriptor
+ * sets.
+ */
 public class BFMatcher extends DescriptorMatcher {
 
     protected BFMatcher(long addr) { super(addr); }
@@ -20,31 +25,34 @@ public class BFMatcher extends DescriptorMatcher {
     // C++:   cv::BFMatcher::BFMatcher(int normType = NORM_L2, bool crossCheck = false)
     //
 
-    //javadoc: BFMatcher::BFMatcher(normType, crossCheck)
-    public   BFMatcher(int normType, boolean crossCheck)
-    {
-        
-        super( BFMatcher_0(normType, crossCheck) );
-        
-        return;
+    /**
+     * Brute-force matcher constructor (obsolete). Please use BFMatcher.create()
+     *
+     *
+     * @param normType automatically generated
+     * @param crossCheck automatically generated
+     */
+    public BFMatcher(int normType, boolean crossCheck) {
+        super(BFMatcher_0(normType, crossCheck));
     }
 
-    //javadoc: BFMatcher::BFMatcher(normType)
-    public   BFMatcher(int normType)
-    {
-        
-        super( BFMatcher_1(normType) );
-        
-        return;
+    /**
+     * Brute-force matcher constructor (obsolete). Please use BFMatcher.create()
+     *
+     *
+     * @param normType automatically generated
+     */
+    public BFMatcher(int normType) {
+        super(BFMatcher_1(normType));
     }
 
-    //javadoc: BFMatcher::BFMatcher()
-    public   BFMatcher()
-    {
-        
-        super( BFMatcher_2() );
-        
-        return;
+    /**
+     * Brute-force matcher constructor (obsolete). Please use BFMatcher.create()
+     *
+     *
+     */
+    public BFMatcher() {
+        super(BFMatcher_2());
     }
 
 
@@ -52,31 +60,55 @@ public class BFMatcher extends DescriptorMatcher {
     // C++: static Ptr_BFMatcher cv::BFMatcher::create(int normType = NORM_L2, bool crossCheck = false)
     //
 
-    //javadoc: BFMatcher::create(normType, crossCheck)
-    public static BFMatcher create(int normType, boolean crossCheck)
-    {
-        
-        BFMatcher retVal = BFMatcher.__fromPtr__(create_0(normType, crossCheck));
-        
-        return retVal;
+    /**
+     * Brute-force matcher create method.
+     *     @param normType One of NORM_L1, NORM_L2, NORM_HAMMING, NORM_HAMMING2. L1 and L2 norms are
+     *     preferable choices for SIFT and SURF descriptors, NORM_HAMMING should be used with ORB, BRISK and
+     *     BRIEF, NORM_HAMMING2 should be used with ORB when WTA_K==3 or 4 (see ORB::ORB constructor
+     *     description).
+     *     @param crossCheck If it is false, this is will be default BFMatcher behaviour when it finds the k
+     *     nearest neighbors for each query descriptor. If crossCheck==true, then the knnMatch() method with
+     *     k=1 will only return pairs (i,j) such that for i-th query descriptor the j-th descriptor in the
+     *     matcher's collection is the nearest and vice versa, i.e. the BFMatcher will only return consistent
+     *     pairs. Such technique usually produces best results with minimal number of outliers when there are
+     *     enough matches. This is alternative to the ratio test, used by D. Lowe in SIFT paper.
+     * @return automatically generated
+     */
+    public static BFMatcher create(int normType, boolean crossCheck) {
+        return BFMatcher.__fromPtr__(create_0(normType, crossCheck));
     }
 
-    //javadoc: BFMatcher::create(normType)
-    public static BFMatcher create(int normType)
-    {
-        
-        BFMatcher retVal = BFMatcher.__fromPtr__(create_1(normType));
-        
-        return retVal;
+    /**
+     * Brute-force matcher create method.
+     *     @param normType One of NORM_L1, NORM_L2, NORM_HAMMING, NORM_HAMMING2. L1 and L2 norms are
+     *     preferable choices for SIFT and SURF descriptors, NORM_HAMMING should be used with ORB, BRISK and
+     *     BRIEF, NORM_HAMMING2 should be used with ORB when WTA_K==3 or 4 (see ORB::ORB constructor
+     *     description).
+     *     nearest neighbors for each query descriptor. If crossCheck==true, then the knnMatch() method with
+     *     k=1 will only return pairs (i,j) such that for i-th query descriptor the j-th descriptor in the
+     *     matcher's collection is the nearest and vice versa, i.e. the BFMatcher will only return consistent
+     *     pairs. Such technique usually produces best results with minimal number of outliers when there are
+     *     enough matches. This is alternative to the ratio test, used by D. Lowe in SIFT paper.
+     * @return automatically generated
+     */
+    public static BFMatcher create(int normType) {
+        return BFMatcher.__fromPtr__(create_1(normType));
     }
 
-    //javadoc: BFMatcher::create()
-    public static BFMatcher create()
-    {
-        
-        BFMatcher retVal = BFMatcher.__fromPtr__(create_2());
-        
-        return retVal;
+    /**
+     * Brute-force matcher create method.
+     *     preferable choices for SIFT and SURF descriptors, NORM_HAMMING should be used with ORB, BRISK and
+     *     BRIEF, NORM_HAMMING2 should be used with ORB when WTA_K==3 or 4 (see ORB::ORB constructor
+     *     description).
+     *     nearest neighbors for each query descriptor. If crossCheck==true, then the knnMatch() method with
+     *     k=1 will only return pairs (i,j) such that for i-th query descriptor the j-th descriptor in the
+     *     matcher's collection is the nearest and vice versa, i.e. the BFMatcher will only return consistent
+     *     pairs. Such technique usually produces best results with minimal number of outliers when there are
+     *     enough matches. This is alternative to the ratio test, used by D. Lowe in SIFT paper.
+     * @return automatically generated
+     */
+    public static BFMatcher create() {
+        return BFMatcher.__fromPtr__(create_2());
     }
 
 

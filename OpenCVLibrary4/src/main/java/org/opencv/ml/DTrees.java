@@ -3,14 +3,21 @@
 //
 package org.opencv.ml;
 
-import java.lang.String;
 import org.opencv.core.Mat;
 import org.opencv.ml.DTrees;
 import org.opencv.ml.StatModel;
 
 // C++: class DTrees
-//javadoc: DTrees
-
+/**
+ * The class represents a single decision tree or a collection of decision trees.
+ *
+ * The current public interface of the class allows user to train only a single decision tree, however
+ * the class is capable of storing multiple decision trees and using them for prediction (by summing
+ * responses or using a voting schemes), and the derived from DTrees classes (such as RTrees and Boost)
+ * use this capability to implement decision tree ensembles.
+ *
+ * SEE: REF: ml_intro_trees
+ */
 public class DTrees extends StatModel {
 
     protected DTrees(long addr) { super(addr); }
@@ -30,13 +37,12 @@ public class DTrees extends StatModel {
     // C++:  Mat cv::ml::DTrees::getPriors()
     //
 
-    //javadoc: DTrees::getPriors()
-    public  Mat getPriors()
-    {
-        
-        Mat retVal = new Mat(getPriors_0(nativeObj));
-        
-        return retVal;
+    /**
+     * SEE: setPriors
+     * @return automatically generated
+     */
+    public Mat getPriors() {
+        return new Mat(getPriors_0(nativeObj));
     }
 
 
@@ -44,13 +50,16 @@ public class DTrees extends StatModel {
     // C++: static Ptr_DTrees cv::ml::DTrees::create()
     //
 
-    //javadoc: DTrees::create()
-    public static DTrees create()
-    {
-        
-        DTrees retVal = DTrees.__fromPtr__(create_0());
-        
-        return retVal;
+    /**
+     * Creates the empty model
+     *
+     *     The static method creates empty decision tree with the specified parameters. It should be then
+     *     trained using train method (see StatModel::train). Alternatively, you can load the model from
+     *     file using Algorithm::load&lt;DTrees&gt;(filename).
+     * @return automatically generated
+     */
+    public static DTrees create() {
+        return DTrees.__fromPtr__(create_0());
     }
 
 
@@ -58,22 +67,33 @@ public class DTrees extends StatModel {
     // C++: static Ptr_DTrees cv::ml::DTrees::load(String filepath, String nodeName = String())
     //
 
-    //javadoc: DTrees::load(filepath, nodeName)
-    public static DTrees load(String filepath, String nodeName)
-    {
-        
-        DTrees retVal = DTrees.__fromPtr__(load_0(filepath, nodeName));
-        
-        return retVal;
+    /**
+     * Loads and creates a serialized DTrees from a file
+     *
+     * Use DTree::save to serialize and store an DTree to disk.
+     * Load the DTree from this file again, by calling this function with the path to the file.
+     * Optionally specify the node for the file containing the classifier
+     *
+     * @param filepath path to serialized DTree
+     * @param nodeName name of node containing the classifier
+     * @return automatically generated
+     */
+    public static DTrees load(String filepath, String nodeName) {
+        return DTrees.__fromPtr__(load_0(filepath, nodeName));
     }
 
-    //javadoc: DTrees::load(filepath)
-    public static DTrees load(String filepath)
-    {
-        
-        DTrees retVal = DTrees.__fromPtr__(load_1(filepath));
-        
-        return retVal;
+    /**
+     * Loads and creates a serialized DTrees from a file
+     *
+     * Use DTree::save to serialize and store an DTree to disk.
+     * Load the DTree from this file again, by calling this function with the path to the file.
+     * Optionally specify the node for the file containing the classifier
+     *
+     * @param filepath path to serialized DTree
+     * @return automatically generated
+     */
+    public static DTrees load(String filepath) {
+        return DTrees.__fromPtr__(load_1(filepath));
     }
 
 
@@ -81,13 +101,12 @@ public class DTrees extends StatModel {
     // C++:  bool cv::ml::DTrees::getTruncatePrunedTree()
     //
 
-    //javadoc: DTrees::getTruncatePrunedTree()
-    public  boolean getTruncatePrunedTree()
-    {
-        
-        boolean retVal = getTruncatePrunedTree_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setTruncatePrunedTree
+     * @return automatically generated
+     */
+    public boolean getTruncatePrunedTree() {
+        return getTruncatePrunedTree_0(nativeObj);
     }
 
 
@@ -95,13 +114,12 @@ public class DTrees extends StatModel {
     // C++:  bool cv::ml::DTrees::getUse1SERule()
     //
 
-    //javadoc: DTrees::getUse1SERule()
-    public  boolean getUse1SERule()
-    {
-        
-        boolean retVal = getUse1SERule_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setUse1SERule
+     * @return automatically generated
+     */
+    public boolean getUse1SERule() {
+        return getUse1SERule_0(nativeObj);
     }
 
 
@@ -109,13 +127,12 @@ public class DTrees extends StatModel {
     // C++:  bool cv::ml::DTrees::getUseSurrogates()
     //
 
-    //javadoc: DTrees::getUseSurrogates()
-    public  boolean getUseSurrogates()
-    {
-        
-        boolean retVal = getUseSurrogates_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setUseSurrogates
+     * @return automatically generated
+     */
+    public boolean getUseSurrogates() {
+        return getUseSurrogates_0(nativeObj);
     }
 
 
@@ -123,13 +140,12 @@ public class DTrees extends StatModel {
     // C++:  float cv::ml::DTrees::getRegressionAccuracy()
     //
 
-    //javadoc: DTrees::getRegressionAccuracy()
-    public  float getRegressionAccuracy()
-    {
-        
-        float retVal = getRegressionAccuracy_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setRegressionAccuracy
+     * @return automatically generated
+     */
+    public float getRegressionAccuracy() {
+        return getRegressionAccuracy_0(nativeObj);
     }
 
 
@@ -137,13 +153,12 @@ public class DTrees extends StatModel {
     // C++:  int cv::ml::DTrees::getCVFolds()
     //
 
-    //javadoc: DTrees::getCVFolds()
-    public  int getCVFolds()
-    {
-        
-        int retVal = getCVFolds_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setCVFolds
+     * @return automatically generated
+     */
+    public int getCVFolds() {
+        return getCVFolds_0(nativeObj);
     }
 
 
@@ -151,13 +166,12 @@ public class DTrees extends StatModel {
     // C++:  int cv::ml::DTrees::getMaxCategories()
     //
 
-    //javadoc: DTrees::getMaxCategories()
-    public  int getMaxCategories()
-    {
-        
-        int retVal = getMaxCategories_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setMaxCategories
+     * @return automatically generated
+     */
+    public int getMaxCategories() {
+        return getMaxCategories_0(nativeObj);
     }
 
 
@@ -165,13 +179,12 @@ public class DTrees extends StatModel {
     // C++:  int cv::ml::DTrees::getMaxDepth()
     //
 
-    //javadoc: DTrees::getMaxDepth()
-    public  int getMaxDepth()
-    {
-        
-        int retVal = getMaxDepth_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setMaxDepth
+     * @return automatically generated
+     */
+    public int getMaxDepth() {
+        return getMaxDepth_0(nativeObj);
     }
 
 
@@ -179,13 +192,12 @@ public class DTrees extends StatModel {
     // C++:  int cv::ml::DTrees::getMinSampleCount()
     //
 
-    //javadoc: DTrees::getMinSampleCount()
-    public  int getMinSampleCount()
-    {
-        
-        int retVal = getMinSampleCount_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setMinSampleCount
+     * @return automatically generated
+     */
+    public int getMinSampleCount() {
+        return getMinSampleCount_0(nativeObj);
     }
 
 
@@ -193,13 +205,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setCVFolds(int val)
     //
 
-    //javadoc: DTrees::setCVFolds(val)
-    public  void setCVFolds(int val)
-    {
-        
+    /**
+     *  getCVFolds SEE: getCVFolds
+     * @param val automatically generated
+     */
+    public void setCVFolds(int val) {
         setCVFolds_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -207,13 +218,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setMaxCategories(int val)
     //
 
-    //javadoc: DTrees::setMaxCategories(val)
-    public  void setMaxCategories(int val)
-    {
-        
+    /**
+     *  getMaxCategories SEE: getMaxCategories
+     * @param val automatically generated
+     */
+    public void setMaxCategories(int val) {
         setMaxCategories_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -221,13 +231,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setMaxDepth(int val)
     //
 
-    //javadoc: DTrees::setMaxDepth(val)
-    public  void setMaxDepth(int val)
-    {
-        
+    /**
+     *  getMaxDepth SEE: getMaxDepth
+     * @param val automatically generated
+     */
+    public void setMaxDepth(int val) {
         setMaxDepth_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -235,13 +244,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setMinSampleCount(int val)
     //
 
-    //javadoc: DTrees::setMinSampleCount(val)
-    public  void setMinSampleCount(int val)
-    {
-        
+    /**
+     *  getMinSampleCount SEE: getMinSampleCount
+     * @param val automatically generated
+     */
+    public void setMinSampleCount(int val) {
         setMinSampleCount_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -249,13 +257,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setPriors(Mat val)
     //
 
-    //javadoc: DTrees::setPriors(val)
-    public  void setPriors(Mat val)
-    {
-        
+    /**
+     *  getPriors SEE: getPriors
+     * @param val automatically generated
+     */
+    public void setPriors(Mat val) {
         setPriors_0(nativeObj, val.nativeObj);
-        
-        return;
     }
 
 
@@ -263,13 +270,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setRegressionAccuracy(float val)
     //
 
-    //javadoc: DTrees::setRegressionAccuracy(val)
-    public  void setRegressionAccuracy(float val)
-    {
-        
+    /**
+     *  getRegressionAccuracy SEE: getRegressionAccuracy
+     * @param val automatically generated
+     */
+    public void setRegressionAccuracy(float val) {
         setRegressionAccuracy_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -277,13 +283,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setTruncatePrunedTree(bool val)
     //
 
-    //javadoc: DTrees::setTruncatePrunedTree(val)
-    public  void setTruncatePrunedTree(boolean val)
-    {
-        
+    /**
+     *  getTruncatePrunedTree SEE: getTruncatePrunedTree
+     * @param val automatically generated
+     */
+    public void setTruncatePrunedTree(boolean val) {
         setTruncatePrunedTree_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -291,13 +296,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setUse1SERule(bool val)
     //
 
-    //javadoc: DTrees::setUse1SERule(val)
-    public  void setUse1SERule(boolean val)
-    {
-        
+    /**
+     *  getUse1SERule SEE: getUse1SERule
+     * @param val automatically generated
+     */
+    public void setUse1SERule(boolean val) {
         setUse1SERule_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -305,13 +309,12 @@ public class DTrees extends StatModel {
     // C++:  void cv::ml::DTrees::setUseSurrogates(bool val)
     //
 
-    //javadoc: DTrees::setUseSurrogates(val)
-    public  void setUseSurrogates(boolean val)
-    {
-        
+    /**
+     *  getUseSurrogates SEE: getUseSurrogates
+     * @param val automatically generated
+     */
+    public void setUseSurrogates(boolean val) {
         setUseSurrogates_0(nativeObj, val);
-        
-        return;
     }
 
 

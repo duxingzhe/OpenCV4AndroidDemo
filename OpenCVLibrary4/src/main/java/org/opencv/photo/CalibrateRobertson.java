@@ -7,8 +7,12 @@ import org.opencv.core.Mat;
 import org.opencv.photo.CalibrateCRF;
 
 // C++: class CalibrateRobertson
-//javadoc: CalibrateRobertson
-
+/**
+ * Inverse camera response function is extracted for each brightness value by minimizing an objective
+ * function as linear system. This algorithm uses all image pixels.
+ *
+ * For more information see CITE: RB99 .
+ */
 public class CalibrateRobertson extends CalibrateCRF {
 
     protected CalibrateRobertson(long addr) { super(addr); }
@@ -20,13 +24,8 @@ public class CalibrateRobertson extends CalibrateCRF {
     // C++:  Mat cv::CalibrateRobertson::getRadiance()
     //
 
-    //javadoc: CalibrateRobertson::getRadiance()
-    public  Mat getRadiance()
-    {
-        
-        Mat retVal = new Mat(getRadiance_0(nativeObj));
-        
-        return retVal;
+    public Mat getRadiance() {
+        return new Mat(getRadiance_0(nativeObj));
     }
 
 
@@ -34,13 +33,8 @@ public class CalibrateRobertson extends CalibrateCRF {
     // C++:  float cv::CalibrateRobertson::getThreshold()
     //
 
-    //javadoc: CalibrateRobertson::getThreshold()
-    public  float getThreshold()
-    {
-        
-        float retVal = getThreshold_0(nativeObj);
-        
-        return retVal;
+    public float getThreshold() {
+        return getThreshold_0(nativeObj);
     }
 
 
@@ -48,13 +42,8 @@ public class CalibrateRobertson extends CalibrateCRF {
     // C++:  int cv::CalibrateRobertson::getMaxIter()
     //
 
-    //javadoc: CalibrateRobertson::getMaxIter()
-    public  int getMaxIter()
-    {
-        
-        int retVal = getMaxIter_0(nativeObj);
-        
-        return retVal;
+    public int getMaxIter() {
+        return getMaxIter_0(nativeObj);
     }
 
 
@@ -62,13 +51,8 @@ public class CalibrateRobertson extends CalibrateCRF {
     // C++:  void cv::CalibrateRobertson::setMaxIter(int max_iter)
     //
 
-    //javadoc: CalibrateRobertson::setMaxIter(max_iter)
-    public  void setMaxIter(int max_iter)
-    {
-        
+    public void setMaxIter(int max_iter) {
         setMaxIter_0(nativeObj, max_iter);
-        
-        return;
     }
 
 
@@ -76,13 +60,8 @@ public class CalibrateRobertson extends CalibrateCRF {
     // C++:  void cv::CalibrateRobertson::setThreshold(float threshold)
     //
 
-    //javadoc: CalibrateRobertson::setThreshold(threshold)
-    public  void setThreshold(float threshold)
-    {
-        
+    public void setThreshold(float threshold) {
         setThreshold_0(nativeObj, threshold);
-        
-        return;
     }
 
 

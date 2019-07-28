@@ -7,8 +7,77 @@ import org.opencv.video.DenseOpticalFlow;
 import org.opencv.video.DualTVL1OpticalFlow;
 
 // C++: class DualTVL1OpticalFlow
-//javadoc: DualTVL1OpticalFlow
-
+/**
+ * "Dual TV L1" Optical Flow Algorithm.
+ *
+ * The class implements the "Dual TV L1" optical flow algorithm described in CITE: Zach2007 and
+ * CITE: Javier2012 .
+ * Here are important members of the class that control the algorithm, which you can set after
+ * constructing the class instance:
+ *
+ * <ul>
+ *   <li>
+ *    member double tau
+ *     Time step of the numerical scheme.
+ *   </li>
+ * </ul>
+ *
+ * <ul>
+ *   <li>
+ *    member double lambda
+ *     Weight parameter for the data term, attachment parameter. This is the most relevant
+ *     parameter, which determines the smoothness of the output. The smaller this parameter is,
+ *     the smoother the solutions we obtain. It depends on the range of motions of the images, so
+ *     its value should be adapted to each image sequence.
+ *   </li>
+ * </ul>
+ *
+ * <ul>
+ *   <li>
+ *    member double theta
+ *     Weight parameter for (u - v)\^2, tightness parameter. It serves as a link between the
+ *     attachment and the regularization terms. In theory, it should have a small value in order
+ *     to maintain both parts in correspondence. The method is stable for a large range of values
+ *     of this parameter.
+ *   </li>
+ * </ul>
+ *
+ * <ul>
+ *   <li>
+ *    member int nscales
+ *     Number of scales used to create the pyramid of images.
+ *   </li>
+ * </ul>
+ *
+ * <ul>
+ *   <li>
+ *    member int warps
+ *     Number of warpings per scale. Represents the number of times that I1(x+u0) and grad(
+ *     I1(x+u0) ) are computed per scale. This is a parameter that assures the stability of the
+ *     method. It also affects the running time, so it is a compromise between speed and
+ *     accuracy.
+ *   </li>
+ * </ul>
+ *
+ * <ul>
+ *   <li>
+ *    member double epsilon
+ *     Stopping criterion threshold used in the numerical scheme, which is a trade-off between
+ *     precision and running time. A small value will yield more accurate solutions at the
+ *     expense of a slower convergence.
+ *   </li>
+ * </ul>
+ *
+ * <ul>
+ *   <li>
+ *    member int iterations
+ *     Stopping criterion iterations number used in the numerical scheme.
+ *   </li>
+ * </ul>
+ *
+ * C. Zach, T. Pock and H. Bischof, "A Duality Based Approach for Realtime TV-L1 Optical Flow".
+ * Javier Sanchez, Enric Meinhardt-Llopis and Gabriele Facciolo. "TV-L1 Optical Flow Estimation".
+ */
 public class DualTVL1OpticalFlow extends DenseOpticalFlow {
 
     protected DualTVL1OpticalFlow(long addr) { super(addr); }
@@ -20,121 +89,186 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++: static Ptr_DualTVL1OpticalFlow cv::DualTVL1OpticalFlow::create(double tau = 0.25, double lambda = 0.15, double theta = 0.3, int nscales = 5, int warps = 5, double epsilon = 0.01, int innnerIterations = 30, int outerIterations = 10, double scaleStep = 0.8, double gamma = 0.0, int medianFiltering = 5, bool useInitialFlow = false)
     //
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma, medianFiltering, useInitialFlow)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep, double gamma, int medianFiltering, boolean useInitialFlow)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_0(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma, medianFiltering, useInitialFlow));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @param innnerIterations automatically generated
+     * @param outerIterations automatically generated
+     * @param scaleStep automatically generated
+     * @param gamma automatically generated
+     * @param medianFiltering automatically generated
+     * @param useInitialFlow automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep, double gamma, int medianFiltering, boolean useInitialFlow) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_0(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma, medianFiltering, useInitialFlow));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma, medianFiltering)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep, double gamma, int medianFiltering)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_1(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma, medianFiltering));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @param innnerIterations automatically generated
+     * @param outerIterations automatically generated
+     * @param scaleStep automatically generated
+     * @param gamma automatically generated
+     * @param medianFiltering automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep, double gamma, int medianFiltering) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_1(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma, medianFiltering));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep, double gamma)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_2(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @param innnerIterations automatically generated
+     * @param outerIterations automatically generated
+     * @param scaleStep automatically generated
+     * @param gamma automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep, double gamma) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_2(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep, gamma));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_3(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @param innnerIterations automatically generated
+     * @param outerIterations automatically generated
+     * @param scaleStep automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations, double scaleStep) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_3(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations, scaleStep));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_4(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @param innnerIterations automatically generated
+     * @param outerIterations automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations, int outerIterations) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_4(tau, lambda, theta, nscales, warps, epsilon, innnerIterations, outerIterations));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon, innnerIterations)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_5(tau, lambda, theta, nscales, warps, epsilon, innnerIterations));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @param innnerIterations automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon, int innnerIterations) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_5(tau, lambda, theta, nscales, warps, epsilon, innnerIterations));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps, epsilon)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_6(tau, lambda, theta, nscales, warps, epsilon));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @param epsilon automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps, double epsilon) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_6(tau, lambda, theta, nscales, warps, epsilon));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales, warps)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_7(tau, lambda, theta, nscales, warps));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @param warps automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales, int warps) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_7(tau, lambda, theta, nscales, warps));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta, nscales)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_8(tau, lambda, theta, nscales));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @param nscales automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta, int nscales) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_8(tau, lambda, theta, nscales));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda, theta)
-    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_9(tau, lambda, theta));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @param theta automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda, double theta) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_9(tau, lambda, theta));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau, lambda)
-    public static DualTVL1OpticalFlow create(double tau, double lambda)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_10(tau, lambda));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @param lambda automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau, double lambda) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_10(tau, lambda));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create(tau)
-    public static DualTVL1OpticalFlow create(double tau)
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_11(tau));
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @param tau automatically generated
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create(double tau) {
+        return DualTVL1OpticalFlow.__fromPtr__(create_11(tau));
     }
 
-    //javadoc: DualTVL1OpticalFlow::create()
-    public static DualTVL1OpticalFlow create()
-    {
-        
-        DualTVL1OpticalFlow retVal = DualTVL1OpticalFlow.__fromPtr__(create_12());
-        
-        return retVal;
+    /**
+     * Creates instance of cv::DualTVL1OpticalFlow
+     * @return automatically generated
+     */
+    public static DualTVL1OpticalFlow create() {
+        return DualTVL1OpticalFlow.__fromPtr__(create_12());
     }
 
 
@@ -142,13 +276,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  bool cv::DualTVL1OpticalFlow::getUseInitialFlow()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getUseInitialFlow()
-    public  boolean getUseInitialFlow()
-    {
-        
-        boolean retVal = getUseInitialFlow_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setUseInitialFlow
+     * @return automatically generated
+     */
+    public boolean getUseInitialFlow() {
+        return getUseInitialFlow_0(nativeObj);
     }
 
 
@@ -156,13 +289,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  double cv::DualTVL1OpticalFlow::getEpsilon()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getEpsilon()
-    public  double getEpsilon()
-    {
-        
-        double retVal = getEpsilon_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setEpsilon
+     * @return automatically generated
+     */
+    public double getEpsilon() {
+        return getEpsilon_0(nativeObj);
     }
 
 
@@ -170,13 +302,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  double cv::DualTVL1OpticalFlow::getGamma()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getGamma()
-    public  double getGamma()
-    {
-        
-        double retVal = getGamma_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setGamma
+     * @return automatically generated
+     */
+    public double getGamma() {
+        return getGamma_0(nativeObj);
     }
 
 
@@ -184,13 +315,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  double cv::DualTVL1OpticalFlow::getLambda()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getLambda()
-    public  double getLambda()
-    {
-        
-        double retVal = getLambda_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setLambda
+     * @return automatically generated
+     */
+    public double getLambda() {
+        return getLambda_0(nativeObj);
     }
 
 
@@ -198,13 +328,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  double cv::DualTVL1OpticalFlow::getScaleStep()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getScaleStep()
-    public  double getScaleStep()
-    {
-        
-        double retVal = getScaleStep_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setScaleStep
+     * @return automatically generated
+     */
+    public double getScaleStep() {
+        return getScaleStep_0(nativeObj);
     }
 
 
@@ -212,13 +341,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  double cv::DualTVL1OpticalFlow::getTau()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getTau()
-    public  double getTau()
-    {
-        
-        double retVal = getTau_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setTau
+     * @return automatically generated
+     */
+    public double getTau() {
+        return getTau_0(nativeObj);
     }
 
 
@@ -226,13 +354,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  double cv::DualTVL1OpticalFlow::getTheta()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getTheta()
-    public  double getTheta()
-    {
-        
-        double retVal = getTheta_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setTheta
+     * @return automatically generated
+     */
+    public double getTheta() {
+        return getTheta_0(nativeObj);
     }
 
 
@@ -240,13 +367,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  int cv::DualTVL1OpticalFlow::getInnerIterations()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getInnerIterations()
-    public  int getInnerIterations()
-    {
-        
-        int retVal = getInnerIterations_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setInnerIterations
+     * @return automatically generated
+     */
+    public int getInnerIterations() {
+        return getInnerIterations_0(nativeObj);
     }
 
 
@@ -254,13 +380,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  int cv::DualTVL1OpticalFlow::getMedianFiltering()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getMedianFiltering()
-    public  int getMedianFiltering()
-    {
-        
-        int retVal = getMedianFiltering_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setMedianFiltering
+     * @return automatically generated
+     */
+    public int getMedianFiltering() {
+        return getMedianFiltering_0(nativeObj);
     }
 
 
@@ -268,13 +393,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  int cv::DualTVL1OpticalFlow::getOuterIterations()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getOuterIterations()
-    public  int getOuterIterations()
-    {
-        
-        int retVal = getOuterIterations_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setOuterIterations
+     * @return automatically generated
+     */
+    public int getOuterIterations() {
+        return getOuterIterations_0(nativeObj);
     }
 
 
@@ -282,13 +406,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  int cv::DualTVL1OpticalFlow::getScalesNumber()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getScalesNumber()
-    public  int getScalesNumber()
-    {
-        
-        int retVal = getScalesNumber_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setScalesNumber
+     * @return automatically generated
+     */
+    public int getScalesNumber() {
+        return getScalesNumber_0(nativeObj);
     }
 
 
@@ -296,13 +419,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  int cv::DualTVL1OpticalFlow::getWarpingsNumber()
     //
 
-    //javadoc: DualTVL1OpticalFlow::getWarpingsNumber()
-    public  int getWarpingsNumber()
-    {
-        
-        int retVal = getWarpingsNumber_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setWarpingsNumber
+     * @return automatically generated
+     */
+    public int getWarpingsNumber() {
+        return getWarpingsNumber_0(nativeObj);
     }
 
 
@@ -310,13 +432,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setEpsilon(double val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setEpsilon(val)
-    public  void setEpsilon(double val)
-    {
-        
+    /**
+     *  getEpsilon SEE: getEpsilon
+     * @param val automatically generated
+     */
+    public void setEpsilon(double val) {
         setEpsilon_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -324,13 +445,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setGamma(double val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setGamma(val)
-    public  void setGamma(double val)
-    {
-        
+    /**
+     *  getGamma SEE: getGamma
+     * @param val automatically generated
+     */
+    public void setGamma(double val) {
         setGamma_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -338,13 +458,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setInnerIterations(int val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setInnerIterations(val)
-    public  void setInnerIterations(int val)
-    {
-        
+    /**
+     *  getInnerIterations SEE: getInnerIterations
+     * @param val automatically generated
+     */
+    public void setInnerIterations(int val) {
         setInnerIterations_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -352,13 +471,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setLambda(double val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setLambda(val)
-    public  void setLambda(double val)
-    {
-        
+    /**
+     *  getLambda SEE: getLambda
+     * @param val automatically generated
+     */
+    public void setLambda(double val) {
         setLambda_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -366,13 +484,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setMedianFiltering(int val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setMedianFiltering(val)
-    public  void setMedianFiltering(int val)
-    {
-        
+    /**
+     *  getMedianFiltering SEE: getMedianFiltering
+     * @param val automatically generated
+     */
+    public void setMedianFiltering(int val) {
         setMedianFiltering_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -380,13 +497,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setOuterIterations(int val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setOuterIterations(val)
-    public  void setOuterIterations(int val)
-    {
-        
+    /**
+     *  getOuterIterations SEE: getOuterIterations
+     * @param val automatically generated
+     */
+    public void setOuterIterations(int val) {
         setOuterIterations_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -394,13 +510,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setScaleStep(double val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setScaleStep(val)
-    public  void setScaleStep(double val)
-    {
-        
+    /**
+     *  getScaleStep SEE: getScaleStep
+     * @param val automatically generated
+     */
+    public void setScaleStep(double val) {
         setScaleStep_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -408,13 +523,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setScalesNumber(int val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setScalesNumber(val)
-    public  void setScalesNumber(int val)
-    {
-        
+    /**
+     *  getScalesNumber SEE: getScalesNumber
+     * @param val automatically generated
+     */
+    public void setScalesNumber(int val) {
         setScalesNumber_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -422,13 +536,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setTau(double val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setTau(val)
-    public  void setTau(double val)
-    {
-        
+    /**
+     *  getTau SEE: getTau
+     * @param val automatically generated
+     */
+    public void setTau(double val) {
         setTau_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -436,13 +549,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setTheta(double val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setTheta(val)
-    public  void setTheta(double val)
-    {
-        
+    /**
+     *  getTheta SEE: getTheta
+     * @param val automatically generated
+     */
+    public void setTheta(double val) {
         setTheta_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -450,13 +562,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setUseInitialFlow(bool val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setUseInitialFlow(val)
-    public  void setUseInitialFlow(boolean val)
-    {
-        
+    /**
+     *  getUseInitialFlow SEE: getUseInitialFlow
+     * @param val automatically generated
+     */
+    public void setUseInitialFlow(boolean val) {
         setUseInitialFlow_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -464,13 +575,12 @@ public class DualTVL1OpticalFlow extends DenseOpticalFlow {
     // C++:  void cv::DualTVL1OpticalFlow::setWarpingsNumber(int val)
     //
 
-    //javadoc: DualTVL1OpticalFlow::setWarpingsNumber(val)
-    public  void setWarpingsNumber(int val)
-    {
-        
+    /**
+     *  getWarpingsNumber SEE: getWarpingsNumber
+     * @param val automatically generated
+     */
+    public void setWarpingsNumber(int val) {
         setWarpingsNumber_0(nativeObj, val);
-        
-        return;
     }
 
 

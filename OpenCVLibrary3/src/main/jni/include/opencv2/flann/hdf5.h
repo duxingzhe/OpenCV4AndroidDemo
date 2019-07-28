@@ -30,7 +30,7 @@
 #ifndef OPENCV_FLANN_HDF5_H_
 #define OPENCV_FLANN_HDF5_H_
 
-#include "hdf5.h"
+#include <hdf5.h>
 
 #include "matrix.h"
 

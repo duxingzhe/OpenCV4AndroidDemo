@@ -3,7 +3,6 @@
 //
 package org.opencv.ml;
 
-import java.lang.String;
 import org.opencv.core.Mat;
 import org.opencv.core.TermCriteria;
 import org.opencv.ml.ParamGrid;
@@ -11,8 +10,11 @@ import org.opencv.ml.SVM;
 import org.opencv.ml.StatModel;
 
 // C++: class SVM
-//javadoc: SVM
-
+/**
+ * Support Vector Machines.
+ *
+ * SEE: REF: ml_intro_svm
+ */
 public class SVM extends StatModel {
 
     protected SVM(long addr) { super(addr); }
@@ -54,13 +56,12 @@ public class SVM extends StatModel {
     // C++:  Mat cv::ml::SVM::getClassWeights()
     //
 
-    //javadoc: SVM::getClassWeights()
-    public  Mat getClassWeights()
-    {
-        
-        Mat retVal = new Mat(getClassWeights_0(nativeObj));
-        
-        return retVal;
+    /**
+     * SEE: setClassWeights
+     * @return automatically generated
+     */
+    public Mat getClassWeights() {
+        return new Mat(getClassWeights_0(nativeObj));
     }
 
 
@@ -68,13 +69,15 @@ public class SVM extends StatModel {
     // C++:  Mat cv::ml::SVM::getSupportVectors()
     //
 
-    //javadoc: SVM::getSupportVectors()
-    public  Mat getSupportVectors()
-    {
-        
-        Mat retVal = new Mat(getSupportVectors_0(nativeObj));
-        
-        return retVal;
+    /**
+     * Retrieves all the support vectors
+     *
+     *     The method returns all the support vectors as a floating-point matrix, where support vectors are
+     *     stored as matrix rows.
+     * @return automatically generated
+     */
+    public Mat getSupportVectors() {
+        return new Mat(getSupportVectors_0(nativeObj));
     }
 
 
@@ -82,13 +85,16 @@ public class SVM extends StatModel {
     // C++:  Mat cv::ml::SVM::getUncompressedSupportVectors()
     //
 
-    //javadoc: SVM::getUncompressedSupportVectors()
-    public  Mat getUncompressedSupportVectors()
-    {
-        
-        Mat retVal = new Mat(getUncompressedSupportVectors_0(nativeObj));
-        
-        return retVal;
+    /**
+     * Retrieves all the uncompressed support vectors of a linear %SVM
+     *
+     *     The method returns all the uncompressed support vectors of a linear %SVM that the compressed
+     *     support vector, used for prediction, was derived from. They are returned in a floating-point
+     *     matrix, where the support vectors are stored as matrix rows.
+     * @return automatically generated
+     */
+    public Mat getUncompressedSupportVectors() {
+        return new Mat(getUncompressedSupportVectors_0(nativeObj));
     }
 
 
@@ -96,13 +102,18 @@ public class SVM extends StatModel {
     // C++: static Ptr_ParamGrid cv::ml::SVM::getDefaultGridPtr(int param_id)
     //
 
-    //javadoc: SVM::getDefaultGridPtr(param_id)
-    public static ParamGrid getDefaultGridPtr(int param_id)
-    {
-        
-        ParamGrid retVal = ParamGrid.__fromPtr__(getDefaultGridPtr_0(param_id));
-        
-        return retVal;
+    /**
+     * Generates a grid for %SVM parameters.
+     *
+     *     @param param_id %SVM parameters IDs that must be one of the SVM::ParamTypes. The grid is
+     *     generated for the parameter with this ID.
+     *
+     *     The function generates a grid pointer for the specified parameter of the %SVM algorithm.
+     *     The grid may be passed to the function SVM::trainAuto.
+     * @return automatically generated
+     */
+    public static ParamGrid getDefaultGridPtr(int param_id) {
+        return ParamGrid.__fromPtr__(getDefaultGridPtr_0(param_id));
     }
 
 
@@ -110,13 +121,14 @@ public class SVM extends StatModel {
     // C++: static Ptr_SVM cv::ml::SVM::create()
     //
 
-    //javadoc: SVM::create()
-    public static SVM create()
-    {
-        
-        SVM retVal = SVM.__fromPtr__(create_0());
-        
-        return retVal;
+    /**
+     * Creates empty model.
+     *     Use StatModel::train to train the model. Since %SVM has several parameters, you may want to
+     * find the best parameters for your problem, it can be done with SVM::trainAuto.
+     * @return automatically generated
+     */
+    public static SVM create() {
+        return SVM.__fromPtr__(create_0());
     }
 
 
@@ -124,13 +136,17 @@ public class SVM extends StatModel {
     // C++: static Ptr_SVM cv::ml::SVM::load(String filepath)
     //
 
-    //javadoc: SVM::load(filepath)
-    public static SVM load(String filepath)
-    {
-        
-        SVM retVal = SVM.__fromPtr__(load_0(filepath));
-        
-        return retVal;
+    /**
+     * Loads and creates a serialized svm from a file
+     *
+     * Use SVM::save to serialize and store an SVM to disk.
+     * Load the SVM from this file again, by calling this function with the path to the file.
+     *
+     * @param filepath path to serialized svm
+     * @return automatically generated
+     */
+    public static SVM load(String filepath) {
+        return SVM.__fromPtr__(load_0(filepath));
     }
 
 
@@ -138,13 +154,12 @@ public class SVM extends StatModel {
     // C++:  TermCriteria cv::ml::SVM::getTermCriteria()
     //
 
-    //javadoc: SVM::getTermCriteria()
-    public  TermCriteria getTermCriteria()
-    {
-        
-        TermCriteria retVal = new TermCriteria(getTermCriteria_0(nativeObj));
-        
-        return retVal;
+    /**
+     * SEE: setTermCriteria
+     * @return automatically generated
+     */
+    public TermCriteria getTermCriteria() {
+        return new TermCriteria(getTermCriteria_0(nativeObj));
     }
 
 
@@ -152,85 +167,274 @@ public class SVM extends StatModel {
     // C++:  bool cv::ml::SVM::trainAuto(Mat samples, int layout, Mat responses, int kFold = 10, Ptr_ParamGrid Cgrid = SVM::getDefaultGridPtr(SVM::C), Ptr_ParamGrid gammaGrid = SVM::getDefaultGridPtr(SVM::GAMMA), Ptr_ParamGrid pGrid = SVM::getDefaultGridPtr(SVM::P), Ptr_ParamGrid nuGrid = SVM::getDefaultGridPtr(SVM::NU), Ptr_ParamGrid coeffGrid = SVM::getDefaultGridPtr(SVM::COEF), Ptr_ParamGrid degreeGrid = SVM::getDefaultGridPtr(SVM::DEGREE), bool balanced = false)
     //
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid, gammaGrid, pGrid, nuGrid, coeffGrid, degreeGrid, balanced)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid, ParamGrid coeffGrid, ParamGrid degreeGrid, boolean balanced)
-    {
-        
-        boolean retVal = trainAuto_0(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr(), coeffGrid.getNativeObjAddr(), degreeGrid.getNativeObjAddr(), balanced);
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *     @param gammaGrid grid for gamma
+     *     @param pGrid grid for p
+     *     @param nuGrid grid for nu
+     *     @param coeffGrid grid for coeff
+     *     @param degreeGrid grid for degree
+     *     @param balanced If true and the problem is 2-class classification then the method creates more
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid, ParamGrid coeffGrid, ParamGrid degreeGrid, boolean balanced) {
+        return trainAuto_0(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr(), coeffGrid.getNativeObjAddr(), degreeGrid.getNativeObjAddr(), balanced);
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid, gammaGrid, pGrid, nuGrid, coeffGrid, degreeGrid)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid, ParamGrid coeffGrid, ParamGrid degreeGrid)
-    {
-        
-        boolean retVal = trainAuto_1(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr(), coeffGrid.getNativeObjAddr(), degreeGrid.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *     @param gammaGrid grid for gamma
+     *     @param pGrid grid for p
+     *     @param nuGrid grid for nu
+     *     @param coeffGrid grid for coeff
+     *     @param degreeGrid grid for degree
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid, ParamGrid coeffGrid, ParamGrid degreeGrid) {
+        return trainAuto_1(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr(), coeffGrid.getNativeObjAddr(), degreeGrid.getNativeObjAddr());
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid, gammaGrid, pGrid, nuGrid, coeffGrid)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid, ParamGrid coeffGrid)
-    {
-        
-        boolean retVal = trainAuto_2(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr(), coeffGrid.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *     @param gammaGrid grid for gamma
+     *     @param pGrid grid for p
+     *     @param nuGrid grid for nu
+     *     @param coeffGrid grid for coeff
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid, ParamGrid coeffGrid) {
+        return trainAuto_2(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr(), coeffGrid.getNativeObjAddr());
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid, gammaGrid, pGrid, nuGrid)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid)
-    {
-        
-        boolean retVal = trainAuto_3(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *     @param gammaGrid grid for gamma
+     *     @param pGrid grid for p
+     *     @param nuGrid grid for nu
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid, ParamGrid nuGrid) {
+        return trainAuto_3(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr(), nuGrid.getNativeObjAddr());
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid, gammaGrid, pGrid)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid)
-    {
-        
-        boolean retVal = trainAuto_4(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *     @param gammaGrid grid for gamma
+     *     @param pGrid grid for p
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid, ParamGrid pGrid) {
+        return trainAuto_4(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr(), pGrid.getNativeObjAddr());
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid, gammaGrid)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid)
-    {
-        
-        boolean retVal = trainAuto_5(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *     @param gammaGrid grid for gamma
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid, ParamGrid gammaGrid) {
+        return trainAuto_5(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr(), gammaGrid.getNativeObjAddr());
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold, Cgrid)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid)
-    {
-        
-        boolean retVal = trainAuto_6(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr());
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *     @param Cgrid grid for C
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold, ParamGrid Cgrid) {
+        return trainAuto_6(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold, Cgrid.getNativeObjAddr());
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses, kFold)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses, int kFold)
-    {
-        
-        boolean retVal = trainAuto_7(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold);
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *     @param kFold Cross-validation parameter. The training set is divided into kFold subsets. One
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses, int kFold) {
+        return trainAuto_7(nativeObj, samples.nativeObj, layout, responses.nativeObj, kFold);
     }
 
-    //javadoc: SVM::trainAuto(samples, layout, responses)
-    public  boolean trainAuto(Mat samples, int layout, Mat responses)
-    {
-        
-        boolean retVal = trainAuto_8(nativeObj, samples.nativeObj, layout, responses.nativeObj);
-        
-        return retVal;
+    /**
+     * Trains an %SVM with optimal parameters
+     *
+     *     @param samples training samples
+     *     @param layout See ml::SampleTypes.
+     *     @param responses vector of responses associated with the training samples.
+     *         subset is used to test the model, the others form the train set. So, the %SVM algorithm is
+     *         balanced cross-validation subsets that is proportions between classes in subsets are close
+     *         to such proportion in the whole train dataset.
+     *
+     *     The method trains the %SVM model automatically by choosing the optimal parameters C, gamma, p,
+     *     nu, coef0, degree. Parameters are considered optimal when the cross-validation
+     *     estimate of the test set error is minimal.
+     *
+     *     This function only makes use of SVM::getDefaultGrid for parameter optimization and thus only
+     *     offers rudimentary parameter options.
+     *
+     *     This function works for the classification (SVM::C_SVC or SVM::NU_SVC) as well as for the
+     *     regression (SVM::EPS_SVR or SVM::NU_SVR). If it is SVM::ONE_CLASS, no optimization is made and
+     *     the usual %SVM with parameters specified in params is executed.
+     * @return automatically generated
+     */
+    public boolean trainAuto(Mat samples, int layout, Mat responses) {
+        return trainAuto_8(nativeObj, samples.nativeObj, layout, responses.nativeObj);
     }
 
 
@@ -238,13 +442,12 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getC()
     //
 
-    //javadoc: SVM::getC()
-    public  double getC()
-    {
-        
-        double retVal = getC_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setC
+     * @return automatically generated
+     */
+    public double getC() {
+        return getC_0(nativeObj);
     }
 
 
@@ -252,13 +455,12 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getCoef0()
     //
 
-    //javadoc: SVM::getCoef0()
-    public  double getCoef0()
-    {
-        
-        double retVal = getCoef0_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setCoef0
+     * @return automatically generated
+     */
+    public double getCoef0() {
+        return getCoef0_0(nativeObj);
     }
 
 
@@ -266,13 +468,25 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getDecisionFunction(int i, Mat& alpha, Mat& svidx)
     //
 
-    //javadoc: SVM::getDecisionFunction(i, alpha, svidx)
-    public  double getDecisionFunction(int i, Mat alpha, Mat svidx)
-    {
-        
-        double retVal = getDecisionFunction_0(nativeObj, i, alpha.nativeObj, svidx.nativeObj);
-        
-        return retVal;
+    /**
+     * Retrieves the decision function
+     *
+     *     @param i the index of the decision function. If the problem solved is regression, 1-class or
+     *         2-class classification, then there will be just one decision function and the index should
+     *         always be 0. Otherwise, in the case of N-class classification, there will be \(N(N-1)/2\)
+     *         decision functions.
+     *     @param alpha the optional output vector for weights, corresponding to different support vectors.
+     *         In the case of linear %SVM all the alpha's will be 1's.
+     *     @param svidx the optional output vector of indices of support vectors within the matrix of
+     *         support vectors (which can be retrieved by SVM::getSupportVectors). In the case of linear
+     *         %SVM each decision function consists of a single "compressed" support vector.
+     *
+     *     The method returns rho parameter of the decision function, a scalar subtracted from the weighted
+     *     sum of kernel responses.
+     * @return automatically generated
+     */
+    public double getDecisionFunction(int i, Mat alpha, Mat svidx) {
+        return getDecisionFunction_0(nativeObj, i, alpha.nativeObj, svidx.nativeObj);
     }
 
 
@@ -280,13 +494,12 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getDegree()
     //
 
-    //javadoc: SVM::getDegree()
-    public  double getDegree()
-    {
-        
-        double retVal = getDegree_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setDegree
+     * @return automatically generated
+     */
+    public double getDegree() {
+        return getDegree_0(nativeObj);
     }
 
 
@@ -294,13 +507,12 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getGamma()
     //
 
-    //javadoc: SVM::getGamma()
-    public  double getGamma()
-    {
-        
-        double retVal = getGamma_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setGamma
+     * @return automatically generated
+     */
+    public double getGamma() {
+        return getGamma_0(nativeObj);
     }
 
 
@@ -308,13 +520,12 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getNu()
     //
 
-    //javadoc: SVM::getNu()
-    public  double getNu()
-    {
-        
-        double retVal = getNu_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setNu
+     * @return automatically generated
+     */
+    public double getNu() {
+        return getNu_0(nativeObj);
     }
 
 
@@ -322,13 +533,12 @@ public class SVM extends StatModel {
     // C++:  double cv::ml::SVM::getP()
     //
 
-    //javadoc: SVM::getP()
-    public  double getP()
-    {
-        
-        double retVal = getP_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setP
+     * @return automatically generated
+     */
+    public double getP() {
+        return getP_0(nativeObj);
     }
 
 
@@ -336,13 +546,13 @@ public class SVM extends StatModel {
     // C++:  int cv::ml::SVM::getKernelType()
     //
 
-    //javadoc: SVM::getKernelType()
-    public  int getKernelType()
-    {
-        
-        int retVal = getKernelType_0(nativeObj);
-        
-        return retVal;
+    /**
+     * Type of a %SVM kernel.
+     * See SVM::KernelTypes. Default value is SVM::RBF.
+     * @return automatically generated
+     */
+    public int getKernelType() {
+        return getKernelType_0(nativeObj);
     }
 
 
@@ -350,13 +560,12 @@ public class SVM extends StatModel {
     // C++:  int cv::ml::SVM::getType()
     //
 
-    //javadoc: SVM::getType()
-    public  int getType()
-    {
-        
-        int retVal = getType_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setType
+     * @return automatically generated
+     */
+    public int getType() {
+        return getType_0(nativeObj);
     }
 
 
@@ -364,13 +573,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setC(double val)
     //
 
-    //javadoc: SVM::setC(val)
-    public  void setC(double val)
-    {
-        
+    /**
+     *  getC SEE: getC
+     * @param val automatically generated
+     */
+    public void setC(double val) {
         setC_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -378,13 +586,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setClassWeights(Mat val)
     //
 
-    //javadoc: SVM::setClassWeights(val)
-    public  void setClassWeights(Mat val)
-    {
-        
+    /**
+     *  getClassWeights SEE: getClassWeights
+     * @param val automatically generated
+     */
+    public void setClassWeights(Mat val) {
         setClassWeights_0(nativeObj, val.nativeObj);
-        
-        return;
     }
 
 
@@ -392,13 +599,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setCoef0(double val)
     //
 
-    //javadoc: SVM::setCoef0(val)
-    public  void setCoef0(double val)
-    {
-        
+    /**
+     *  getCoef0 SEE: getCoef0
+     * @param val automatically generated
+     */
+    public void setCoef0(double val) {
         setCoef0_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -406,13 +612,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setDegree(double val)
     //
 
-    //javadoc: SVM::setDegree(val)
-    public  void setDegree(double val)
-    {
-        
+    /**
+     *  getDegree SEE: getDegree
+     * @param val automatically generated
+     */
+    public void setDegree(double val) {
         setDegree_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -420,13 +625,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setGamma(double val)
     //
 
-    //javadoc: SVM::setGamma(val)
-    public  void setGamma(double val)
-    {
-        
+    /**
+     *  getGamma SEE: getGamma
+     * @param val automatically generated
+     */
+    public void setGamma(double val) {
         setGamma_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -434,13 +638,13 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setKernel(int kernelType)
     //
 
-    //javadoc: SVM::setKernel(kernelType)
-    public  void setKernel(int kernelType)
-    {
-        
+    /**
+     * Initialize with one of predefined kernels.
+     * See SVM::KernelTypes.
+     * @param kernelType automatically generated
+     */
+    public void setKernel(int kernelType) {
         setKernel_0(nativeObj, kernelType);
-        
-        return;
     }
 
 
@@ -448,13 +652,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setNu(double val)
     //
 
-    //javadoc: SVM::setNu(val)
-    public  void setNu(double val)
-    {
-        
+    /**
+     *  getNu SEE: getNu
+     * @param val automatically generated
+     */
+    public void setNu(double val) {
         setNu_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -462,13 +665,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setP(double val)
     //
 
-    //javadoc: SVM::setP(val)
-    public  void setP(double val)
-    {
-        
+    /**
+     *  getP SEE: getP
+     * @param val automatically generated
+     */
+    public void setP(double val) {
         setP_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -476,13 +678,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setTermCriteria(TermCriteria val)
     //
 
-    //javadoc: SVM::setTermCriteria(val)
-    public  void setTermCriteria(TermCriteria val)
-    {
-        
+    /**
+     *  getTermCriteria SEE: getTermCriteria
+     * @param val automatically generated
+     */
+    public void setTermCriteria(TermCriteria val) {
         setTermCriteria_0(nativeObj, val.type, val.maxCount, val.epsilon);
-        
-        return;
     }
 
 
@@ -490,13 +691,12 @@ public class SVM extends StatModel {
     // C++:  void cv::ml::SVM::setType(int val)
     //
 
-    //javadoc: SVM::setType(val)
-    public  void setType(int val)
-    {
-        
+    /**
+     *  getType SEE: getType
+     * @param val automatically generated
+     */
+    public void setType(int val) {
         setType_0(nativeObj, val);
-        
-        return;
     }
 
 

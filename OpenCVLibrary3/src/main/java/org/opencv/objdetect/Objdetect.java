@@ -11,7 +11,6 @@ import org.opencv.core.MatOfRect;
 import org.opencv.utils.Converters;
 
 // C++: class Objdetect
-//javadoc: Objdetect
 
 public class Objdetect {
 
@@ -35,24 +34,16 @@ public class Objdetect {
     // C++:  void cv::groupRectangles(vector_Rect& rectList, vector_int& weights, int groupThreshold, double eps = 0.2)
     //
 
-    //javadoc: groupRectangles(rectList, weights, groupThreshold, eps)
-    public static void groupRectangles(MatOfRect rectList, MatOfInt weights, int groupThreshold, double eps)
-    {
+    public static void groupRectangles(MatOfRect rectList, MatOfInt weights, int groupThreshold, double eps) {
         Mat rectList_mat = rectList;
         Mat weights_mat = weights;
         groupRectangles_0(rectList_mat.nativeObj, weights_mat.nativeObj, groupThreshold, eps);
-        
-        return;
     }
 
-    //javadoc: groupRectangles(rectList, weights, groupThreshold)
-    public static void groupRectangles(MatOfRect rectList, MatOfInt weights, int groupThreshold)
-    {
+    public static void groupRectangles(MatOfRect rectList, MatOfInt weights, int groupThreshold) {
         Mat rectList_mat = rectList;
         Mat weights_mat = weights;
         groupRectangles_1(rectList_mat.nativeObj, weights_mat.nativeObj, groupThreshold);
-        
-        return;
     }
 
 

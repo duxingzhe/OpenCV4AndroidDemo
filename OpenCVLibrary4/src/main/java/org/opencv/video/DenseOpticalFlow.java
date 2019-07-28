@@ -7,8 +7,9 @@ import org.opencv.core.Algorithm;
 import org.opencv.core.Mat;
 
 // C++: class DenseOpticalFlow
-//javadoc: DenseOpticalFlow
-
+/**
+ * Base class for dense optical flow algorithms
+ */
 public class DenseOpticalFlow extends Algorithm {
 
     protected DenseOpticalFlow(long addr) { super(addr); }
@@ -20,13 +21,15 @@ public class DenseOpticalFlow extends Algorithm {
     // C++:  void cv::DenseOpticalFlow::calc(Mat I0, Mat I1, Mat& flow)
     //
 
-    //javadoc: DenseOpticalFlow::calc(I0, I1, flow)
-    public  void calc(Mat I0, Mat I1, Mat flow)
-    {
-        
+    /**
+     * Calculates an optical flow.
+     *
+     *     @param I0 first 8-bit single-channel input image.
+     *     @param I1 second input image of the same size and the same type as prev.
+     *     @param flow computed flow image that has the same size as prev and type CV_32FC2.
+     */
+    public void calc(Mat I0, Mat I1, Mat flow) {
         calc_0(nativeObj, I0.nativeObj, I1.nativeObj, flow.nativeObj);
-        
-        return;
     }
 
 
@@ -34,13 +37,11 @@ public class DenseOpticalFlow extends Algorithm {
     // C++:  void cv::DenseOpticalFlow::collectGarbage()
     //
 
-    //javadoc: DenseOpticalFlow::collectGarbage()
-    public  void collectGarbage()
-    {
-        
+    /**
+     * Releases all inner buffers.
+     */
+    public void collectGarbage() {
         collectGarbage_0(nativeObj);
-        
-        return;
     }
 
 

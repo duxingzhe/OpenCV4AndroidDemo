@@ -3,15 +3,25 @@
 //
 package org.opencv.ml;
 
-import java.lang.String;
 import org.opencv.core.Mat;
 import org.opencv.core.TermCriteria;
 import org.opencv.ml.ANN_MLP;
 import org.opencv.ml.StatModel;
 
 // C++: class ANN_MLP
-//javadoc: ANN_MLP
-
+/**
+ * Artificial Neural Networks - Multi-Layer Perceptrons.
+ *
+ * Unlike many other models in ML that are constructed and trained at once, in the MLP model these
+ * steps are separated. First, a network with the specified topology is created using the non-default
+ * constructor or the method ANN_MLP::create. All the weights are set to zeros. Then, the network is
+ * trained using a set of input and output vectors. The training procedure can be repeated more than
+ * once, that is, the weights can be adjusted based on the new training data.
+ *
+ * Additional flags for StatModel::train are available: ANN_MLP::TrainFlags.
+ *
+ * SEE: REF: ml_intro_ann
+ */
 public class ANN_MLP extends StatModel {
 
     protected ANN_MLP(long addr) { super(addr); }
@@ -46,13 +56,15 @@ public class ANN_MLP extends StatModel {
     // C++:  Mat cv::ml::ANN_MLP::getLayerSizes()
     //
 
-    //javadoc: ANN_MLP::getLayerSizes()
-    public  Mat getLayerSizes()
-    {
-        
-        Mat retVal = new Mat(getLayerSizes_0(nativeObj));
-        
-        return retVal;
+    /**
+     * Integer vector specifying the number of neurons in each layer including the input and output layers.
+     *     The very first element specifies the number of elements in the input layer.
+     *     The last element - number of elements in the output layer.
+     * SEE: setLayerSizes
+     * @return automatically generated
+     */
+    public Mat getLayerSizes() {
+        return new Mat(getLayerSizes_0(nativeObj));
     }
 
 
@@ -60,13 +72,8 @@ public class ANN_MLP extends StatModel {
     // C++:  Mat cv::ml::ANN_MLP::getWeights(int layerIdx)
     //
 
-    //javadoc: ANN_MLP::getWeights(layerIdx)
-    public  Mat getWeights(int layerIdx)
-    {
-        
-        Mat retVal = new Mat(getWeights_0(nativeObj, layerIdx));
-        
-        return retVal;
+    public Mat getWeights(int layerIdx) {
+        return new Mat(getWeights_0(nativeObj, layerIdx));
     }
 
 
@@ -74,13 +81,15 @@ public class ANN_MLP extends StatModel {
     // C++: static Ptr_ANN_MLP cv::ml::ANN_MLP::create()
     //
 
-    //javadoc: ANN_MLP::create()
-    public static ANN_MLP create()
-    {
-        
-        ANN_MLP retVal = ANN_MLP.__fromPtr__(create_0());
-        
-        return retVal;
+    /**
+     * Creates empty model
+     *
+     *     Use StatModel::train to train the model, Algorithm::load&lt;ANN_MLP&gt;(filename) to load the pre-trained model.
+     *     Note that the train method has optional flags: ANN_MLP::TrainFlags.
+     * @return automatically generated
+     */
+    public static ANN_MLP create() {
+        return ANN_MLP.__fromPtr__(create_0());
     }
 
 
@@ -88,13 +97,17 @@ public class ANN_MLP extends StatModel {
     // C++: static Ptr_ANN_MLP cv::ml::ANN_MLP::load(String filepath)
     //
 
-    //javadoc: ANN_MLP::load(filepath)
-    public static ANN_MLP load(String filepath)
-    {
-        
-        ANN_MLP retVal = ANN_MLP.__fromPtr__(load_0(filepath));
-        
-        return retVal;
+    /**
+     * Loads and creates a serialized ANN from a file
+     *
+     * Use ANN::save to serialize and store an ANN to disk.
+     * Load the ANN from this file again, by calling this function with the path to the file.
+     *
+     * @param filepath path to serialized ANN
+     * @return automatically generated
+     */
+    public static ANN_MLP load(String filepath) {
+        return ANN_MLP.__fromPtr__(load_0(filepath));
     }
 
 
@@ -102,13 +115,12 @@ public class ANN_MLP extends StatModel {
     // C++:  TermCriteria cv::ml::ANN_MLP::getTermCriteria()
     //
 
-    //javadoc: ANN_MLP::getTermCriteria()
-    public  TermCriteria getTermCriteria()
-    {
-        
-        TermCriteria retVal = new TermCriteria(getTermCriteria_0(nativeObj));
-        
-        return retVal;
+    /**
+     * SEE: setTermCriteria
+     * @return automatically generated
+     */
+    public TermCriteria getTermCriteria() {
+        return new TermCriteria(getTermCriteria_0(nativeObj));
     }
 
 
@@ -116,13 +128,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getAnnealCoolingRatio()
     //
 
-    //javadoc: ANN_MLP::getAnnealCoolingRatio()
-    public  double getAnnealCoolingRatio()
-    {
-        
-        double retVal = getAnnealCoolingRatio_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealCoolingRatio
+     * @return automatically generated
+     */
+    public double getAnnealCoolingRatio() {
+        return getAnnealCoolingRatio_0(nativeObj);
     }
 
 
@@ -130,13 +141,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getAnnealFinalT()
     //
 
-    //javadoc: ANN_MLP::getAnnealFinalT()
-    public  double getAnnealFinalT()
-    {
-        
-        double retVal = getAnnealFinalT_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealFinalT
+     * @return automatically generated
+     */
+    public double getAnnealFinalT() {
+        return getAnnealFinalT_0(nativeObj);
     }
 
 
@@ -144,13 +154,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getAnnealInitialT()
     //
 
-    //javadoc: ANN_MLP::getAnnealInitialT()
-    public  double getAnnealInitialT()
-    {
-        
-        double retVal = getAnnealInitialT_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealInitialT
+     * @return automatically generated
+     */
+    public double getAnnealInitialT() {
+        return getAnnealInitialT_0(nativeObj);
     }
 
 
@@ -158,13 +167,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getBackpropMomentumScale()
     //
 
-    //javadoc: ANN_MLP::getBackpropMomentumScale()
-    public  double getBackpropMomentumScale()
-    {
-        
-        double retVal = getBackpropMomentumScale_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setBackpropMomentumScale
+     * @return automatically generated
+     */
+    public double getBackpropMomentumScale() {
+        return getBackpropMomentumScale_0(nativeObj);
     }
 
 
@@ -172,13 +180,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getBackpropWeightScale()
     //
 
-    //javadoc: ANN_MLP::getBackpropWeightScale()
-    public  double getBackpropWeightScale()
-    {
-        
-        double retVal = getBackpropWeightScale_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setBackpropWeightScale
+     * @return automatically generated
+     */
+    public double getBackpropWeightScale() {
+        return getBackpropWeightScale_0(nativeObj);
     }
 
 
@@ -186,13 +193,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getRpropDW0()
     //
 
-    //javadoc: ANN_MLP::getRpropDW0()
-    public  double getRpropDW0()
-    {
-        
-        double retVal = getRpropDW0_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setRpropDW0
+     * @return automatically generated
+     */
+    public double getRpropDW0() {
+        return getRpropDW0_0(nativeObj);
     }
 
 
@@ -200,13 +206,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getRpropDWMax()
     //
 
-    //javadoc: ANN_MLP::getRpropDWMax()
-    public  double getRpropDWMax()
-    {
-        
-        double retVal = getRpropDWMax_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setRpropDWMax
+     * @return automatically generated
+     */
+    public double getRpropDWMax() {
+        return getRpropDWMax_0(nativeObj);
     }
 
 
@@ -214,13 +219,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getRpropDWMin()
     //
 
-    //javadoc: ANN_MLP::getRpropDWMin()
-    public  double getRpropDWMin()
-    {
-        
-        double retVal = getRpropDWMin_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setRpropDWMin
+     * @return automatically generated
+     */
+    public double getRpropDWMin() {
+        return getRpropDWMin_0(nativeObj);
     }
 
 
@@ -228,13 +232,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getRpropDWMinus()
     //
 
-    //javadoc: ANN_MLP::getRpropDWMinus()
-    public  double getRpropDWMinus()
-    {
-        
-        double retVal = getRpropDWMinus_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setRpropDWMinus
+     * @return automatically generated
+     */
+    public double getRpropDWMinus() {
+        return getRpropDWMinus_0(nativeObj);
     }
 
 
@@ -242,13 +245,12 @@ public class ANN_MLP extends StatModel {
     // C++:  double cv::ml::ANN_MLP::getRpropDWPlus()
     //
 
-    //javadoc: ANN_MLP::getRpropDWPlus()
-    public  double getRpropDWPlus()
-    {
-        
-        double retVal = getRpropDWPlus_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setRpropDWPlus
+     * @return automatically generated
+     */
+    public double getRpropDWPlus() {
+        return getRpropDWPlus_0(nativeObj);
     }
 
 
@@ -256,13 +258,12 @@ public class ANN_MLP extends StatModel {
     // C++:  int cv::ml::ANN_MLP::getAnnealItePerStep()
     //
 
-    //javadoc: ANN_MLP::getAnnealItePerStep()
-    public  int getAnnealItePerStep()
-    {
-        
-        int retVal = getAnnealItePerStep_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealItePerStep
+     * @return automatically generated
+     */
+    public int getAnnealItePerStep() {
+        return getAnnealItePerStep_0(nativeObj);
     }
 
 
@@ -270,13 +271,12 @@ public class ANN_MLP extends StatModel {
     // C++:  int cv::ml::ANN_MLP::getTrainMethod()
     //
 
-    //javadoc: ANN_MLP::getTrainMethod()
-    public  int getTrainMethod()
-    {
-        
-        int retVal = getTrainMethod_0(nativeObj);
-        
-        return retVal;
+    /**
+     * Returns current training method
+     * @return automatically generated
+     */
+    public int getTrainMethod() {
+        return getTrainMethod_0(nativeObj);
     }
 
 
@@ -284,31 +284,34 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setActivationFunction(int type, double param1 = 0, double param2 = 0)
     //
 
-    //javadoc: ANN_MLP::setActivationFunction(type, param1, param2)
-    public  void setActivationFunction(int type, double param1, double param2)
-    {
-        
+    /**
+     * Initialize the activation function for each neuron.
+     *     Currently the default and the only fully supported activation function is ANN_MLP::SIGMOID_SYM.
+     *     @param type The type of activation function. See ANN_MLP::ActivationFunctions.
+     *     @param param1 The first parameter of the activation function, \(\alpha\). Default value is 0.
+     *     @param param2 The second parameter of the activation function, \(\beta\). Default value is 0.
+     */
+    public void setActivationFunction(int type, double param1, double param2) {
         setActivationFunction_0(nativeObj, type, param1, param2);
-        
-        return;
     }
 
-    //javadoc: ANN_MLP::setActivationFunction(type, param1)
-    public  void setActivationFunction(int type, double param1)
-    {
-        
+    /**
+     * Initialize the activation function for each neuron.
+     *     Currently the default and the only fully supported activation function is ANN_MLP::SIGMOID_SYM.
+     *     @param type The type of activation function. See ANN_MLP::ActivationFunctions.
+     *     @param param1 The first parameter of the activation function, \(\alpha\). Default value is 0.
+     */
+    public void setActivationFunction(int type, double param1) {
         setActivationFunction_1(nativeObj, type, param1);
-        
-        return;
     }
 
-    //javadoc: ANN_MLP::setActivationFunction(type)
-    public  void setActivationFunction(int type)
-    {
-        
+    /**
+     * Initialize the activation function for each neuron.
+     *     Currently the default and the only fully supported activation function is ANN_MLP::SIGMOID_SYM.
+     *     @param type The type of activation function. See ANN_MLP::ActivationFunctions.
+     */
+    public void setActivationFunction(int type) {
         setActivationFunction_2(nativeObj, type);
-        
-        return;
     }
 
 
@@ -316,13 +319,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setAnnealCoolingRatio(double val)
     //
 
-    //javadoc: ANN_MLP::setAnnealCoolingRatio(val)
-    public  void setAnnealCoolingRatio(double val)
-    {
-        
+    /**
+     *  getAnnealCoolingRatio SEE: getAnnealCoolingRatio
+     * @param val automatically generated
+     */
+    public void setAnnealCoolingRatio(double val) {
         setAnnealCoolingRatio_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -330,13 +332,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setAnnealFinalT(double val)
     //
 
-    //javadoc: ANN_MLP::setAnnealFinalT(val)
-    public  void setAnnealFinalT(double val)
-    {
-        
+    /**
+     *  getAnnealFinalT SEE: getAnnealFinalT
+     * @param val automatically generated
+     */
+    public void setAnnealFinalT(double val) {
         setAnnealFinalT_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -344,13 +345,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setAnnealInitialT(double val)
     //
 
-    //javadoc: ANN_MLP::setAnnealInitialT(val)
-    public  void setAnnealInitialT(double val)
-    {
-        
+    /**
+     *  getAnnealInitialT SEE: getAnnealInitialT
+     * @param val automatically generated
+     */
+    public void setAnnealInitialT(double val) {
         setAnnealInitialT_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -358,13 +358,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setAnnealItePerStep(int val)
     //
 
-    //javadoc: ANN_MLP::setAnnealItePerStep(val)
-    public  void setAnnealItePerStep(int val)
-    {
-        
+    /**
+     *  getAnnealItePerStep SEE: getAnnealItePerStep
+     * @param val automatically generated
+     */
+    public void setAnnealItePerStep(int val) {
         setAnnealItePerStep_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -372,13 +371,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setBackpropMomentumScale(double val)
     //
 
-    //javadoc: ANN_MLP::setBackpropMomentumScale(val)
-    public  void setBackpropMomentumScale(double val)
-    {
-        
+    /**
+     *  getBackpropMomentumScale SEE: getBackpropMomentumScale
+     * @param val automatically generated
+     */
+    public void setBackpropMomentumScale(double val) {
         setBackpropMomentumScale_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -386,13 +384,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setBackpropWeightScale(double val)
     //
 
-    //javadoc: ANN_MLP::setBackpropWeightScale(val)
-    public  void setBackpropWeightScale(double val)
-    {
-        
+    /**
+     *  getBackpropWeightScale SEE: getBackpropWeightScale
+     * @param val automatically generated
+     */
+    public void setBackpropWeightScale(double val) {
         setBackpropWeightScale_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -400,13 +397,15 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setLayerSizes(Mat _layer_sizes)
     //
 
-    //javadoc: ANN_MLP::setLayerSizes(_layer_sizes)
-    public  void setLayerSizes(Mat _layer_sizes)
-    {
-        
+    /**
+     * Integer vector specifying the number of neurons in each layer including the input and output layers.
+     *     The very first element specifies the number of elements in the input layer.
+     *     The last element - number of elements in the output layer. Default value is empty Mat.
+     * SEE: getLayerSizes
+     * @param _layer_sizes automatically generated
+     */
+    public void setLayerSizes(Mat _layer_sizes) {
         setLayerSizes_0(nativeObj, _layer_sizes.nativeObj);
-        
-        return;
     }
 
 
@@ -414,13 +413,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setRpropDW0(double val)
     //
 
-    //javadoc: ANN_MLP::setRpropDW0(val)
-    public  void setRpropDW0(double val)
-    {
-        
+    /**
+     *  getRpropDW0 SEE: getRpropDW0
+     * @param val automatically generated
+     */
+    public void setRpropDW0(double val) {
         setRpropDW0_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -428,13 +426,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setRpropDWMax(double val)
     //
 
-    //javadoc: ANN_MLP::setRpropDWMax(val)
-    public  void setRpropDWMax(double val)
-    {
-        
+    /**
+     *  getRpropDWMax SEE: getRpropDWMax
+     * @param val automatically generated
+     */
+    public void setRpropDWMax(double val) {
         setRpropDWMax_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -442,13 +439,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setRpropDWMin(double val)
     //
 
-    //javadoc: ANN_MLP::setRpropDWMin(val)
-    public  void setRpropDWMin(double val)
-    {
-        
+    /**
+     *  getRpropDWMin SEE: getRpropDWMin
+     * @param val automatically generated
+     */
+    public void setRpropDWMin(double val) {
         setRpropDWMin_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -456,13 +452,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setRpropDWMinus(double val)
     //
 
-    //javadoc: ANN_MLP::setRpropDWMinus(val)
-    public  void setRpropDWMinus(double val)
-    {
-        
+    /**
+     *  getRpropDWMinus SEE: getRpropDWMinus
+     * @param val automatically generated
+     */
+    public void setRpropDWMinus(double val) {
         setRpropDWMinus_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -470,13 +465,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setRpropDWPlus(double val)
     //
 
-    //javadoc: ANN_MLP::setRpropDWPlus(val)
-    public  void setRpropDWPlus(double val)
-    {
-        
+    /**
+     *  getRpropDWPlus SEE: getRpropDWPlus
+     * @param val automatically generated
+     */
+    public void setRpropDWPlus(double val) {
         setRpropDWPlus_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -484,13 +478,12 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setTermCriteria(TermCriteria val)
     //
 
-    //javadoc: ANN_MLP::setTermCriteria(val)
-    public  void setTermCriteria(TermCriteria val)
-    {
-        
+    /**
+     *  getTermCriteria SEE: getTermCriteria
+     * @param val automatically generated
+     */
+    public void setTermCriteria(TermCriteria val) {
         setTermCriteria_0(nativeObj, val.type, val.maxCount, val.epsilon);
-        
-        return;
     }
 
 
@@ -498,31 +491,31 @@ public class ANN_MLP extends StatModel {
     // C++:  void cv::ml::ANN_MLP::setTrainMethod(int method, double param1 = 0, double param2 = 0)
     //
 
-    //javadoc: ANN_MLP::setTrainMethod(method, param1, param2)
-    public  void setTrainMethod(int method, double param1, double param2)
-    {
-        
+    /**
+     * Sets training method and common parameters.
+     *     @param method Default value is ANN_MLP::RPROP. See ANN_MLP::TrainingMethods.
+     *     @param param1 passed to setRpropDW0 for ANN_MLP::RPROP and to setBackpropWeightScale for ANN_MLP::BACKPROP and to initialT for ANN_MLP::ANNEAL.
+     *     @param param2 passed to setRpropDWMin for ANN_MLP::RPROP and to setBackpropMomentumScale for ANN_MLP::BACKPROP and to finalT for ANN_MLP::ANNEAL.
+     */
+    public void setTrainMethod(int method, double param1, double param2) {
         setTrainMethod_0(nativeObj, method, param1, param2);
-        
-        return;
     }
 
-    //javadoc: ANN_MLP::setTrainMethod(method, param1)
-    public  void setTrainMethod(int method, double param1)
-    {
-        
+    /**
+     * Sets training method and common parameters.
+     *     @param method Default value is ANN_MLP::RPROP. See ANN_MLP::TrainingMethods.
+     *     @param param1 passed to setRpropDW0 for ANN_MLP::RPROP and to setBackpropWeightScale for ANN_MLP::BACKPROP and to initialT for ANN_MLP::ANNEAL.
+     */
+    public void setTrainMethod(int method, double param1) {
         setTrainMethod_1(nativeObj, method, param1);
-        
-        return;
     }
 
-    //javadoc: ANN_MLP::setTrainMethod(method)
-    public  void setTrainMethod(int method)
-    {
-        
+    /**
+     * Sets training method and common parameters.
+     *     @param method Default value is ANN_MLP::RPROP. See ANN_MLP::TrainingMethods.
+     */
+    public void setTrainMethod(int method) {
         setTrainMethod_2(nativeObj, method);
-        
-        return;
     }
 
 

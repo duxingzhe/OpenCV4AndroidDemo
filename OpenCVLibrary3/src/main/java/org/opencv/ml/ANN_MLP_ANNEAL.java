@@ -6,8 +6,11 @@ package org.opencv.ml;
 import org.opencv.ml.ANN_MLP;
 
 // C++: class ANN_MLP_ANNEAL
-//javadoc: ANN_MLP_ANNEAL
-
+/**
+ * Artificial Neural Networks - Multi-Layer Perceptrons.
+ *
+ * SEE: REF: ml_intro_ann
+ */
 public class ANN_MLP_ANNEAL extends ANN_MLP {
 
     protected ANN_MLP_ANNEAL(long addr) { super(addr); }
@@ -19,13 +22,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  double cv::ml::ANN_MLP_ANNEAL::getAnnealCoolingRatio()
     //
 
-    //javadoc: ANN_MLP_ANNEAL::getAnnealCoolingRatio()
-    public  double getAnnealCoolingRatio()
-    {
-        
-        double retVal = getAnnealCoolingRatio_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealCoolingRatio
+     * @return automatically generated
+     */
+    public double getAnnealCoolingRatio() {
+        return getAnnealCoolingRatio_0(nativeObj);
     }
 
 
@@ -33,13 +35,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  double cv::ml::ANN_MLP_ANNEAL::getAnnealFinalT()
     //
 
-    //javadoc: ANN_MLP_ANNEAL::getAnnealFinalT()
-    public  double getAnnealFinalT()
-    {
-        
-        double retVal = getAnnealFinalT_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealFinalT
+     * @return automatically generated
+     */
+    public double getAnnealFinalT() {
+        return getAnnealFinalT_0(nativeObj);
     }
 
 
@@ -47,13 +48,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  double cv::ml::ANN_MLP_ANNEAL::getAnnealInitialT()
     //
 
-    //javadoc: ANN_MLP_ANNEAL::getAnnealInitialT()
-    public  double getAnnealInitialT()
-    {
-        
-        double retVal = getAnnealInitialT_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealInitialT
+     * @return automatically generated
+     */
+    public double getAnnealInitialT() {
+        return getAnnealInitialT_0(nativeObj);
     }
 
 
@@ -61,13 +61,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  int cv::ml::ANN_MLP_ANNEAL::getAnnealItePerStep()
     //
 
-    //javadoc: ANN_MLP_ANNEAL::getAnnealItePerStep()
-    public  int getAnnealItePerStep()
-    {
-        
-        int retVal = getAnnealItePerStep_0(nativeObj);
-        
-        return retVal;
+    /**
+     * SEE: setAnnealItePerStep
+     * @return automatically generated
+     */
+    public int getAnnealItePerStep() {
+        return getAnnealItePerStep_0(nativeObj);
     }
 
 
@@ -75,13 +74,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  void cv::ml::ANN_MLP_ANNEAL::setAnnealCoolingRatio(double val)
     //
 
-    //javadoc: ANN_MLP_ANNEAL::setAnnealCoolingRatio(val)
-    public  void setAnnealCoolingRatio(double val)
-    {
-        
+    /**
+     *  getAnnealCoolingRatio SEE: getAnnealCoolingRatio
+     * @param val automatically generated
+     */
+    public void setAnnealCoolingRatio(double val) {
         setAnnealCoolingRatio_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -89,13 +87,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  void cv::ml::ANN_MLP_ANNEAL::setAnnealFinalT(double val)
     //
 
-    //javadoc: ANN_MLP_ANNEAL::setAnnealFinalT(val)
-    public  void setAnnealFinalT(double val)
-    {
-        
+    /**
+     *  getAnnealFinalT SEE: getAnnealFinalT
+     * @param val automatically generated
+     */
+    public void setAnnealFinalT(double val) {
         setAnnealFinalT_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -103,13 +100,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  void cv::ml::ANN_MLP_ANNEAL::setAnnealInitialT(double val)
     //
 
-    //javadoc: ANN_MLP_ANNEAL::setAnnealInitialT(val)
-    public  void setAnnealInitialT(double val)
-    {
-        
+    /**
+     *  getAnnealInitialT SEE: getAnnealInitialT
+     * @param val automatically generated
+     */
+    public void setAnnealInitialT(double val) {
         setAnnealInitialT_0(nativeObj, val);
-        
-        return;
     }
 
 
@@ -117,13 +113,12 @@ public class ANN_MLP_ANNEAL extends ANN_MLP {
     // C++:  void cv::ml::ANN_MLP_ANNEAL::setAnnealItePerStep(int val)
     //
 
-    //javadoc: ANN_MLP_ANNEAL::setAnnealItePerStep(val)
-    public  void setAnnealItePerStep(int val)
-    {
-        
+    /**
+     *  getAnnealItePerStep SEE: getAnnealItePerStep
+     * @param val automatically generated
+     */
+    public void setAnnealItePerStep(int val) {
         setAnnealItePerStep_0(nativeObj, val);
-        
-        return;
     }
 
 

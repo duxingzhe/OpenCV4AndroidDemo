@@ -3,7 +3,6 @@
 //
 package org.opencv.dnn;
 
-import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 import org.opencv.core.Algorithm;
@@ -11,8 +10,12 @@ import org.opencv.core.Mat;
 import org.opencv.utils.Converters;
 
 // C++: class Layer
-//javadoc: Layer
-
+/**
+ * This interface class allows to build new Layers - are building blocks of networks.
+ *
+ * Each class, derived from Layer, must implement allocate() methods to declare own outputs and forward() to compute outputs.
+ * Also before using the new layer into networks you must register your layer by using one of REF: dnnLayerFactory "LayerFactory" macros.
+ */
 public class Layer extends Algorithm {
 
     protected Layer(long addr) { super(addr); }
@@ -24,13 +27,14 @@ public class Layer extends Algorithm {
     // C++:  int cv::dnn::Layer::outputNameToIndex(String outputName)
     //
 
-    //javadoc: Layer::outputNameToIndex(outputName)
-    public  int outputNameToIndex(String outputName)
-    {
-        
-        int retVal = outputNameToIndex_0(nativeObj, outputName);
-        
-        return retVal;
+    /**
+     * Returns index of output blob in output array.
+     * SEE: inputNameToIndex()
+     * @param outputName automatically generated
+     * @return automatically generated
+     */
+    public int outputNameToIndex(String outputName) {
+        return outputNameToIndex_0(nativeObj, outputName);
     }
 
 
@@ -38,15 +42,20 @@ public class Layer extends Algorithm {
     // C++:  void cv::dnn::Layer::finalize(vector_Mat inputs, vector_Mat& outputs)
     //
 
-    //javadoc: Layer::finalize(inputs, outputs)
-    public  void finalize(List<Mat> inputs, List<Mat> outputs)
-    {
+    /**
+     * Computes and sets internal parameters according to inputs, outputs and blobs.
+     * @param outputs vector of already allocated output blobs
+     *
+     * If this method is called after network has allocated all memory for input and output blobs
+     * and before inferencing.
+     * @param inputs automatically generated
+     */
+    public void finalize(List<Mat> inputs, List<Mat> outputs) {
         Mat inputs_mat = Converters.vector_Mat_to_Mat(inputs);
         Mat outputs_mat = new Mat();
         finalize_0(nativeObj, inputs_mat.nativeObj, outputs_mat.nativeObj);
         Converters.Mat_to_vector_Mat(outputs_mat, outputs);
         outputs_mat.release();
-        return;
     }
 
 
@@ -54,10 +63,15 @@ public class Layer extends Algorithm {
     // C++:  void cv::dnn::Layer::run(vector_Mat inputs, vector_Mat& outputs, vector_Mat& internals)
     //
 
-    //javadoc: Layer::run(inputs, outputs, internals)
+    /**
+     * Allocates layer and computes output.
+     * @deprecated This method will be removed in the future release.
+     * @param inputs automatically generated
+     * @param outputs automatically generated
+     * @param internals automatically generated
+     */
     @Deprecated
-    public  void run(List<Mat> inputs, List<Mat> outputs, List<Mat> internals)
-    {
+    public void run(List<Mat> inputs, List<Mat> outputs, List<Mat> internals) {
         Mat inputs_mat = Converters.vector_Mat_to_Mat(inputs);
         Mat outputs_mat = new Mat();
         Mat internals_mat = Converters.vector_Mat_to_Mat(internals);
@@ -66,7 +80,6 @@ public class Layer extends Algorithm {
         outputs_mat.release();
         Converters.Mat_to_vector_Mat(internals_mat, internals);
         internals_mat.release();
-        return;
     }
 
 
@@ -74,9 +87,7 @@ public class Layer extends Algorithm {
     // C++: vector_Mat Layer::blobs
     //
 
-    //javadoc: Layer::get_blobs()
-    public  List<Mat> get_blobs()
-    {
+    public List<Mat> get_blobs() {
         List<Mat> retVal = new ArrayList<Mat>();
         Mat retValMat = new Mat(get_blobs_0(nativeObj));
         Converters.Mat_to_vector_Mat(retValMat, retVal);
@@ -88,13 +99,9 @@ public class Layer extends Algorithm {
     // C++: void Layer::blobs
     //
 
-    //javadoc: Layer::set_blobs(blobs)
-    public  void set_blobs(List<Mat> blobs)
-    {
+    public void set_blobs(List<Mat> blobs) {
         Mat blobs_mat = Converters.vector_Mat_to_Mat(blobs);
         set_blobs_0(nativeObj, blobs_mat.nativeObj);
-        
-        return;
     }
 
 
@@ -102,13 +109,8 @@ public class Layer extends Algorithm {
     // C++: String Layer::name
     //
 
-    //javadoc: Layer::get_name()
-    public  String get_name()
-    {
-        
-        String retVal = get_name_0(nativeObj);
-        
-        return retVal;
+    public String get_name() {
+        return get_name_0(nativeObj);
     }
 
 
@@ -116,13 +118,8 @@ public class Layer extends Algorithm {
     // C++: String Layer::type
     //
 
-    //javadoc: Layer::get_type()
-    public  String get_type()
-    {
-        
-        String retVal = get_type_0(nativeObj);
-        
-        return retVal;
+    public String get_type() {
+        return get_type_0(nativeObj);
     }
 
 
@@ -130,13 +127,8 @@ public class Layer extends Algorithm {
     // C++: int Layer::preferableTarget
     //
 
-    //javadoc: Layer::get_preferableTarget()
-    public  int get_preferableTarget()
-    {
-        
-        int retVal = get_preferableTarget_0(nativeObj);
-        
-        return retVal;
+    public int get_preferableTarget() {
+        return get_preferableTarget_0(nativeObj);
     }
 
 

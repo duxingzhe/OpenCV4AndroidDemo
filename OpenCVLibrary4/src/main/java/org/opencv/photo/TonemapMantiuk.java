@@ -6,8 +6,13 @@ package org.opencv.photo;
 import org.opencv.photo.Tonemap;
 
 // C++: class TonemapMantiuk
-//javadoc: TonemapMantiuk
-
+/**
+ * This algorithm transforms image to contrast using gradients on all levels of gaussian pyramid,
+ * transforms contrast values to HVS response and scales the response. After this the image is
+ * reconstructed from new contrast values.
+ *
+ * For more information see CITE: MM06 .
+ */
 public class TonemapMantiuk extends Tonemap {
 
     protected TonemapMantiuk(long addr) { super(addr); }
@@ -19,13 +24,8 @@ public class TonemapMantiuk extends Tonemap {
     // C++:  float cv::TonemapMantiuk::getSaturation()
     //
 
-    //javadoc: TonemapMantiuk::getSaturation()
-    public  float getSaturation()
-    {
-        
-        float retVal = getSaturation_0(nativeObj);
-        
-        return retVal;
+    public float getSaturation() {
+        return getSaturation_0(nativeObj);
     }
 
 
@@ -33,13 +33,8 @@ public class TonemapMantiuk extends Tonemap {
     // C++:  float cv::TonemapMantiuk::getScale()
     //
 
-    //javadoc: TonemapMantiuk::getScale()
-    public  float getScale()
-    {
-        
-        float retVal = getScale_0(nativeObj);
-        
-        return retVal;
+    public float getScale() {
+        return getScale_0(nativeObj);
     }
 
 
@@ -47,13 +42,8 @@ public class TonemapMantiuk extends Tonemap {
     // C++:  void cv::TonemapMantiuk::setSaturation(float saturation)
     //
 
-    //javadoc: TonemapMantiuk::setSaturation(saturation)
-    public  void setSaturation(float saturation)
-    {
-        
+    public void setSaturation(float saturation) {
         setSaturation_0(nativeObj, saturation);
-        
-        return;
     }
 
 
@@ -61,13 +51,8 @@ public class TonemapMantiuk extends Tonemap {
     // C++:  void cv::TonemapMantiuk::setScale(float scale)
     //
 
-    //javadoc: TonemapMantiuk::setScale(scale)
-    public  void setScale(float scale)
-    {
-        
+    public void setScale(float scale) {
         setScale_0(nativeObj, scale);
-        
-        return;
     }
 
 

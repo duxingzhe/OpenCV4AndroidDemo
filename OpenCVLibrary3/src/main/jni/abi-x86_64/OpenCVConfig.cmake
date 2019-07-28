@@ -25,10 +25,10 @@
 #      - OpenCV_INCLUDE_DIRS             : The OpenCV include directories.
 #      - OpenCV_COMPUTE_CAPABILITIES     : The version of compute capability.
 #      - OpenCV_ANDROID_NATIVE_API_LEVEL : Minimum required level of Android API.
-#      - OpenCV_VERSION                  : The version of this OpenCV build: "3.4.6"
+#      - OpenCV_VERSION                  : The version of this OpenCV build: "3.4.7"
 #      - OpenCV_VERSION_MAJOR            : Major version part of OpenCV_VERSION: "3"
 #      - OpenCV_VERSION_MINOR            : Minor version part of OpenCV_VERSION: "4"
-#      - OpenCV_VERSION_PATCH            : Patch version part of OpenCV_VERSION: "6"
+#      - OpenCV_VERSION_PATCH            : Patch version part of OpenCV_VERSION: "7"
 #      - OpenCV_VERSION_STATUS           : Development status of this build: ""
 #
 #    Advanced variables:
@@ -45,10 +45,10 @@
 # ======================================================
 #  Version variables:
 # ======================================================
-SET(OpenCV_VERSION 3.4.6)
+SET(OpenCV_VERSION 3.4.7)
 SET(OpenCV_VERSION_MAJOR  3)
 SET(OpenCV_VERSION_MINOR  4)
-SET(OpenCV_VERSION_PATCH  6)
+SET(OpenCV_VERSION_PATCH  7)
 SET(OpenCV_VERSION_TWEAK  0)
 SET(OpenCV_VERSION_STATUS "")
 
@@ -76,7 +76,7 @@ endif()
 
 # Extract the directory where *this* file has been installed (determined at cmake run-time)
 # Get the absolute path with no ../.. relative marks, to eliminate implicit linker warnings
-set(OpenCV_CONFIG_PATH "${CMAKE_CURRENT_LIST_DIR}")
+get_filename_component(OpenCV_CONFIG_PATH "${CMAKE_CURRENT_LIST_DIR}" REALPATH)
 get_filename_component(OpenCV_INSTALL_PATH "${OpenCV_CONFIG_PATH}/../../../../" REALPATH)
 
 # Search packages for host system instead of packages for target system.
@@ -113,7 +113,7 @@ if(NOT TARGET ippicv)
   add_library(ippicv STATIC IMPORTED)
   set_target_properties(ippicv PROPERTIES
     IMPORTED_LINK_INTERFACE_LIBRARIES ""
-    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/src/main/jniLibs/3rdparty/libs/x86_64/libippicv.a"
+    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/sdk/native/3rdparty/libs/x86_64/libippicv.a"
   )
 endif()
 
@@ -125,8 +125,22 @@ set(OpenCV_SHARED OFF)
 # Enables mangled install paths, that help with side by side installs
 set(OpenCV_USE_MANGLED_PATHS FALSE)
 
-set(OpenCV_LIB_COMPONENTS opencv_video;opencv_highgui;opencv_videoio;opencv_objdetect;opencv_superres;opencv_ml;opencv_shape;opencv_stitching;opencv_calib3d;opencv_videostab;opencv_features2d;opencv_dnn;opencv_photo;opencv_flann;opencv_core;opencv_imgcodecs;opencv_imgproc;opencv_java)
-set(OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/src/main/jni/include" "${OpenCV_INSTALL_PATH}/src/main/jni/include/opencv")
+set(OpenCV_LIB_COMPONENTS opencv_video;opencv_shape;opencv_highgui;opencv_videostab;opencv_calib3d;opencv_core;opencv_imgcodecs;opencv_ml;opencv_dnn;opencv_features2d;opencv_flann;opencv_photo;opencv_videoio;opencv_superres;opencv_imgproc;opencv_stitching;opencv_objdetect;opencv_java)
+set(__OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/sdk/native/jni/include" "${OpenCV_INSTALL_PATH}/sdk/native/jni/include/opencv")
+
+set(OpenCV_INCLUDE_DIRS "")
+foreach(d ${__OpenCV_INCLUDE_DIRS})
+  get_filename_component(__d "${d}" REALPATH)
+  if(NOT EXISTS "${__d}")
+    if(NOT OpenCV_FIND_QUIETLY)
+      message(WARNING "OpenCV: Include directory doesn't exist: '${d}'. OpenCV installation may be broken. Skip...")
+    endif()
+  else()
+    list(APPEND OpenCV_INCLUDE_DIRS "${__d}")
+  endif()
+endforeach()
+unset(__d)
+
 
 if(NOT TARGET opencv_core)
   include(${CMAKE_CURRENT_LIST_DIR}/OpenCVModules${OpenCV_MODULES_SUFFIX}.cmake)

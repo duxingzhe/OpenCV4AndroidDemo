@@ -6,8 +6,14 @@ package org.opencv.photo;
 import org.opencv.photo.Tonemap;
 
 // C++: class TonemapReinhard
-//javadoc: TonemapReinhard
-
+/**
+ * This is a global tonemapping operator that models human visual system.
+ *
+ * Mapping function is controlled by adaptation parameter, that is computed using light adaptation and
+ * color adaptation.
+ *
+ * For more information see CITE: RD05 .
+ */
 public class TonemapReinhard extends Tonemap {
 
     protected TonemapReinhard(long addr) { super(addr); }
@@ -19,13 +25,8 @@ public class TonemapReinhard extends Tonemap {
     // C++:  float cv::TonemapReinhard::getColorAdaptation()
     //
 
-    //javadoc: TonemapReinhard::getColorAdaptation()
-    public  float getColorAdaptation()
-    {
-        
-        float retVal = getColorAdaptation_0(nativeObj);
-        
-        return retVal;
+    public float getColorAdaptation() {
+        return getColorAdaptation_0(nativeObj);
     }
 
 
@@ -33,13 +34,8 @@ public class TonemapReinhard extends Tonemap {
     // C++:  float cv::TonemapReinhard::getIntensity()
     //
 
-    //javadoc: TonemapReinhard::getIntensity()
-    public  float getIntensity()
-    {
-        
-        float retVal = getIntensity_0(nativeObj);
-        
-        return retVal;
+    public float getIntensity() {
+        return getIntensity_0(nativeObj);
     }
 
 
@@ -47,13 +43,8 @@ public class TonemapReinhard extends Tonemap {
     // C++:  float cv::TonemapReinhard::getLightAdaptation()
     //
 
-    //javadoc: TonemapReinhard::getLightAdaptation()
-    public  float getLightAdaptation()
-    {
-        
-        float retVal = getLightAdaptation_0(nativeObj);
-        
-        return retVal;
+    public float getLightAdaptation() {
+        return getLightAdaptation_0(nativeObj);
     }
 
 
@@ -61,13 +52,8 @@ public class TonemapReinhard extends Tonemap {
     // C++:  void cv::TonemapReinhard::setColorAdaptation(float color_adapt)
     //
 
-    //javadoc: TonemapReinhard::setColorAdaptation(color_adapt)
-    public  void setColorAdaptation(float color_adapt)
-    {
-        
+    public void setColorAdaptation(float color_adapt) {
         setColorAdaptation_0(nativeObj, color_adapt);
-        
-        return;
     }
 
 
@@ -75,13 +61,8 @@ public class TonemapReinhard extends Tonemap {
     // C++:  void cv::TonemapReinhard::setIntensity(float intensity)
     //
 
-    //javadoc: TonemapReinhard::setIntensity(intensity)
-    public  void setIntensity(float intensity)
-    {
-        
+    public void setIntensity(float intensity) {
         setIntensity_0(nativeObj, intensity);
-        
-        return;
     }
 
 
@@ -89,13 +70,8 @@ public class TonemapReinhard extends Tonemap {
     // C++:  void cv::TonemapReinhard::setLightAdaptation(float light_adapt)
     //
 
-    //javadoc: TonemapReinhard::setLightAdaptation(light_adapt)
-    public  void setLightAdaptation(float light_adapt)
-    {
-        
+    public void setLightAdaptation(float light_adapt) {
         setLightAdaptation_0(nativeObj, light_adapt);
-        
-        return;
     }
 
 

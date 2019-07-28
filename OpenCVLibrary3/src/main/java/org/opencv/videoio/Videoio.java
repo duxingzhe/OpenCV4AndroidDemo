@@ -3,103 +3,17 @@
 //
 package org.opencv.videoio;
 
-import java.lang.String;
+
 
 // C++: class Videoio
-//javadoc: Videoio
 
 public class Videoio {
-
-    // C++: enum VideoCaptureAPIs
-    public static final int
-            CAP_ANY = 0,
-            CAP_VFW = 200,
-            CAP_V4L = 200,
-            CAP_V4L2 = 200,
-            CAP_FIREWIRE = 300,
-            CAP_FIREWARE = 300,
-            CAP_IEEE1394 = 300,
-            CAP_DC1394 = 300,
-            CAP_CMU1394 = 300,
-            CAP_QT = 500,
-            CAP_UNICAP = 600,
-            CAP_DSHOW = 700,
-            CAP_PVAPI = 800,
-            CAP_OPENNI = 900,
-            CAP_OPENNI_ASUS = 910,
-            CAP_ANDROID = 1000,
-            CAP_XIAPI = 1100,
-            CAP_AVFOUNDATION = 1200,
-            CAP_GIGANETIX = 1300,
-            CAP_MSMF = 1400,
-            CAP_WINRT = 1410,
-            CAP_INTELPERC = 1500,
-            CAP_OPENNI2 = 1600,
-            CAP_OPENNI2_ASUS = 1610,
-            CAP_GPHOTO2 = 1700,
-            CAP_GSTREAMER = 1800,
-            CAP_FFMPEG = 1900,
-            CAP_IMAGES = 2000,
-            CAP_ARAVIS = 2100,
-            CAP_OPENCV_MJPEG = 2200,
-            CAP_INTEL_MFX = 2300,
-            CAP_XINE = 2400;
-
 
     // C++: enum VideoWriterProperties
     public static final int
             VIDEOWRITER_PROP_QUALITY = 1,
             VIDEOWRITER_PROP_FRAMEBYTES = 2,
             VIDEOWRITER_PROP_NSTRIPES = 3;
-
-
-    // C++: enum VideoCaptureProperties
-    public static final int
-            CAP_PROP_POS_MSEC = 0,
-            CAP_PROP_POS_FRAMES = 1,
-            CAP_PROP_POS_AVI_RATIO = 2,
-            CAP_PROP_FRAME_WIDTH = 3,
-            CAP_PROP_FRAME_HEIGHT = 4,
-            CAP_PROP_FPS = 5,
-            CAP_PROP_FOURCC = 6,
-            CAP_PROP_FRAME_COUNT = 7,
-            CAP_PROP_FORMAT = 8,
-            CAP_PROP_MODE = 9,
-            CAP_PROP_BRIGHTNESS = 10,
-            CAP_PROP_CONTRAST = 11,
-            CAP_PROP_SATURATION = 12,
-            CAP_PROP_HUE = 13,
-            CAP_PROP_GAIN = 14,
-            CAP_PROP_EXPOSURE = 15,
-            CAP_PROP_CONVERT_RGB = 16,
-            CAP_PROP_WHITE_BALANCE_BLUE_U = 17,
-            CAP_PROP_RECTIFICATION = 18,
-            CAP_PROP_MONOCHROME = 19,
-            CAP_PROP_SHARPNESS = 20,
-            CAP_PROP_AUTO_EXPOSURE = 21,
-            CAP_PROP_GAMMA = 22,
-            CAP_PROP_TEMPERATURE = 23,
-            CAP_PROP_TRIGGER = 24,
-            CAP_PROP_TRIGGER_DELAY = 25,
-            CAP_PROP_WHITE_BALANCE_RED_V = 26,
-            CAP_PROP_ZOOM = 27,
-            CAP_PROP_FOCUS = 28,
-            CAP_PROP_GUID = 29,
-            CAP_PROP_ISO_SPEED = 30,
-            CAP_PROP_BACKLIGHT = 32,
-            CAP_PROP_PAN = 33,
-            CAP_PROP_TILT = 34,
-            CAP_PROP_ROLL = 35,
-            CAP_PROP_IRIS = 36,
-            CAP_PROP_SETTINGS = 37,
-            CAP_PROP_BUFFERSIZE = 38,
-            CAP_PROP_AUTOFOCUS = 39,
-            CAP_PROP_SAR_NUM = 40,
-            CAP_PROP_SAR_DEN = 41,
-            CAP_PROP_BACKEND = 42,
-            CAP_PROP_CHANNEL = 43,
-            CAP_PROP_AUTO_WB = 44,
-            CAP_PROP_WB_TEMPERATURE = 45;
 
 
     // C++: enum <unnamed>
@@ -691,6 +605,91 @@ public class Videoio {
             CAP_PROP_IMAGES_LAST = 19000;
 
 
+    // C++: enum VideoCaptureProperties
+    public static final int
+            CAP_PROP_POS_MSEC = 0,
+            CAP_PROP_POS_FRAMES = 1,
+            CAP_PROP_POS_AVI_RATIO = 2,
+            CAP_PROP_FRAME_WIDTH = 3,
+            CAP_PROP_FRAME_HEIGHT = 4,
+            CAP_PROP_FPS = 5,
+            CAP_PROP_FOURCC = 6,
+            CAP_PROP_FRAME_COUNT = 7,
+            CAP_PROP_FORMAT = 8,
+            CAP_PROP_MODE = 9,
+            CAP_PROP_BRIGHTNESS = 10,
+            CAP_PROP_CONTRAST = 11,
+            CAP_PROP_SATURATION = 12,
+            CAP_PROP_HUE = 13,
+            CAP_PROP_GAIN = 14,
+            CAP_PROP_EXPOSURE = 15,
+            CAP_PROP_CONVERT_RGB = 16,
+            CAP_PROP_WHITE_BALANCE_BLUE_U = 17,
+            CAP_PROP_RECTIFICATION = 18,
+            CAP_PROP_MONOCHROME = 19,
+            CAP_PROP_SHARPNESS = 20,
+            CAP_PROP_AUTO_EXPOSURE = 21,
+            CAP_PROP_GAMMA = 22,
+            CAP_PROP_TEMPERATURE = 23,
+            CAP_PROP_TRIGGER = 24,
+            CAP_PROP_TRIGGER_DELAY = 25,
+            CAP_PROP_WHITE_BALANCE_RED_V = 26,
+            CAP_PROP_ZOOM = 27,
+            CAP_PROP_FOCUS = 28,
+            CAP_PROP_GUID = 29,
+            CAP_PROP_ISO_SPEED = 30,
+            CAP_PROP_BACKLIGHT = 32,
+            CAP_PROP_PAN = 33,
+            CAP_PROP_TILT = 34,
+            CAP_PROP_ROLL = 35,
+            CAP_PROP_IRIS = 36,
+            CAP_PROP_SETTINGS = 37,
+            CAP_PROP_BUFFERSIZE = 38,
+            CAP_PROP_AUTOFOCUS = 39,
+            CAP_PROP_SAR_NUM = 40,
+            CAP_PROP_SAR_DEN = 41,
+            CAP_PROP_BACKEND = 42,
+            CAP_PROP_CHANNEL = 43,
+            CAP_PROP_AUTO_WB = 44,
+            CAP_PROP_WB_TEMPERATURE = 45;
+
+
+    // C++: enum VideoCaptureAPIs
+    public static final int
+            CAP_ANY = 0,
+            CAP_VFW = 200,
+            CAP_V4L = 200,
+            CAP_V4L2 = 200,
+            CAP_FIREWIRE = 300,
+            CAP_FIREWARE = 300,
+            CAP_IEEE1394 = 300,
+            CAP_DC1394 = 300,
+            CAP_CMU1394 = 300,
+            CAP_QT = 500,
+            CAP_UNICAP = 600,
+            CAP_DSHOW = 700,
+            CAP_PVAPI = 800,
+            CAP_OPENNI = 900,
+            CAP_OPENNI_ASUS = 910,
+            CAP_ANDROID = 1000,
+            CAP_XIAPI = 1100,
+            CAP_AVFOUNDATION = 1200,
+            CAP_GIGANETIX = 1300,
+            CAP_MSMF = 1400,
+            CAP_WINRT = 1410,
+            CAP_INTELPERC = 1500,
+            CAP_OPENNI2 = 1600,
+            CAP_OPENNI2_ASUS = 1610,
+            CAP_GPHOTO2 = 1700,
+            CAP_GSTREAMER = 1800,
+            CAP_FFMPEG = 1900,
+            CAP_IMAGES = 2000,
+            CAP_ARAVIS = 2100,
+            CAP_OPENCV_MJPEG = 2200,
+            CAP_INTEL_MFX = 2300,
+            CAP_XINE = 2400;
+
+
     // C++: enum VideoCaptureModes
     public static final int
             CAP_MODE_BGR = 0,
@@ -703,13 +702,13 @@ public class Videoio {
     // C++:  String cv::videoio_registry::getBackendName(VideoCaptureAPIs api)
     //
 
-    //javadoc: getBackendName(api)
-    public static String getBackendName(int api)
-    {
-        
-        String retVal = getBackendName_0(api);
-        
-        return retVal;
+    /**
+     * Returns backend API name or "unknown"
+     * @param api backend ID (#VideoCaptureAPIs)
+     * @return automatically generated
+     */
+    public static String getBackendName(int api) {
+        return getBackendName_0(api);
     }
 
 
