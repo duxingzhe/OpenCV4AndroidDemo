@@ -9,7 +9,10 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,5 +118,51 @@ public class CameraCalibrator {
         perViewErrors.create(objectPoints.size(), 1, CvType.CV_32FC1);
         perViewErrors.put(0,0, viewErrors);
         return Math.sqrt(totalError/totalError);
+    }
+
+    private void findPattern(Mat grayFrame){
+        mPatternWasFound=Calib3d.findCirclesGrid(grayFrame, mPatternSize, mCorners,
+                Calib3d.CALIB_CB_ASYMMETRIC_GRID);
+    }
+
+    public void addCorners(){
+        if(mPatternWasFound){
+            mCornersBuffer.add(mCorners.clone());
+        }
+    }
+
+    private void drawPoints(Mat rgbaFrame){
+        Calib3d.drawChessboardCorners(rgbaFrame, mPatternSize, mCorners, mPatternWasFound);
+    }
+
+    private void renderFrame(Mat rgbaFrame){
+        drawPoints(rgbaFrame);
+
+        Imgproc.putText(rgbaFrame, "Captured: "+mCornersBuffer.size(), new Point(rgbaFrame.cols()/3*2, rgbaFrame.rows()*0.1),
+                Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255,255,0));
+    }
+
+    public Mat getCameraMatrix(){
+        return mCameraMatrix;
+    }
+
+    public Mat getDistortionCoefficients(){
+        return mDistortionCoefficients;
+    }
+
+    public int getCornersBufferSize(){
+        return mCornersBuffer.size();
+    }
+
+    public double getAvgReprojectionError(){
+        return mRms;
+    }
+
+    public boolean isCalibrated(){
+        return mIsCalibrated;
+    }
+
+    public void setCalibrated(){
+        mIsCalibrated=true;
     }
 }
