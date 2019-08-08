@@ -6,7 +6,9 @@ import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Size;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class CameraCalibrator {
     private static final String TAG="OCVSample::CameraCalibrator";
 
     private final Size mPatternSize=new Size(4,11);
-    private final int mConersSzie=(int)(mPatternSize.width*mPatternSize.height);
+    private final int mCornersSize=(int)(mPatternSize.width*mPatternSize.height);
     private boolean mPatternWasFound=false;
     private MatOfPoint2f mCorners=new MatOfPoint2f();
     private List<Mat> mCornersBuffer=new ArrayList<Mat>();
@@ -66,5 +68,52 @@ public class CameraCalibrator {
         Log.i(TAG, String.format("Average re-projection error: %f", mRms));
         Log.i(TAG, "Camera matrix: "+mCameraMatrix.dump());
         Log.i(TAG, "Distortion coefficients: "+mDistortionCoefficients.dump());
+    }
+
+    public void clearCorners(){
+        mCornersBuffer.clear();
+    }
+
+    private void calcBoardCornerPositions(Mat corners){
+        final int cn=3;
+        float positions[]=new float[mCornersSize*cn];
+
+        for(int i=0;i<mPatternSize.height;i++){
+            for(int j=0;j<mPatternSize.width*cn;j+=cn){
+                positions[(int)(i*mPatternSize.width *cn +j+0)]=
+                        (2*(j/cn)+i%2)*(float)mSquareSize;
+                positions[(int)(i*mPatternSize.width*cn+j+1)]=
+                        i*(float)mSquareSize;
+                positions[(int)(i*mPatternSize.width*cn+j+2)]=0;
+            }
+        }
+        corners.create(mCornersSize, 1, CvType.CV_32FC3);
+        corners.put(0, 0, positions);
+    }
+
+    private double computeReprojectionErrors(List<Mat> objectPoints, List<Mat> rvecs,
+                                             List<Mat> tvecs, Mat perViewErrors){
+        MatOfPoint2f cornersProjected=new MatOfPoint2f();
+        double totalError=0;
+        double error;
+        float viewErrors[]=new float[objectPoints.size())];
+
+        MatOfDouble distortionCoefficients=new MatOfDouble(mDistortionCoefficients);
+        int totalPoints=0;
+        for(int i=0;i<objectPoints.size();i++){
+            MatOfPoint3f points=new MatOfPoint3f(objectPoints.get(i));
+            Calib3d.projectPoints(points, rvecs.get(i), tvecs.get(i),
+                    mCameraMatrix, distortionCoefficients, cornersProjected);
+            error=Core.norm(mCornersBuffer.get(i), cornersProjected, Core.NORM_L2);
+
+            int n=objectPoints.get(i).rows();
+            viewErrors[i]=(float)Math.sqrt(error*error/n);
+            totalError+=error*error;
+            totalPoints+=n;
+        }
+
+        perViewErrors.create(objectPoints.size(), 1, CvType.CV_32FC1);
+        perViewErrors.put(0,0, viewErrors);
+        return Math.sqrt(totalError/totalError);
     }
 }
