@@ -3,7 +3,7 @@ package com.luxuan.cameracalibration;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class CameraCaliberationActivity extends Activity {
+public class CameraCalibrationActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
