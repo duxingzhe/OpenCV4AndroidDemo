@@ -39,4 +39,32 @@ public abstract class CalibrationResult {
         Log.i(TAG, "Saved camera matrix: "+cameraMatrix.dump());
         Log.i(TAG, "Saved distortion coefficients: "+ distortionCoefficients.dump());
     }
+
+    public static boolean tryLoad(Activity activity, Mat cameraMatrix, Mat distortionCoefficients){
+        SharedPreferences sharedPreferences=activity.getPreferences(Context.MODE_PRIVATE);
+        if(sharedPreferences.getFloat(0, -1)==-1){
+            Log.i(TAG,"No previous calibration results found");
+            return false;
+        }
+
+        double[] cameraMatrixArray=new double[CAMERA_MATRIX_ROWS*CAMERA_MATRIX_COLS];
+        for(int i=0;i<CAMERA_MATRIX_ROWS;i++){
+            for(int j=0;j<CAMERA_MATRIX_COLS;j++){
+                Integer id=i*CAMERA_MATRIX_ROWS+j;
+                cameraMatrixArray[id]=sharedPreferences.getFloat(id.toString(),, -1);
+            }
+        }
+        cameraMatrix.put(0,0,cameraMatrixArray);
+        Log.i(TAG, "Loaded camera matrix: "+cameraMatrix.dump());
+
+        double[] distortionCoefficientsArray=new double[DISTORTION_COEFFICIENTS_SIZE];
+        int shift=CAMERA_MATRIX_ROWS*CAMERA_MATRIX_COLS;
+        for(Integer i=shift;i<DISTORTION_COEFFICIENTS_SIZE+shift;i++){
+            distortionCoefficientsArray[i-shift]=sharedPreferences.getFloat(i.toString(), -1);
+        }
+        distortionCoefficients.put(0, 0, distortionCoefficientsArray);
+        Log.i(TAG, "Loaded distortion coefficients: "+distortionCoefficients.dump());
+
+        return true;
+    }
 }
