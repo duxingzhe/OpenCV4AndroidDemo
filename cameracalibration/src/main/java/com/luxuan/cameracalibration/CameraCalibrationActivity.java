@@ -2,7 +2,10 @@ package com.luxuan.cameracalibration;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -12,10 +15,12 @@ import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.luxuan.cameracalibration.Render.CalibrationFrameRender;
 import com.luxuan.cameracalibration.Render.ComparisonFrameRender;
 import com.luxuan.cameracalibration.Render.OnCameraFrameRender;
+import com.luxuan.cameracalibration.Render.PreviewFrameRender;
 import com.luxuan.cameracalibration.Render.UndistortionFrameRender;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -138,9 +143,53 @@ public class CameraCalibrationActivity extends Activity implements CameraBridgeV
                 item.setChecked(true);
                 return true;
             case R.id.comparison:
-                mOnCameraFrameRender=new OnCameraFrameRender(new ComparisonFrameRender(mCalibrator));
+                mOnCameraFrameRender=new OnCameraFrameRender(new ComparisonFrameRender(mCalibrator, mWidth, mHeight, getResources()));
                 item.setChecked(true);
                 return true;
+            case R.id.calibrate:
+                final Resources res=getResources();
+                if(mCalibrator.getCornersBufferSize()<2){
+                    Toast.makeText(this, "Please, capture more samples", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                mOnCameraFrameRender=new OnCameraFrameRender(new PreviewFrameRender());
+
+                new AsyncTask<Void, Void, Void>(){
+                    private ProgressDialog calibrationProgress;
+
+                    @Override
+                    protected void onPreExecute(){
+                        calibrationProgress=new ProgressDialog(CameraCalibrationActivity.this);
+                        calibrationProgress.setTitle("Calibrating...");
+                        calibrationProgress.setMessage("Please wait");
+                        calibrationProgress.setCancelable(false);
+                        calibrationProgress.setIndeterminate(true);
+                        calibrationProgress.show();
+                    }
+                    @Override
+                    protected Void doInBackground(Void... args){
+                        mCalibrator.calibrate();
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result){
+                        calibrationProgress.dismiss();
+                        mCalibrator.clearCorners();
+                        mOnCameraFrameRender=new OnCameraFrameRender(new CalibrationFrameRender(mCalibrator));
+                        String resultMessage=(mCalibrator.isCalibrated())?
+                                res.getString(R.string.calibration_successful)  + " " + mCalibrator.getAvgReprojectionError() :
+                                res.getString(R.string.calibration_unsuccessful);
+                        Toast.makeText(CameraCalibrationActivity.this, resultMessage, Toast.LENGTH_SHORT).show();
+                        if(mCalibrator.isCalibrated()){
+                            CalibrationResult.save(CameraCalibrationActivity.this, mCalibrator.getCameraMatrix(), mCalibrator.getDistortionCoefficients());
+                        }
+                    }
+                }.execute();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+
     }
 }
