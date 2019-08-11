@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,6 +28,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Mat;
 
 public class CameraCalibrationActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, View.OnTouchListener {
 
@@ -191,5 +193,37 @@ public class CameraCalibrationActivity extends Activity implements CameraBridgeV
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    public void onCameraViewStarted(int width, int height){
+        if(mWidth!=width||mHeight!=height){
+            mWidth=width;
+            mHeight=height;
+            mCalibrator=new CameraCalibrator(mWidth, mHeight);
+            if(CalibrationResult.tryLoad(this, mCalibrator.getCameraMatrix(), mCalibrator.getDistortionCoefficients())){
+                mCalibrator.setCalibrated();
+            }
+        }
+
+        mOnCameraFrameRender=new OnCameraFrameRender(new CalibrationFrameRender(mCalibrator));
+    }
+
+    @Override
+    public void onCameraViewStopped(){
+
+    }
+
+    @Override
+    public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame){
+        return mOnCameraFrameRender.render(inputFrame);
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event){
+        Log.d(TAG, "onTouch invoked");
+
+        mCalibrator.addCorners();
+        return false;
     }
 }
