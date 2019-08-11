@@ -1,3 +1,3 @@
-include ':app', ':answersheetscan', ':colorblob', ':androidimageanalysis', ':cameracalibration', ":OpenCVLibrary3", ":OpenCVLibrary4"
+include ':app', ':answersheetscan', ':colorblob', ':androidimageanalysis', ':cameracalibration', ':opencv4demo', ":OpenCVLibrary3", ":OpenCVLibrary4"
 
 

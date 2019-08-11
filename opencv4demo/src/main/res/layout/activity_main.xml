@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_load_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载原图"
+        android:textSize="12sp"/>
+
+
+    <Button
+        android:id="@+id/btn_line_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/btn_load_img"
+        android:text="画一条线"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_rect_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/btn_line_img"
+        android:text="画个矩形"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_gray_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/btn_rect_img"
+        android:text="灰度化"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_invert_single_pixel_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_load_img"
+        android:text="单像素取反"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_invert_all_pixel_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_load_img"
+        android:layout_toEndOf="@id/btn_invert_single_pixel_img"
+        android:text="全像素取反"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_avg_blur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_rect_img"
+        android:layout_toEndOf="@id/btn_invert_all_pixel_img"
+        android:text="均值模糊"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_mid_blur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_gray_img"
+        android:layout_toEndOf="@id/btn_avg_blur"
+        android:text="中值模糊"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_custom_blur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_invert_single_pixel_img"
+        android:text="自定义锐化"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btn_gaussian_blur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_invert_all_pixel_img"
+        android:layout_toEndOf="@id/btn_custom_blur"
+        android:text="高斯模糊"
+        android:textSize="12sp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="正在处理，请稍候..."
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+</RelativeLayout>
