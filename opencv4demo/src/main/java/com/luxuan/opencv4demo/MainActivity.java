@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private static final String TAG="MainActivity";
     public static final String mBasePath= Environment.getExternalStorageDirectory()+ File.separator+"OpenCV4AndroidDemo"+File.separator;
     public static final String mImageName="00.jpg";
-    public static final Mat mSrcMat;
-    public static final Mat mTargetMat;
+    public static Mat mSrcMat;
+    public static Mat mTargetMat;
 
     private View mProgress;
 
@@ -153,6 +153,58 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 public void run(){
                     Imgproc.blur(mSrcMat, mTargetMat, new Size(9,9));
                     showResult("均值模糊");
+                }
+            });
+        }
+    }
+
+    private void invertByAllPixel(){
+
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+
+                    mTargetMat=mSrcMat.clone();
+                    int width=mSrcMat.width();
+                    int height=mSrcMat.height();
+                    int channels=mSrcMat.channels();
+
+                    int blue;
+                    int green;
+                    int red;
+                    if(channels==3){
+                        byte[] bgr=new byte[width * height *channels];
+                        mSrcMat.get(0, 0, bgr);
+                        for(int i=0;i<height;i++){
+                            for(int j=0;j<width;j++){
+                                blue=bgr[i*width*channels+j*channels]&0xff;
+                                green=bgr[i*width*channels+j*channels+1]&0xff;
+                                red=bgr[i*width*channels+j*channels+2]&0xff;
+                                bgr[i*width*channels+j*channels]=(byte)(255-blue);
+                                bgr[i*width*channels+j*channels+1]=(byte)(255-green);
+                                bgr[i*width*channels+j*channels+2]=(byte)(255-red);
+                            }
+                        }
+                        mTargetMat.put(0, 0, bgr);
+                    }
+
+                    int gray;
+                    if(channels==1){
+                        byte[] g=new byte[width*height];
+                        for(int i=0;i<height;i++){
+                            for(int j=0;j<width;j++){
+                                gray=g[i*width+j]&0xff;
+                                g[i*width+j]=(byte)(255-gray);
+                            }
+                        }
+
+                        mTargetMat.put(0,0,g);
+                    }
+
+                    showResult("全像素取反");
                 }
             });
         }
