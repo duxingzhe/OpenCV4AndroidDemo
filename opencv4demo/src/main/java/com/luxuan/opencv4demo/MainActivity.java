@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.File;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -78,5 +82,79 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 invertByAllPixel();
             }
         });
+
+        findViewById(R.id.btn_avg_blur).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                avgBlur();
+            }
+        });
+
+        findViewById(R.id.btn_mid_blur).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                midBlur();
+            }
+        });
+
+        findViewById(R.id.btn_custom_blur).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                customBlur();
+            }
+        });
+
+        findViewById(R.id.btn_gaussian_blur).setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                gaussianBlur();
+            }
+        });
+    }
+
+    private void gaussianBlur(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    Imgproc.GaussianBlur(mSrcMat, mTargetMat, new Size(), 50F, 5F);
+                    showResult("高斯模糊");
+                }
+            });
+        }
+    }
+
+    private void midBlur(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    Imgproc.medianBlur(mSrcMat, mTargetMat, 9);
+                    showResult("中斯模糊");
+                }
+            });
+        }
+    }
+
+    private void avgBlur(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    Imgproc.blur(mSrcMat, mTargetMat, new Size(9,9));
+                    showResult("均值模糊");
+                }
+            });
+        }
     }
 }
