@@ -209,4 +209,72 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             });
         }
     }
+
+    private void invertBySinglePixel(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    mTargetMat=mSrcMat.clone();
+                    int width=mSrcMat.width();
+                    int height=mSrcMat.height();
+                    int channels=mSrcMat.channels();
+
+                    int blue;
+                    int green;
+                    int red;
+
+                    if(channels==3){
+                        byte[] bgr=new byte[channels];
+                        for(int i=0;i<height;i++){
+                            for(int j=0;j<width;j++){
+                                mSrcMat.get(i,j,bgr);
+                                blue=bgr[0]&0xff;
+                                green=bgr[1]&0xff;
+                                red=bgr[2]&0xff;
+
+                                bgr[0]=(byte)(255-blue);
+                                bgr[1]=(byte)(255-green);
+                                bgr[2]=(byte)(255-red);
+                                mTargetMat.put(i,j,bgr);
+                            }
+                        }
+                    }
+
+                    int gray;
+                    if(channels==1){
+                        byte[] g=new byte[1];
+                        for(int i=0;i<height;i++){
+                            for(int j=0;j<width;j++){
+                                mSrcMat.get(i,j,g);
+                                gray=g[0]&0xff;
+                                g[0]=(byte)(255-gray);
+                                mTargetMat.put(i,j,g);
+                            }
+                        }
+                    }
+                }
+
+                showResult("单像素取反");
+            });
+        }
+    }
+
+    private void doGray(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    mTargetMat=new Mat();
+                    Imgproc.cvtColor(mSrcMat, mTargetMat, Imgproc.COLOR_BGR2GRAY);
+                    showResult("灰度化");
+                }
+            });
+
+        }
+    }
 }
