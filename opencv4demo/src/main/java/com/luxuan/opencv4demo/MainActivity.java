@@ -1,6 +1,7 @@
 package com.luxuan.opencv4demo;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -318,11 +320,77 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             showProgress();
             destroyMat(mSrcMat);
             destroy(mTargetMat);
-            mSrcMat=Imgcodecs.imread(mBasePath+mImageName, Imgcodecs.CV_LOAD_IMAGE_COLOR);
+            mSrcMat=Imgcodecs.imread(mBasePath+mImageName, Imgcodecs.IMREAD_COLOR);
             mTargetMat=mSrcMat.clone();
             showResult("原图");
         }else{
             ToastUtils.showToast(this, "图片不存在");
         }
+    }
+
+    private void showResult(String name){
+        hideProgress();
+        PhototActivity.startAction(this, name);
+    }
+
+    private boolean resetMat(){
+        if(mSrcMat==null||(mSrcMat.width()==0&&mSrcMat.height()==0)){
+            ToastUtils.showToast(this, "请先加载原图");
+            return false;
+        }else{
+            destroyMat(mTargetMat);
+            return true;
+        }
+    }
+
+    private void destroyMat(Mat mat){
+        if(mat!=null){
+            mat.release();
+        }
+    }
+
+    private void showProgress(){
+        if(mProgress!=null){
+            ThreadUtils.runOnUIThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    mProgress.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
+    private void hideProgress(){
+        if(mProgress!=null){
+            ThreadUtils.runOnUIThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    mProgress.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    private void requestPermission(){
+        if (!EasyPermissions.hasPermissions(this, PermissionUtils.permissions)) {
+            EasyPermissions.requestPermissions(this, "为保证Demo运行，需要申请权限", PermissionUtils.REQUEST_PERMISSION_CODE, PermissionUtils.permissions);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCde, @NonNull List<String> perms){
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms){
+        ToastUtils.showToast(this, "权限未获取，请手动打开");
     }
 }
