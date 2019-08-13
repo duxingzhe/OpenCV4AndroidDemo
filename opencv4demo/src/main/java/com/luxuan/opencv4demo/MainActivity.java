@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -274,7 +278,51 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     showResult("灰度化");
                 }
             });
+        }
+    }
 
+    private void drawRect(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    mTargetMat=mSrcMat.clone();
+                    Rect rect=new Rect(10,10, 300, 200);
+                    Imgproc.rectangle(mTargetMat, rect.tl(), rect.br(), new Scalar(0,0,255), 2, Imgproc.LINE_8, 0);
+                    showResult("画矩形");
+                }
+            });
+        }
+    }
+
+    private void drawLine(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    mTargetMat=mSrcMat.clone();
+                    Imgproc.line(mTargetMat, new Point(0, 10),new Point(mTargetMat.width(), 10), new Scalar(0,0,255), 2, Imgproc.LINE_8, 0);
+                    showResult("画线");
+                }
+            });
+        }
+    }
+
+    private void loadImg(){
+        File imgFile=new File(mBasePath+mImageName);
+        if(imgFile.exists()){
+            showProgress();
+            destroyMat(mSrcMat);
+            destroy(mTargetMat);
+            mSrcMat=Imgcodecs.imread(mBasePath+mImageName, Imgcodecs.CV_LOAD_IMAGE_COLOR);
+            mTargetMat=mSrcMat.clone();
+            showResult("原图");
+        }else{
+            ToastUtils.showToast(this, "图片不存在");
         }
     }
 }
