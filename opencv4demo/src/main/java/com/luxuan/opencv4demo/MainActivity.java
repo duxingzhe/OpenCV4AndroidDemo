@@ -342,6 +342,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             showProgress();
             destroyMat(mSrcMat);
             destroyMat(mTargetMat);
+            // OpenCV3是Imgcodecs.CV_LOAD_IMAGE_COLOR
             mSrcMat=Imgcodecs.imread(mBasePath+mImageName, Imgcodecs.IMREAD_COLOR);
             mTargetMat=mSrcMat.clone();
             showResult("原图");
