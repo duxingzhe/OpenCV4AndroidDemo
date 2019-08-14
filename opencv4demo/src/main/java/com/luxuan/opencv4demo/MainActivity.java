@@ -4,8 +4,14 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.InstallCallbackInterface;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -136,6 +142,23 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
+    private void customBlur(){
+        if(resetMat()){
+            showProgress();
+            ThreadUtils.runOnSubThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    Mat kernel=new Mat(3,3, CvType.CV_32FC1);
+                    float[] matrix={-1F, -1F, -1F, -1F, 9F, -1F, -1F, -1F, -1F};
+                    kernel.put(0,0,matrix);
+                    Imgproc.filter2D(mSrcMat, mTargetMat, mSrcMat.depth(), kernel);
+                    showResult("自定义锐化");
+                }
+            });
+        }
+    }
+
     private void midBlur(){
         if(resetMat()){
             showProgress();
@@ -144,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 @Override
                 public void run(){
                     Imgproc.medianBlur(mSrcMat, mTargetMat, 9);
-                    showResult("中斯模糊");
+                    showResult("中值模糊");
                 }
             });
         }
@@ -261,9 +284,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             }
                         }
                     }
+                    showResult("单像素取反");
                 }
-
-                showResult("单像素取反");
             });
         }
     }
@@ -319,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         if(imgFile.exists()){
             showProgress();
             destroyMat(mSrcMat);
-            destroy(mTargetMat);
+            destroyMat(mTargetMat);
             mSrcMat=Imgcodecs.imread(mBasePath+mImageName, Imgcodecs.IMREAD_COLOR);
             mTargetMat=mSrcMat.clone();
             showResult("原图");
@@ -373,6 +395,36 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
+    public void initOpenCV(){
+        LoaderCallbackInterface loaderCallback=new BaseLoaderCallback(this){
+
+            @Override
+            public void onManagerConnected(int status){
+                switch(status){
+                    case LoaderCallbackInterface.SUCCESS:
+                        Log.e(TAG, "OpenCV loaded successfully");
+                        break;
+                    default:
+                        super.onManagerConnected(status);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPackageInstall(int operation, InstallCallbackInterface callaback){
+
+            }
+        };
+
+        if(!OpenCVLoader.initDebug()){
+            Log.e(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, getApplicationContext(), loaderCallback);
+        } else {
+            Log.e(TAG, "OpenCV library found inside package. Using it!");
+            loaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
     private void requestPermission(){
         if (!EasyPermissions.hasPermissions(this, PermissionUtils.permissions)) {
             EasyPermissions.requestPermissions(this, "为保证Demo运行，需要申请权限", PermissionUtils.REQUEST_PERMISSION_CODE, PermissionUtils.permissions);
@@ -381,11 +433,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
-    public void onPermissionsGranted(int requestCde, @NonNull List<String> perms){
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms){
 
     }
 
