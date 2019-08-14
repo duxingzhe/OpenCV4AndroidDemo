@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     private void showResult(String name){
         hideProgress();
-        PhototActivity.startAction(this, name);
+        PhotoActivity.startAction(this, name);
     }
 
     private boolean resetMat(){
