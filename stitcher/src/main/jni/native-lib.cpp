@@ -75,3 +75,42 @@ Java_com_luxuan_stitcher_tracker_ImageStitchUtil_stitchImages(JNIEnv *env, jclas
 
     return jint_arr;
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_luxuan_stitcher_tracker_ImageStitchUtil_getMat(JNIEnv *env, jclass type, jlong mat)
+{
+    LOGI("开始获取mat...");
+    Mat *res=(Mat *)mat;
+    res->create(finalMat.rows, finalMat.cols, finalMat.type());
+    memcpy(res->data, finalMat.data, finalMat.rows* finalMat.step);
+    LOGI("获取成功");
+}
+
+void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultiplayAlpha)
+{
+    AndroidBitmapInfo info;
+    void *pixels=0;
+    Mat &src=mat;
+
+    try
+    {
+        LOGD("nMatToBitmap");
+        CV_Assert(AndroidBitmap_getInfo(env, bitmap, &info)>=0);
+        LOGD("nMatToBitmap1");
+
+        CV_Assert(info.format==ANDROID_BITMAP_FORMAT_RGBA_8888 ||
+                    info.format==ANDROID_BITMAP_FORMAT_RGB_565);
+        LOGD("nMatToBitmap2 :%d :%d :%d", src.dims, src.rows, src.cols);
+
+        CV_Assert(src.dims==2&&info.height==(uint32_t)src.rows &&
+                    info.width==(uint32_t)src.cols);
+        LOGD("nMatToBitmap3");
+        CV_Assert(src.type()==CV_8UC1|| src.type()=CV_8UC3||src.type()==CV_8UC4);
+        LOGD("nMatToBitmap4");
+        CV_Assert(AndroidBitmap_lockPixels(env, bitmap, &pixels)>=0);
+        LOGD("nMatToBitmap5");
+        CV_Assert(pixels);
+        LOGD("nMatToBitmap6");
+    }
+}
