@@ -5,8 +5,7 @@ include $(CLEAR_VARS)
 #OPENCV_INSTALL_MODULES:=off
 #OPENCV_LIB_TYPE:=SHARED
 
-include ../../../../OpenCVLibrary4/src/main/jni/OpenCV.mk
-
+include $(LOCAL_PATH)/../../../../OpenCVLibrary4/src/main/jni/OpenCV.mk
 
 LOCAL_SRC_FILES  := DetectionBasedTracker_jni.cpp
 LOCAL_C_INCLUDES += $(LOCAL_PATH)

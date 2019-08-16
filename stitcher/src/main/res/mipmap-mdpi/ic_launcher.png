@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a1c79143-0738-4db2-a107-1d3442fbe8f6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-base/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/common-base/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-router/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/common-router/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/config.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/module.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/opengles-sample/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/opengles-sample/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample-native/src/main/java/com/onzhou/opengles/main/NativeWindowActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/sample-native/src/main/java/com/onzhou/opengles/main/NativeWindowActivity.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file
