@@ -112,5 +112,85 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
         LOGD("nMatToBitmap5");
         CV_Assert(pixels);
         LOGD("nMatToBitmap6");
+
+        if(info.format==ANDROID_BITMAP_FORMAT_RGBA_8888)
+        {
+            Mat tmp(info.height, info.widht, CV_8UC4, pixels);
+            if(src.type()==CV_8UC1)
+            {
+                LOGD("nMatToBitmap: CV_8UC1 ->RGBA_8888");
+            }
+            else if(src.type()==CV_8UC3)
+            {
+                LOGD("nMatToBitmap: CV_8UC# -> RGBA_8888");
+
+                cvtColor(src, tmp, COLOR_BGR2RGBA);
+            }
+            else if(src.type()==CV_8UC4)
+            {
+                LOGD("nMatToBitmap: CV_8UC4 -> RGBA_8888");
+                if(needPremultiplayAlpha)
+                {
+                    cvtColor(src,tmp,COLOR_BRG2RGBA);
+                }
+                else
+                {
+                    src.copyTo(tmp);
+                }
+            }
+        }
+        else
+        {
+            Mat tmp(info.height, info.width, CV_8UC2, pixles);
+            if(src.type()==CV_8UC1)
+            {
+                LOGD("nMatToBitmap: CV_8UC1 -> RGB_565");
+                cvtColor(src, tmp, COLOR_GRAY2BGR565);
+            }
+            else if(src.type()==CV_8UC3)
+            {
+                LOGD("nMatToBitmap: CV_8UC3 -> RGB_565");
+                cvtColor(src, tmp, COLOR_RGB2BGR565);
+            }
+            else if(src.type()==CV_8UC4)
+            {
+                LOGD("nMatToBitmap: CV_8UC4 -> RGB_565");
+                cvtColor(src, tmp, COLOR_RGBA2BGR565);
+            }
+        }
+        AndroidBitmap_unlockPixels(env, bitmap);
+        return;
     }
+    catch(const cv::Exception &e)
+    {
+        AndroidBitmap_unlockPixels(env, bitmap);
+        LOGE("nMatToBitmap caught cv::Exception: %s", e.what());
+        jclass je=env->FindClass("org/opencv/core/CvException");
+        if(!je)
+            je=env->FindClass("java/lang/Exception");
+        env->ThrowNew(je, e.what());
+        return;
+    }
+    catch(...)
+    {
+        AndroidBitmap_unlockPixels(env, bitmap);
+        LOGE("nMatToBitmap caught unknown exception (...)");
+        jclass je=env->FindClass("java/lang/Exception");
+        env->ThrowNew(je, "Unknown exception in JNI code {nMatToBitma}");
+        return;
+    }
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_luxuan_stitcher_tracker_ImageStitchUtil_getBitmap(JNIEnv *env, jclass type, jobject bitmap)
+{
+    if(finalMat.dims!=2)
+    {
+        return -1;
+    }
+
+    MatToBitmap(env, finalMat, bitmap, false);
+
+    return 0;
 }
