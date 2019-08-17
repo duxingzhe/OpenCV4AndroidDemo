@@ -132,7 +132,7 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
                 LOGD("nMatToBitmap: CV_8UC4 -> RGBA_8888");
                 if(needPremultiplayAlpha)
                 {
-                    cvtColor(src, tmp, COLOR_BGR2mRGBA);
+                    cvtColor(src, tmp, COLOR_RGBA2mRGBA);
                 }
                 else
                 {
