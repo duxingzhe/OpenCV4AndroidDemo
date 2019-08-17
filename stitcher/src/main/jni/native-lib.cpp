@@ -37,22 +37,23 @@ Java_com_luxuan_stitcher_tracker_ImageStitchUtil_stitchImages(JNIEnv *env, jclas
         jstr=(jstring)env->GetObjectArrayElement(paths, i);
         const char *path=(char *)env->GetStringUTFChars(jstr, 0);
         LOGI("path %s", path);
+        cv::Mat mat=cv::imread(path);
 
         mats.push_back(mat);
     }
 
     LOGI("开始拼接......");
-    cv::Stitcher stitcher=cv::Stiticher::createDefault(false);
+    cv::Stitcher stitcher=cv::Stitcher::createDefault();
 
 
-    detail::BestOf2NearestMatcher *matcher=nwe detail::BeestOf2NearestMatcher(false, 0.5f);
+    detail::BestOf2NearestMatcher *matcher=new detail::BestOf2NearestMatcher(false, 0.5f);
     stitcher.setFeaturesMatcher(matcher);
-    stitcher.setBundleAdjust(new detail::BundleAdjustRay());
+    stitcher.setBundleAdjuster(new detail::BundleAdjusterRay());
     stitcher.setSeamFinder(new detail::NoSeamFinder);
     stitcher.setExposureCompensator(new detail::NoExposureCompensator());
-    stitcher.setBlender(new detail::FeatherBlur());
+    stitcher.setBlender(new detail::FeatherBlender());
 
-    Stitcher:: status state=stitcher.stitch(mats, finalMat);
+    Stitcher::Status state=stitcher.stitch(mats, finalMat);
 
     LOGI("拼接结果：%d", state);
 
@@ -106,7 +107,7 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
         CV_Assert(src.dims==2&&info.height==(uint32_t)src.rows &&
                     info.width==(uint32_t)src.cols);
         LOGD("nMatToBitmap3");
-        CV_Assert(src.type()==CV_8UC1|| src.type()=CV_8UC3||src.type()==CV_8UC4);
+        CV_Assert(src.type()==CV_8UC1|| src.type()==CV_8UC3||src.type()==CV_8UC4);
         LOGD("nMatToBitmap4");
         CV_Assert(AndroidBitmap_lockPixels(env, bitmap, &pixels)>=0);
         LOGD("nMatToBitmap5");
@@ -115,7 +116,7 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
 
         if(info.format==ANDROID_BITMAP_FORMAT_RGBA_8888)
         {
-            Mat tmp(info.height, info.widht, CV_8UC4, pixels);
+            Mat tmp(info.height, info.width, CV_8UC4, pixels);
             if(src.type()==CV_8UC1)
             {
                 LOGD("nMatToBitmap: CV_8UC1 ->RGBA_8888");
@@ -131,7 +132,7 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
                 LOGD("nMatToBitmap: CV_8UC4 -> RGBA_8888");
                 if(needPremultiplayAlpha)
                 {
-                    cvtColor(src,tmp,COLOR_BRG2RGBA);
+                    cvtColor(src, tmp, COLOR_BGR2mRGBA);
                 }
                 else
                 {
@@ -141,7 +142,7 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
         }
         else
         {
-            Mat tmp(info.height, info.width, CV_8UC2, pixles);
+            Mat tmp(info.height, info.width, CV_8UC2, pixels);
             if(src.type()==CV_8UC1)
             {
                 LOGD("nMatToBitmap: CV_8UC1 -> RGB_565");
@@ -176,7 +177,7 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
         AndroidBitmap_unlockPixels(env, bitmap);
         LOGE("nMatToBitmap caught unknown exception (...)");
         jclass je=env->FindClass("java/lang/Exception");
-        env->ThrowNew(je, "Unknown exception in JNI code {nMatToBitma}");
+        env->ThrowNew(je, "Unknown exception in JNI code {nMatToBitmap}");
         return;
     }
 }

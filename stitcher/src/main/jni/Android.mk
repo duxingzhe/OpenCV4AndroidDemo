@@ -14,7 +14,7 @@ LOCAL_MODULE := Stitcher
 LOCAL_SRC_FILES := native-lib.cpp \
             stitcher.cpp
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../OpenCVLibrary4/src/main/jni/include
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../OpenCVLibrary3/src/main/jni/include
 
 LOCAL_LDLIBS    += -lm -llog -landroid
 LOCAL_LDFLAGS += -ljnigraphics
