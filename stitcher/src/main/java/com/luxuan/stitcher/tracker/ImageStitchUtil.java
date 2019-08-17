@@ -29,7 +29,7 @@ public class ImageStitchUtil {
             case OK:
                 Bitmap bitmap=Bitmap.createBitmap(wh[1], wh[2], Bitmap.Config.ARGB_8888);
                 int result=getBitmap(bitmap);
-                if(result==OK&&bitmpa!=null){
+                if(result==OK&&bitmap!=null){
                     listener.onSuccess(bitmap);
                 }else{
                     listener.onError("图片合成失败");

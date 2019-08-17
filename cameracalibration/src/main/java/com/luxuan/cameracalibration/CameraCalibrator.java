@@ -99,7 +99,7 @@ public class CameraCalibrator {
         MatOfPoint2f cornersProjected=new MatOfPoint2f();
         double totalError=0;
         double error;
-        float viewErrors[]=new float[objectPoints.size())];
+        float viewErrors[]=new float[objectPoints.size()];
 
         MatOfDouble distortionCoefficients=new MatOfDouble(mDistortionCoefficients);
         int totalPoints=0;

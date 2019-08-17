@@ -42,7 +42,7 @@ public abstract class CalibrationResult {
 
     public static boolean tryLoad(Activity activity, Mat cameraMatrix, Mat distortionCoefficients){
         SharedPreferences sharedPreferences=activity.getPreferences(Context.MODE_PRIVATE);
-        if(sharedPreferences.getFloat(0, -1)==-1){
+        if(sharedPreferences.getFloat("0", -1)==-1){
             Log.i(TAG,"No previous calibration results found");
             return false;
         }
@@ -51,7 +51,7 @@ public abstract class CalibrationResult {
         for(int i=0;i<CAMERA_MATRIX_ROWS;i++){
             for(int j=0;j<CAMERA_MATRIX_COLS;j++){
                 Integer id=i*CAMERA_MATRIX_ROWS+j;
-                cameraMatrixArray[id]=sharedPreferences.getFloat(id.toString(),, -1);
+                cameraMatrixArray[id]=sharedPreferences.getFloat(id.toString(), -1);
             }
         }
         cameraMatrix.put(0,0,cameraMatrixArray);

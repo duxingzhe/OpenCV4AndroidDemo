@@ -3,7 +3,7 @@
 //
 
 #include <jni.h>
-#include <opencv2/oepncv.hpp>
+#include <opencv2/opencv.hpp>
 #include <opencv2/core/base.hpp>
 #include <opencv2/stitching.hpp>
 #include <opencv2/imgcodecs.hpp>

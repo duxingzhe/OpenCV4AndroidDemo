@@ -7,7 +7,7 @@ OpenCV_CAMERA_MODULES := off
 
 OPENCV_LIB_TYPE :=STATIC
 
-include $(LOCAL_PATH)/../../../../OpenCVLibrary4/src/main/jni/OpenCV.mk
+include $(LOCAL_PATH)/../../../../OpenCVLibrary3/src/main/jni/OpenCV.mk
 
 LOCAL_MODULE := Stitcher
 
