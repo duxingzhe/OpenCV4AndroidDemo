@@ -21,9 +21,11 @@ LOCAL_LDFLAGS += -ljnigraphics
 
 include $(BUILD_SHARED_LIBRARY)
 
-include $(BUILD_SHARED_LIBRARY)
+include $(CLEAR_VARS)
 
 LOCAL_MODULE := OpenCVHelper
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../OpenCVLibrary3/src/main/jni/include
 
 LOCAL_SRC_FILES := com_luxuan_stitcher_OpenCVHelper.cpp
 
