@@ -7,18 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.luxuan.stitcher.R;
-import com.luxuan.stitcher.stitcher.Beans.DetailItem;
+import com.luxuan.stitcher.stitcher.Beans.DocItem;
 
 import java.util.ArrayList;
 
-public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder>{
+public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.ViewHolder>{
 
     private Context mContext;
-    private ArrayList<DetailItem> mItems;
+    private ArrayList<DocItem> mItems;
 
-    public DetailAdapter(Context context, ArrayList<DetailItem> items){
+    public DocsAdapter(Context context, ArrayList<DocItem> items){
         mContext=context;
         mItems=items;
     }
@@ -31,21 +32,24 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         int layout;
-        layout=R.layout.item_detail;
-        View view= LayoutInflater.from(parent.getContext()).inflate(layout,parent, false);
+        layout=R.layout.item_gallery;
+        View view= LayoutInflater.from(parent.getContext())
+                .inflate(layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position){
+        holder.name.setText(mItems.get(position).getName());
+        holder.tsText.setText(mItems.get(position).getTimeStamp());
         holder.contactPic.setImageBitmap(mItems.get(position).getBitmap());
         holder.itemView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view){
-                Intent i=new Intent(mContext, ImageActivity.class);
-                i.putExtra("pathKey", mItems.get(position).getPath());
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent i=new Intent(mContext, DetailActvity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("folder", mItems.get(position).getName());
                 mContext.startActivity(i);
             }
         });
@@ -58,12 +62,14 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView contactPic;
+        public TextView name, tsText;
+        public ImageView contactPic;
 
         public ViewHolder(View itemView){
             super(itemView);
+            name=(TextView)itemView.findViewById(R.id.doc_name);
+            tsText=(TextView)itemView.findViewById(R.id.doc_time_stamp);
             contactPic=(ImageView)itemView.findViewById(R.id.iv1);
         }
     }
-
 }
