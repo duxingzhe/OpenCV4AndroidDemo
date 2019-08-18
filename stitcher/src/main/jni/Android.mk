@@ -20,3 +20,15 @@ LOCAL_LDLIBS    += -lm -llog -landroid
 LOCAL_LDFLAGS += -ljnigraphics
 
 include $(BUILD_SHARED_LIBRARY)
+
+include $(BUILD_SHARED_LIBRARY)
+
+LOCAL_MODULE := OpenCVHelper
+
+LOCAL_SRC_FILES := com_luxuan_stitcher_OpenCVHelper.cpp
+
+LOCAL_SRC_FILES += extra_functions.cpp
+LOCAL_LDLIBS    += -lm -llog -landroid
+LOCAL_LDFLAGS += -ljnigraphics
+
+include $(BUILD_SHARED_LIBRARY)
