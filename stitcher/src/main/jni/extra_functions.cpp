@@ -187,4 +187,45 @@ JNIEXPORT jobject JNICALL java_com_luxuan_stitcher_OpenCVHelper_getGrayBitmap(JN
     return _bitmap;
 }
 
+JNIEXPORT jobject JNICALL Java_com_luxuan_stitcher_OpenCVHelper_getBlackWhiteBitmap(JNIEnv *env, jobject thiz, jobject bitmap)
+{
+    __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Scanning getBWBitmap --> Black and White image");
+    int ret;
+    AndroidBitmapInfo info;
+    void *pixels=0;
+
+    if((ret=AndroidBitmap_getInfo(env, bitmap, &info))<0)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "AndroidBitmap_getInfo() failed! error=%d", ret);
+        return NULL;
+    }
+
+    if(info.format!=ANDROID_BITMAP_FORMAT_RGBA_8888)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Bitmap format is not RGBA_8888!");
+        return NULL;
+    }
+
+    if((ret=AndroidBitmap_lockPixels(env, bitmap, &pixels))<0)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "AndroidBitmap_lockPixels() failed! error=%d", ret);
+    }
+
+    Mat mbgra(info.height, info.width, CV_8UC4, pixels);
+    Mat dst=mbgra.clone();
+
+    cvtColor(mbgra, dst, CV_RGBA2GRAY);
+
+    thresold(dst, dst, 0, 255, THRESH_BINARY|THRESH_OTSU);
+    cvtColor(dst, dst, CV_GRAY2BGR);
+
+    jclass java_bitmap_class=(jclass)env_>FindClass("android/graphics/Bitmap");
+    jmethodID mid=env->GetMethodID(java_bitmap_class, "getConfig", "()Landroid/graphics/Bitmap$Config;");
+    jobject bitmap_config=env->CallObjectMethod(bitmap, mid);
+    jobject _bitmap=mat_to_bitmap(env, dst, false, bitmap_config);
+
+    AndroidBitmap_unlockPixles(env, bitmap);
+    return _bitmap;
+}
+
 }
