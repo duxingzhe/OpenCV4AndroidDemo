@@ -92,7 +92,7 @@ jobject mat_to_bitmapp(JNIEnv *env, Mat &src, bool needPremultiplyAlpha, jobject
         CV_Assert(src.type()==CV_8UC1||src.type()==CV_8UC3||src.type()==CV_8UC4);
         CV_Assert(AndroidBitmap_lockPixels(env,bitmap, &pixels)>=0);
         CV_Assert(pixels);
-        if(info.format==ANDORID_BITMAP_FORMAT_RGBA_8888)
+        if(info.format==ANDROID_BITMAP_FORMAT_RGBA_8888)
         {
             Mat tmp(info.height, info.width, CV_8UC4, pixels);
             if(src.type()==CV_8UC1)
@@ -150,4 +150,41 @@ jobject mat_to_bitmapp(JNIEnv *env, Mat &src, bool needPremultiplyAlpha, jobject
         env->ThrowNew(je, "Unknown exception in JNI code {nMatToBitmap}");
         return bitmap;
     }
+}
+
+extern "C"
+{
+JNIEXPORT jobject JNICALL java_com_luxuan_stitcher_OpenCVHelper_getGrayBitmap(JNIEnv *env, jobject thiz, jobject bitmap)
+{
+    __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Scanning getGrayBitmap");
+    int ret;
+    AndroidBitmapInfo info;
+    void* pixels=0;
+
+    if((ret=AndroidBitmap_getInfo(env, bitmap, &info))<0)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "AndroidBitmap_getInfo() failed! error=%d", ret);
+        return NULL;
+    }
+
+    if((ret=AndroidBitmap_lockPixels(env, bitmap, &pixels))<0)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "AndroidBitmap_lockPixels() failed! error=%d", ret);
+    }
+
+    Mat mbgra(info.height, info.width, CV_8UC4, pixels);
+    Mat dst=mbgra.clone();
+
+    cvtColor(mbgra, dst, CV_RGBA2GRAY);
+    cvtColor(dst, dst, CV_GRAY2BGR);
+
+    jclass java_bitmap_class=(jclass)env->FindClass("android/graphics/Bitmap");
+    jmethodID mid=env->GetMethodID(java_bitmap_class, "getConfig", "()Landroid/graphics/Bitmap$Config;");
+    jobject bitmap_config=env->CallObjectMethod(bitmap, mid);
+    jobject _bitmap=mat_to_bitmapp(env, dst, false, bitmap_config);
+
+    AndroidBitmap_unlockPixels(env, bitmap);
+    return _bitmap;
+}
+
 }
