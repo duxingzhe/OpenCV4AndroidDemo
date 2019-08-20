@@ -29,7 +29,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../OpenCVLibrary3/src/main/jni/includ
 
 LOCAL_SRC_FILES := com_luxuan_stitcher_OpenCVHelper.cpp \
                     extra_functions.cpp \
-                    myconnect.cpp
+                    myconnect.cpp \
+                    mydilate.cpp
 
 LOCAL_SRC_FILES += extra_functions.cpp
 LOCAL_LDLIBS    += -lm -llog -landroid
