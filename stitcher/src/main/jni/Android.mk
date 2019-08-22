@@ -33,7 +33,8 @@ LOCAL_SRC_FILES := com_luxuan_stitcher_OpenCVHelper.cpp \
                     mydilate.cpp \
                     myerode.cpp \
                     mysmooth.cpp \
-                    mysidesobel.cpp
+                    mysidesobel.cpp \
+                    scanner.cpp
 
 LOCAL_SRC_FILES += extra_functions.cpp
 LOCAL_LDLIBS    += -lm -llog -landroid
