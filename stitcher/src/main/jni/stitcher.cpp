@@ -114,3 +114,32 @@ void MatToBitmap(JNIEnv *env, Mat &mat, jobject &bitmap, jboolean needPremultipl
         return;
     }
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_luxuan_opencv_tracker_ImageStitchUtil_stitchPanorama(JNIEnv *env, jlongArray imageAddressArray, jlong outputAddress)
+{
+    jsize a_len=env->GetArrayLength(imageAddressArray);
+    jlong *imgAddressArr=env->GetLongArrayElements(imageAddressArray, 0);
+    vector<Mat> imgVec;
+    for(int k=0;k<a_len;k++)
+    {
+        Mat &curImage=*(Mat *) imgAddressArr[k];
+        Mat newImage;
+        curImage.copyTo(newImage);
+        float scale=500.0f/curImage.rows;
+        resize(newImage, newImage, Size((int)(scale *curImage.cols), (int)(scale*curImage.rows)));
+        LOGD("Image height %d width %d", newImage.rows, newImage.cols);
+        imgVec.push_back(newImage);
+    }
+
+    Mat &result=*(Mat *) outputAddress;
+    Stitcher stitcher=Stitcher::createDefault();
+    LOGD("Stitching..........");
+
+    Stitcher::Status status=stitcher.stitch(imgVec, result);
+
+    LOGD("Result height %d width %d", result.rows, result.cols);
+
+    return status;
+}
