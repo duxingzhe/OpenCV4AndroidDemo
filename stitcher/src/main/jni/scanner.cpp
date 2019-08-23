@@ -16,8 +16,8 @@ Mat resize_(Mat inputImage)
     Mat outputImage;
     int w=inputImage.size().width;
     int h=inputImage.size().height;
-    Size resize=(w>h)? Size(1000,500):Size(500,100);
-    resize(inputImage, outputImage, resize);
+    Size resized=(w>h)? Size(1000,500):Size(500,100);
+    resize(inputImage, outputImage, resized);
     return outputImage;
 }
 
@@ -76,4 +76,59 @@ vector<Point2f> orderPoints(vector<Point2f> sort)
     sort=pushPoints(tl, tr, bl, br);
 
     return sort;
+}
+
+vector<Point2f> getPoints(Mat image)
+{
+    int width=image.size().width;
+    int height=image.size().height;
+    int intensity, img_intensity, larea=0, lindex=0;
+    Mat bgdModel, fgdModel, mask;
+    vector<vector<Point>>contours;
+    vector<Point2f> approxCurve, rectPts;
+    double a, epsilon;
+    Rect rect, bounding_rect;
+    Size size=(width>height)?Size(1000,500):Size(500,100);
+    resize(image, image, size);
+    mask=Mat::zeros(size, CV_8UC1);
+    bgdModel=Mat::zeros(1, 64, CV_64F);
+    fgdModel=Mat::zeros(1,65, CV_64F);
+    rect=Rect(50, 50, width-100, height-100);
+    grabCut(image, mask, rect, bgdModel, fgdModel, 5, GC_INIT_WITH_RECT);
+
+    for(int i=0;i<image.rows;i++)
+    {
+        for(int j=0;j<image.cols;j++)
+        {
+            intensity=mask.at<uchar>(i,j);
+            if((intensity==0)|(intensity==2))
+            {
+                mask.at<uchar>(i,j)=0;
+            }
+            else
+            {
+                mask.at<uchar>(i,j)=255;
+            }
+        }
+
+        findContours(mask, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+
+        for(int i=0;i<contours.size();i++)
+        {
+            a=contourArea(contours[i]);
+            if(a>larea)
+            {
+                larea=a;
+                lindex=i;
+                bounding_rect=boundingRect(contours[i]);
+            }
+        }
+
+        epsilon=0.1*arcLength(Mat(contours[lindex]), true);
+        approxPolyDP(Mat(contours[lindex]), approxCurve, epsilon, true);
+
+        approxCurve=orderPoints(approxCurve);
+
+        return approxCurve;
+    }
 }
