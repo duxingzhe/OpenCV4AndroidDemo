@@ -159,3 +159,20 @@ Mat doPerspective(Mat inputImage)
 
     return inputImage;
 }
+
+Mat binarize(Mat image)
+{
+    cvtColor(image, image, CV_BGR2GRAY);
+    adaptiveThreshold(image, image, 255.0, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 11, 2);
+    return image;
+}
+
+int main(int argc, char** argv)
+{
+    Mat img=imread(argv[1]);
+    img=doPerspective(img);
+    img=binarize(img);
+    imshow("Binary", img);
+    waitKey(0);
+    return 0;
+}
