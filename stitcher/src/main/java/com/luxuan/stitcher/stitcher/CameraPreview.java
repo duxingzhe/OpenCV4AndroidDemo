@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -77,7 +78,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if(event.getPointerCount()>1){
             if(action==MotionEvent.ACTION_POINTER_DOWN){
-                mDist=getFingerSpacing(evnet);
+                mDist=getFingerSpacing(event);
             }else if(action==MotionEvent.ACTION_MOVE && params.isZoomSupported()){
                 mCamera.cancelAutoFocus();
                 handleZoom(event ,params);
@@ -87,12 +88,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 handleFocus(event, params);
             }
         }
+
+        return true;
     }
 
     private void handleZoom(MotionEvent event, Camera.Parameters params){
         int maxZoom=params.getMaxZoom();
         int zoom=params.getZoom();
-        float newDist=getFingerSpacing(evnet);
+        float newDist=getFingerSpacing(event);
 
         if(newDist>mDist){
             if(zoom<maxZoom){
@@ -107,5 +110,30 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mDist=newDist;
         params.setZoom(zoom);
         mCamera.setParameters(params);
+    }
+
+    public void handleFocus(MotionEvent event, Camera.Parameters params){
+        int pointerId=event.getPointerId(0);
+        int pointerIndex=event.findPointerIndex(pointerId);
+
+        float x=event.getX(pointerIndex);
+        float y=event.getY(pointerIndex);
+
+        List<String> supportedFocusModes=params.getSupportedFocusModes();
+        if(supportedFocusModes!=null && supportedFocusModes.contains(Camera.Parameters. FOCUS_MODE_AUTO)){
+            mCamera.autoFocus(new Camera.AutoFocusCallback(){
+                @Override
+                public void onAutoFocus(boolean b, Camera camera){
+
+                }
+            });
+        }
+    }
+
+    private float getFingerSpacing(MotionEvent event){
+        float x=event.getX(0)-event.getX(1);
+        float y=event.getY(0)-event.getY(1);
+
+        return (float)Math.sqrt(x*x+y*y);
     }
 }
