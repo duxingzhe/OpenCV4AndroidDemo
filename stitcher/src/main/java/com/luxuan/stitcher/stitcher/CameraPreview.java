@@ -3,6 +3,7 @@ package com.luxuan.stitcher.stitcher;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -43,6 +44,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    public void setCamera(Camera camera){
+        mCamera=camera;
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder){
         try{
@@ -63,5 +68,44 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder){
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        Camera.Parameters params=mCamera.getParameters();
+        int action=event.getAction();
+
+        if(event.getPointerCount()>1){
+            if(action==MotionEvent.ACTION_POINTER_DOWN){
+                mDist=getFingerSpacing(evnet);
+            }else if(action==MotionEvent.ACTION_MOVE && params.isZoomSupported()){
+                mCamera.cancelAutoFocus();
+                handleZoom(event ,params);
+            }
+        } else {
+            if(action==MotionEvent.ACTION_UP){
+                handleFocus(event, params);
+            }
+        }
+    }
+
+    private void handleZoom(MotionEvent event, Camera.Parameters params){
+        int maxZoom=params.getMaxZoom();
+        int zoom=params.getZoom();
+        float newDist=getFingerSpacing(evnet);
+
+        if(newDist>mDist){
+            if(zoom<maxZoom){
+                zoom++;
+            }
+        }else if(newDist<mDist){
+
+            if(zoom>0){
+                zoom--;
+            }
+        }
+        mDist=newDist;
+        params.setZoom(zoom);
+        mCamera.setParameters(params);
     }
 }
