@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
 
@@ -22,7 +23,7 @@ public class CameraScreenActivity extends AppCompatActivity {
     private boolean previewing=false;
     private LayoutInflater controlInflater=null;
     private ImageView setting1, single, setting2, single_batch_page;
-    private Button camera_click, batch_click, front_camrea_btn, batch;
+    private Button camera_click, batch_click, front_camera_btn, batch;
 
     private Uri fileUri, outputFileUri;
     private TextView textView;
@@ -83,5 +84,58 @@ public class CameraScreenActivity extends AppCompatActivity {
         settingtest=(ImageView)findViewById(R.id.settingtest);
 
         initialize();
+    }
+
+    private int findFrontFacingCamera(){
+        int cameraId=-1;
+        int numberOfCameras=Camera.getNumberOfCameras();
+        for(int i=0;i<numberOfCameras;i++){
+            Camera.CameraInfo info=new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if(info.facing==Camera.CameraInfo.CAMERA_FACING_FRONT){
+                cameraId=i;
+                cameraFront=true;
+                break;
+            }
+        }
+
+        return cameraId;
+    }
+
+    private int findBackFacingCamera(){
+        int cameraId=-1;
+        int numberOfCameras=Camera.getNumberOfCameras();
+        for(int i=0;i<numberOfCameras;i++){
+            Camera.CameraInfo info=new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if(info.facing==Camera.CameraInfo.CAMERA_FACING_BACK){
+                cameraId=i;
+                cameraFront=false;
+                break;
+            }
+        }
+
+        return cameraId;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(!hasCamera(mContext)){
+            Toast.makeText(mContext,
+                    "Sorry, your phone does not have a camera!",
+                    Toast.LENGTH_LONG).show();
+            finish();
+        }
+        if(mCamera==null){
+            if(findFrontFacingCamera()<0){
+                Toast.makeText(this, "No front facing camera found.",
+                        Toast.LENGTH_LONG).show();
+                front_camera_btn.setVisibility(View.GONE);
+            }
+            mCamera=Camera.open(findBackFacingCamera());
+            mPictureCallback=getPictureCallback();
+            mPreview.refreshCamera(mCamera);
+        }
     }
 }
