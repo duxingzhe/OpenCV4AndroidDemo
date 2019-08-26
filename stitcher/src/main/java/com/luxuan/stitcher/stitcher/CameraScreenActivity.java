@@ -1,9 +1,11 @@
 package com.luxuan.stitcher.stitcher;
 
+import android.Manifest;
 import android.content.Context;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,5 +139,54 @@ public class CameraScreenActivity extends AppCompatActivity {
             mPictureCallback=getPictureCallback();
             mPreview.refreshCamera(mCamera);
         }
+    }
+
+    public void initialize(){
+        int PERMISSION_ALL=1;
+        String[] PERMISSIONS={Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_SMS, Manifest.permission.CAMERA};
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+
+        camera_preview=(LinearLayout)findViewById(R.id.camera_preview);
+        mPreview=new CameraPreview(mContext, mCamera);
+        camera_preview.addView(mPreview);
+
+        extra_settings=(LinearLayout)findViewById(R.id.extra_settings);
+        picturecount=(LinearLayout)findViewById(R.id.picturecount);
+
+        setting_before=(LinearLayout)findViewById(R.id.setting_bef);
+        setting_before.setOnClickListener(setting_beforeListener);
+
+        setting_after=(LinearLayout)findViewById(R.id.setting_aft);
+        setting_after.setOnClickListener(settinger_afterListener);
+
+        camera_single=(LinearLayout)findViewById(R.id.camera_single);
+
+        camera_batch=(LinearLayout)findViewById(R.id.camera_batch);
+        camera_batch.setOnClickListener(camera_batchListener);
+
+        batch_before=(LinearLayout)findViewById(R.id.batch_bef);
+        batch_before.setOnClickListener(batch_listener);
+
+        batch_after=(LinearLayout)findViewById(R.id.batch_aft);
+        batch_after.setOnClickListener(batch_afterListener);
+
+        single_before=(LinearLayout)findViewById(R.id.single_bef);
+        single_before.setOnClickListener(single_beforeLisntener);
+
+        single_after=(LinearLayout)findViewById(R.id.single_afr);
+        single_after.setOnClickListener(single_afterLisntener);
+
+        settingbefore=(ImageView)findViewById(R.id.settingbefore);
+        settingafter=(ImageView)findViewById(R.id.settingafter);
+
+        flashOn=(LinearLayout)findViewById(R.id.flashon);
+        flashOn.setOnClickListener(flashOnListener);
+
+        flashOff=(LinearLayout)findViewById(R.id.flashoff);
+        flashOff.setOnClickListener(flashOffListener);
     }
 }
