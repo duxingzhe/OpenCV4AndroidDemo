@@ -2,11 +2,13 @@ package com.luxuan.stitcher.stitcher;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -229,7 +231,7 @@ public class CameraScreenActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener batch_beforeListener=new View.OnClickListener(){
+    private View.OnClickListener batch_beforeListener=new View.OnClickListener(){
         @Override
         public void onClick(View view){
             batch_before.setVisibility(View.GONE);
@@ -244,7 +246,7 @@ public class CameraScreenActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener batch_afterListener=new View.OnClickListener(){
+    private View.OnClickListener batch_afterListener=new View.OnClickListener(){
         @Override
         public void onClick(View view){
             batch_before.setVisibility(View.VISIBLE);
@@ -256,6 +258,69 @@ public class CameraScreenActivity extends AppCompatActivity {
 
             settingTest.setVisibility(View.VISIBLE);
             settingtest.setVisibility(View.VISIBLE);
+        }
+    };
+
+    private View.OnClickListener single_beforeListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            if(textView.equals("Batch Mode")){
+                Log.i("Batch Mode", "Mode");
+            }else{
+                batch_before.setVisibility(View.VISIBLE);
+                batch_after.setVisibility(View.GONE);
+                camera_single.setVisibility(View.VISIBLE);
+                camera_batch.setVisibility(View.GONE);
+                picturecount.setVisibility(View.GONE);
+                textView.setText("Single Mode");
+            }
+        }
+    };
+
+    private View.OnClickListener showPictureListener=new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view){
+            Log.i("test count", "picture count");
+            Intent intent=new Intent(CameraScreenActivity.this, GridViewActivity.class);
+            startActivity(intent);
+        }
+    };
+
+    private View.OnClickListener single_afterListener=new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view){
+            Toast.makeText(CameraScreenActivity.this, "Single Mode", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener camera_batchListener=new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view){
+            Toast.makeText(CameraScreenActivity.this, "Batch Mode", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener flashOnListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            turnOnFlash();
+        }
+    };
+
+    private View.OnClickListener flashOffListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            turnOffFlash();
+        }
+    };
+
+    private View.OnClickListener testListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            Log.i("test", "test");
         }
     };
 }
