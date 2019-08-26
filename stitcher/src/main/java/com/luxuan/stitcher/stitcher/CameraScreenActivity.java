@@ -161,7 +161,7 @@ public class CameraScreenActivity extends AppCompatActivity {
         setting_before.setOnClickListener(setting_beforeListener);
 
         setting_after=(LinearLayout)findViewById(R.id.setting_aft);
-        setting_after.setOnClickListener(settinger_afterListener);
+        setting_after.setOnClickListener(setting_afterListener);
 
         camera_single=(LinearLayout)findViewById(R.id.camera_single);
 
@@ -188,5 +188,74 @@ public class CameraScreenActivity extends AppCompatActivity {
 
         flashOff=(LinearLayout)findViewById(R.id.flashoff);
         flashOff.setOnClickListener(flashOffListener);
+
+        textView=(TextView)findViewById(R.id.textView);
+        picturecount=(LinearLayout)findViewById(R.id.picturecount);
+
+        pictureImageView=(ImageView)findViewById(R.id.pictureIV);
+        pictureImageView.setOnClickListener(showPictureListener);
+
+        settingTest=(LinearLayout)findViewById(R.id.settingTest);
+        settingTest.setOnClickListener(testListener);
+
+        settingtest=(ImageView)findViewById(R.id.settingtest);
+
+        camerasingle=(Button)findViewById(R.id.camerasingle);
+        camerasingle.setOnClickListener(captureListener);
+
+        cameraBatch=(Button)findViewById(R.id.cameraBatch);
+        cameraBatch.setOnClickListener(batchCameraListener);
     }
+
+    private View.OnClickListener setting_beforeListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            setting_before.setVisibility(View.GONE);
+            setting_after.setVisibility(View.VISIBLE);
+            extra_settings.setVisibility(View.VISIBLE);
+            settingbefore.setVisibility(View.GONE);
+            settingafter.setVisibility(View.VISIBLE);
+        }
+    };
+
+    private View.OnClickListener setting_afterListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            setting_before.setVisibility(View.VISIBLE);
+            setting_after.setVisibility(View.GONE);
+            extra_settings.setVisibility(View.GONE);
+            settingbefore.setVisibility(View.VISIBLE);
+            settingafter.setVisibility(View.GONE);
+        }
+    };
+
+    View.OnClickListener batch_beforeListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            batch_before.setVisibility(View.GONE);
+            batch_after.setVisibility(View.VISIBLE);
+            camera_single.setVisibility(View.GONE);
+            camera_batch.setVisibility(View.VISIBLE);
+            picturecount.setVisibility(View.VISIBLE);
+            textView.setText("Batch Mode");
+
+            settingTest.setVisibility(View.GONE);
+            settingtest.setVisibility(View.GONE);
+        }
+    };
+
+    View.OnClickListener batch_afterListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            batch_before.setVisibility(View.VISIBLE);
+            batch_after.setVisibility(View.GONE);
+            camera_single.setVisibility(View.VISIBLE);
+            camera_batch.setVisibility(View.GONE);
+            picturecount.setVisibility(View.GONE);
+            textView.setText("Single Mode");
+
+            settingTest.setVisibility(View.VISIBLE);
+            settingtest.setVisibility(View.VISIBLE);
+        }
+    };
 }
