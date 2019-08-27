@@ -184,16 +184,16 @@ public class CameraScreenActivity extends AppCompatActivity {
         camera_batch.setOnClickListener(camera_batchListener);
 
         batch_before=(LinearLayout)findViewById(R.id.batch_bef);
-        batch_before.setOnClickListener(batch_listener);
+        batch_before.setOnClickListener(batch_beforeListener);
 
         batch_after=(LinearLayout)findViewById(R.id.batch_aft);
         batch_after.setOnClickListener(batch_afterListener);
 
         single_before=(LinearLayout)findViewById(R.id.single_bef);
-        single_before.setOnClickListener(single_beforeLisntener);
+        single_before.setOnClickListener(single_beforeListener);
 
         single_after=(LinearLayout)findViewById(R.id.single_afr);
-        single_after.setOnClickListener(single_afterLisntener);
+        single_after.setOnClickListener(single_afterListener);
 
         settingbefore=(ImageView)findViewById(R.id.settingbefore);
         settingafter=(ImageView)findViewById(R.id.settingafter);
