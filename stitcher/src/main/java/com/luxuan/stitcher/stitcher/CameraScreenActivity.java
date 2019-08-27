@@ -27,6 +27,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CameraScreenActivity extends AppCompatActivity {
 
@@ -430,5 +433,66 @@ public class CameraScreenActivity extends AppCompatActivity {
         };
 
         return pictureCallback;
+    }
+
+    private Camera.PictureCallback photoCallback_batch=new Camera.PictureCallback(){
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera){
+
+            FileOutputStream outputStream=null;
+            try{
+                File mediaStorageDir=new File("/sdcard/", "Batch");
+                if(!mediaStorageDir.exists()){
+                    if(!mediaStorageDir.mkdirs()){
+                        Log.d("image upload", "Oops! Failed create YOUR DIRECTORY NAME directory");
+                    }
+                }
+
+                outputFileUri=Uri.fromFile(mediaStorageDir);
+
+                String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+
+                int i=(int)(new Date().getTime()/1000);
+                System.out.println("Integer: "+i);
+                String name=String.valueOf(i);
+                System.out.println("Time: "+name);
+
+                File mediaFile=new File(mediaStorageDir.getPath()+File.separator+"IMG_"+name+".jpg");
+                System.out.println("mdeiaFile: "+mediaFile);
+                Log.i("current imageFilePath", imageFilePath);
+
+                outputStream=new FileOutputStream(mediaFile);
+                outputStream.write(data);
+                outputStream.close();
+
+                BitmapFactory.Options options=new BitmapFactory.Options();
+                options.inPreferredConfig=Bitmap.Config.ARGB_8888;
+                Bitmap bitmap=BitmapFactory.decodeFile(String.valueOf(mediaFile), options);
+
+            }catch(FileNotFoundException e){
+                e.printStackTrace();
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally{
+
+            }
+
+            mCamera.startPreview();
+        }
+    };
+
+    private void turnOnFlash(){
+        Camera.Parameters parameters=mCamera.getParameters();
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        mCamera.setParameters(parameters);
+        mCamera.startPreview();
+    }
+
+    private void turnOffFlash(){
+        Camera.Parameters parameters=mCamera.getParameters();
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+        mCamera.setParameters(parameters);
+        mCamera.startPreview();
     }
 }
