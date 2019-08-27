@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class CameraScreenActivity extends AppCompatActivity {
 
@@ -39,7 +47,7 @@ public class CameraScreenActivity extends AppCompatActivity {
 
     private ImageView pictureImageView;
     private View pictureCountBackgroundView;
-    private TextView pictureCountBackgroundTextView;
+    private TextView pictureCountTextView;
     private Camera.Parameters parameters;
     private boolean isFlashOn;
     private static String formattedDate;
@@ -83,7 +91,7 @@ public class CameraScreenActivity extends AppCompatActivity {
 
         pictureImageView=(ImageView)findViewById(R.id.pictureIV);
         pictureCountBackgroundView=(View)findViewById(R.id.pictureCountBgV);
-        pictureCountBackgroundTextView=(TextView)findViewById(R.id.pictureCountTV);
+        pictureCountTextView=(TextView)findViewById(R.id.pictureCountTV);
 
         settingTest=(LinearLayout)findViewById(R.id.settingTest);
         settingtest=(ImageView)findViewById(R.id.settingtest);
@@ -353,16 +361,74 @@ public class CameraScreenActivity extends AppCompatActivity {
             int cameraId=findBackFacingCamera();
             if(cameraId>=0){
                 mCamera=Camera.open(cameraId);
-                mPicture=getPictureCallback();
+                mPictureCallback=getPictureCallback();
                 mPreview.refreshCamera(mCamera);
             }
         }else{
             int cameraId=findFrontFacingCamera();
             if(cameraId>=0) {
                 mCamera=Camera.open(cameraId);
-                mPicture=getPictureCallback();
+                mPictureCallback=getPictureCallback();
                 mPreview.refreshCamera(mCamera);
             }
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        releaseCamera();
+    }
+
+    private boolean hasCamera(Context context){
+        if(context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private Camera.PictureCallback getPictureCallback(){
+        Camera.PictureCallback pictureCallback=new Camera.PictureCallback(){
+
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera){
+                File pictureFile=getOutputMediaFile();
+
+                if(pictureFile==null){
+                    return;
+                }
+
+                try{
+                    FileOutputStream fos=new FileOuputStream(pictureFile);
+                    fos.write(data);
+                    fos.close();
+
+                    BitmapFactory.Options options=new BitmapFactory.Options();
+                    options.inPreferredConfig= Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap=BitmapFactory.decodeFile(String.valueOf(pictureFile), options);
+                    if(bitmap!=null){
+                        Uri uri=Utils.getUri(CameraScreenActivity.this, bitmap);
+                        bitmap.recycle();
+
+                        Log.i("test uri", uri.toString());
+                        Intent intent=new Intent(CameraScreenActivity.this, PolygonViewScreenActivity.class);
+                        intent.putExtra("imageTest", uri);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(CameraScreenActivity.this,"Failed to Capture the picture. kindly Try Again:", Toast.LENGTH_LONG).show();
+                    }
+                }catch(FileNotFoundException e){
+
+                }catch(IOException e){
+
+                }
+
+                mPreview.refreshCamera(mCamera);
+            }
+        };
+
+        return pictureCallback;
     }
 }
