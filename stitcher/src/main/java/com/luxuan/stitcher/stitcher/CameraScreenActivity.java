@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -494,5 +495,51 @@ public class CameraScreenActivity extends AppCompatActivity {
         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         mCamera.setParameters(parameters);
         mCamera.startPreview();
+    }
+
+    private View.OnClickListener captureListener=new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view){
+            mCamera.takePicture(null, null, mPictureCallback);
+        }
+    };
+
+    private static File getOutputMediaFile(){
+        File mediaStorageDir=new File("/sdcard/", "Single");
+
+        if(!mediaStorageDir.exists()){
+            if(mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
+        int i=(int)(System.currentTimeMillis()/1000);
+        System.out.println("Integer: "+i);
+        String name=String.valueOf(i);
+        System.out.println("Time: "+name);
+
+        File mediaFile=new File(mediaStorageDir.getPath()+File.separator+"IMG_"+name+".jpg");
+        System.out.println("mediaFile: "+ mediaFile);
+
+        return mediaFile;
+    }
+
+    private void releaseCamera(){
+        if(mCamera!=null){
+            mCamera.release();
+            mCamera=null;
+        }
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && context!=null && permissions!=null){
+            for(String permission: permissions){
+                if(ActivityCompat.checkSelfPermission(context, permission)!=PackageManager.PERMISSION_GRANTED){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
