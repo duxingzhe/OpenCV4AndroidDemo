@@ -404,7 +404,7 @@ public class CameraScreenActivity extends AppCompatActivity {
                 }
 
                 try{
-                    FileOutputStream fos=new FileOuputStream(pictureFile);
+                    FileOutputStream fos=new FileOutputStream(pictureFile);
                     fos.write(data);
                     fos.close();
 
