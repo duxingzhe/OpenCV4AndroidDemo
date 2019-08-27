@@ -453,7 +453,7 @@ public class CameraScreenActivity extends AppCompatActivity {
 
                 String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
-                int i=(int)(new Date().getTime()/1000);
+                int i=(int)(System.currentTimeMillis()/1000);
                 System.out.println("Integer: "+i);
                 String name=String.valueOf(i);
                 System.out.println("Time: "+name);
