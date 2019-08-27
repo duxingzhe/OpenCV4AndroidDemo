@@ -3,6 +3,7 @@ package com.luxuan.stitcher.stitcher;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -323,4 +324,45 @@ public class CameraScreenActivity extends AppCompatActivity {
             Log.i("test", "test");
         }
     };
+
+    private View.OnClickListener batchCameraListener=new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            int camerasNumber=Camera.getNumberOfCameras();
+            if(camerasNumber>1){
+                count++;
+                mCamera.startPreview();
+                mCamera.takePicture(null, null, photoCallback_batch);
+                String s=String.valueOf(count);
+                pictureCountTextView.setText(s);
+                Log.i("test count", String.valueOf(count));
+
+                SharedPreferences pref=getApplicationContext().getSharedPreferences("CameraPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor=pref.edit();
+                editor.putString("count", String.valueOf(count));
+                editor.clear();
+                editor.commit();
+            }else{
+                Toast.makeText(mContext, "Sorry, your phone has only one camera!", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    public void chooseCamera(){
+        if(cameraFront){
+            int cameraId=findBackFacingCamera();
+            if(cameraId>=0){
+                mCamera=Camera.open(cameraId);
+                mPicture=getPictureCallback();
+                mPreview.refreshCamera(mCamera);
+            }
+        }else{
+            int cameraId=findFrontFacingCamera();
+            if(cameraId>=0) {
+                mCamera=Camera.open(cameraId);
+                mPicture=getPictureCallback();
+                mPreview.refreshCamera(mCamera);
+            }
+        }
+    }
 }
