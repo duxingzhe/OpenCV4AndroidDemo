@@ -4,15 +4,19 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Utils {
 
@@ -83,5 +87,31 @@ public class Utils {
         }
 
         return filePaths;
+    }
+
+    private boolean isSupportedFile(String filePath){
+        String extension=filePath.substring((filePath.lastIndexOf(".")+1), filePath.length());
+
+        if(ScanConstants.FILE_EXTENSTION.contains(extension.toLowerCase(Locale.getDefault()))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int getScreenWidth(){
+        int columnWidth;
+        WindowManager wm=(WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display=wm.getDefaultDisplay();
+
+        Point point=new Point();
+        try{
+            display.getSize(point);
+        }catch(NoSuchMethodError ignore){
+            point.x=display.getWidth();
+            point.y=display.getHeight();
+        }
+        columnWidth=point.x;
+        return columnWidth;
     }
 }
