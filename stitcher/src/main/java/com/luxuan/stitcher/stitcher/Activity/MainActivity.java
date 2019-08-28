@@ -1,4 +1,4 @@
-package com.luxuan.stitcher.stitcher;
+package com.luxuan.stitcher.stitcher.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

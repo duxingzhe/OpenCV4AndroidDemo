@@ -1,4 +1,4 @@
-package com.luxuan.stitcher.stitcher;
+package com.luxuan.stitcher.stitcher.Activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Util.Utils;
+import com.luxuan.stitcher.stitcher.widget.CameraPreview;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -412,7 +414,7 @@ public class CameraScreenActivity extends AppCompatActivity {
                     options.inPreferredConfig= Bitmap.Config.ARGB_8888;
                     Bitmap bitmap=BitmapFactory.decodeFile(String.valueOf(pictureFile), options);
                     if(bitmap!=null){
-                        Uri uri=Utils.getUri(CameraScreenActivity.this, bitmap);
+                        Uri uri= Utils.getUri(CameraScreenActivity.this, bitmap);
                         bitmap.recycle();
 
                         Log.i("test uri", uri.toString());

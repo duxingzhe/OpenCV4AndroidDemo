@@ -1,4 +1,4 @@
-package com.luxuan.stitcher.stitcher;
+package com.luxuan.stitcher.stitcher.Util;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -69,7 +69,7 @@ public class Utils {
                     if(i>=j){
                         String filePath=listFiles[i].getAbsolutePath();
 
-                        if(IsSupportedFile(filePath)){
+                        if(isSupportedFile(filePath)){
                             filePaths.add(filePath);
 
                             filePaths.get(filePaths.size()-1);

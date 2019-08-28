@@ -1,4 +1,4 @@
-package com.luxuan.stitcher.stitcher;
+package com.luxuan.stitcher.stitcher.widget;
 
 import android.content.Context;
 import android.hardware.Camera;
