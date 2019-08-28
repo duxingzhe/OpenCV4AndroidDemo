@@ -26,5 +26,5 @@ public class ScanConstants {
     public static final int GRID_PADDING = 8; // in dp
 
     // supported file formats
-    public static final List<String> FILE_EXTN = Arrays.asList("jpg", "jpeg","png");
+    public static final List<String> FILE_EXTENSION = Arrays.asList("jpg", "jpeg","png");
 }

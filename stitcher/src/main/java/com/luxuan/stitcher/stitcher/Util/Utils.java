@@ -92,7 +92,7 @@ public class Utils {
     private boolean isSupportedFile(String filePath){
         String extension=filePath.substring((filePath.lastIndexOf(".")+1), filePath.length());
 
-        if(ScanConstants.FILE_EXTENSTION.contains(extension.toLowerCase(Locale.getDefault()))) {
+        if(ScanConstants.FILE_EXTENSION.contains(extension.toLowerCase(Locale.getDefault()))) {
             return true;
         } else {
             return false;
