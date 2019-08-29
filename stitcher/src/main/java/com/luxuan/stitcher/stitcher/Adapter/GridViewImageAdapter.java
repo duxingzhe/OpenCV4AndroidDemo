@@ -2,12 +2,16 @@ package com.luxuan.stitcher.stitcher.Adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class GridViewImageAdapter extends BaseAdapter {
@@ -55,6 +59,27 @@ public class GridViewImageAdapter extends BaseAdapter {
     }
 
     private Bitmap decodeFile(String filePath, int width, int height){
+        try{
+            File f=new File(filePath);
 
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.inJustDecodeBounds=true;
+            BitmapFactory.decodeStream(new FileInputStream(f), null, options);
+
+            int REQUIRED_WIDTH=width;
+            int REQUIRED_HEIGHT=height;
+            int scale=1;
+
+            while(options.outWidth/scale/2>=REQUIRED_WIDTH&& options.outHeight/scale/2>=REQUIRED_HEIGHT){
+                scale*=2;
+            }
+
+            BitmapFactory.Options outputOptions=new BitmapFactory.Options();
+            outputOptions.inSampleSize=scale;
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, outputOptions);
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
