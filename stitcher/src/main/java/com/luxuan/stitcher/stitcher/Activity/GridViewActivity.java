@@ -1,6 +1,7 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.Adapter.GridViewImageAdapter;
+import com.luxuan.stitcher.stitcher.Util.ScanConstants;
 import com.luxuan.stitcher.stitcher.Util.Utils;
 
 import java.io.File;
@@ -91,5 +94,19 @@ public class GridViewActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void initializeGridLayout(){
+        Resources r=getResources();
+        float padding=TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ScanConstants.GRID_PADDING, r.getDisplayMetrics());
+
+        columnWidth=(int)((utils.getScreenWidth()-((ScanConstants.NUM_OF_COLUMNS+1)*padding))/ScanConstants.NUM_OF_COLUMNS);
+
+        gridView.setNumColumns(ScanConstants.NUM_OF_COLUMNS);
+        gridView.setColumnWidth(columnWidth);
+        gridView.setStretchMode(GridView.NO_STRETCH);
+        gridView.setPadding((int) padding, (int)padding, (int) padding, (int) padding);
+        gridView.setHorizontalSpacing((int)padding);
+        gridView.setVerticalSpacing((int)padding);
     }
 }
