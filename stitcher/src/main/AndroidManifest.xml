@@ -15,6 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".stitcher.Activity.GridViewActivity"></activity>
+        <activity android:name=".stitcher.Activity.CameraScreenActivity"></activity>
     </application>
 
 </manifest>
