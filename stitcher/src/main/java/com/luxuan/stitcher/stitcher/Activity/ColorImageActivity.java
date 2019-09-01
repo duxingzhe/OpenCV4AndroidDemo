@@ -16,8 +16,10 @@ import android.widget.Toast;
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.SaveImageToStorageAsyncTask;
 import com.luxuan.stitcher.stitcher.Util.OpenCVHelper;
+import com.luxuan.stitcher.stitcher.Util.Utils;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ColorImageActivity extends AppCompatActivity {
 
@@ -28,7 +30,6 @@ public class ColorImageActivity extends AppCompatActivity {
     private Uri uri;
 
     private Bitmap original, bitmap;
-    private FileOutputStream fos;
     private FloatingActionButton fab;
 
     @Override
@@ -128,5 +129,23 @@ public class ColorImageActivity extends AppCompatActivity {
         new SaveImageToStorageAsyncTask(val, bitmap).execute();
         Toast.makeText(this, "Image saved", Toast.LENGTH_LONG).show();
         finish();
+    }
+
+    private Bitmap getBitmap(){
+        Uri uri=getUri();
+        try{
+            bitmap= Utils.getBitmap(this,uri);
+            getContentResolver().delete(uri, null, null);
+            return bitmap;
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private Uri getUri(){
+        uri=getIntent().getParcelableExtra("image");
+        return uri;
     }
 }
