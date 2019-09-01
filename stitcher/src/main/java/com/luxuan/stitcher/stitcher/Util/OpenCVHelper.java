@@ -16,4 +16,5 @@ public class OpenCVHelper {
     public static native Bitmap getMagicBitmap(Bitmap bitmap);
     public static native Bitmap getGrayBitmapP(Bitmap bitmap);
     public static native Bitmap getLightedBitmap(Bitmap bitmap);
+    public static native Bitmap getBlackWhiteBitmapP(Bitmap bitmap);
 }
