@@ -11,8 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.SaveImageToStorageAsyncTask;
 import com.luxuan.stitcher.stitcher.Util.OpenCVHelper;
 
 import java.io.FileOutputStream;
@@ -119,5 +121,12 @@ public class ColorImageActivity extends AppCompatActivity {
         }
     }
 
-
+    private void popup_request(Bitmap bitmap){
+        int i=(int)(System.currentTimeMillis()/1000);
+        String name=String.valueOf(i);
+        String val=name;
+        new SaveImageToStorageAsyncTask(val, bitmap).execute();
+        Toast.makeText(this, "Image saved", Toast.LENGTH_LONG).show();
+        finish();
+    }
 }
