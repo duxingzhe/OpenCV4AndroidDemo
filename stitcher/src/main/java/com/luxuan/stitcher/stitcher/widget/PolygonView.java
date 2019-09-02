@@ -1,6 +1,7 @@
 package com.luxuan.stitcher.stitcher.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -124,5 +125,54 @@ public class PolygonView extends FrameLayout {
         }
 
         return orderedPoints;
+    }
+
+    public void setPoints(Map<Integer, PointF> pointFMap){
+        if(pointFMap.size()==4){
+            setPointsCoordinates(pointFMap);
+        }
+    }
+
+    private void setPointsCoordinates(Map<Integer, PointF> pointFMap){
+        pointer1.setX(pointFMap.get(0).x);
+        pointer1.setY(pointFMap.get(0).y);
+
+        pointer2.setX(pointFMap.get(1).x);
+        pointer2.setY(pointFMap.get(1).y);
+
+        pointer3.setX(pointFMap.get(2).x);
+        pointer3.setY(pointFMap.get(2).y);
+
+        pointer4.setX(pointFMap.get(3).x);
+        pointer4.setY(pointFMap.get(3).y);
+    }
+
+    @Override
+    public void dispatchDraw(Canvas canvas){
+        super.dispatchDraw(canvas);
+        canvas.drawLine(pointer1.getX()+(pointer1.getWidth()/2), pointer1.getY()+(pointer1.getHeight()/2), pointer3.getX()+(pointer3.getWidth()/2), pointer3.getY()+(pointer3.getHeight()/2), paint);
+        canvas.drawLine(pointer1.getX()+(pointer1.getWidth()/2), pointer1.getY()+(pointer1.getHeight()/2), pointer2.getX()+(pointer2.getWidth()/2), pointer2.getY()+(pointer2.getHeight()/2), paint);
+        canvas.drawLine(pointer2.getX()+(pointer2.getWidth()/2), pointer2.getY()+(pointer2.getHeight()/2), pointer4.getX()+(pointer4.getWidth()/2), pointer4.getY()+(pointer4.getHeight()/2), paint);
+        canvas.drawLine(pointer3.getX()+(pointer3.getWidth()/2), pointer3.getY()+(pointer3.getHeight()/2), pointer4.getX()+(pointer4.getWidth()/2), pointer4.getY()+(pointer4.getHeight()/2), paint);
+
+        midPointer13.setX(pointer3.getX()-((pointer3.getX()-pointer1.getX())/2));
+        midPointer13.setY(pointer3.getY()-((pointer3.getY()-pointer1.getY())/2));
+        midPointer24.setX(pointer4.getX()-((pointer4.getX()-pointer2.getY())/2));
+        midPointer24.setY(pointer4.getY()-((pointer4.getY()-pointer2.getY())/2));
+        midPointer34.setX(pointer4.getX()-((pointer4.getX()-pointer3.getY())/2));
+        midPointer34.setY(pointer4.getY()-((pointer4.getY()-pointer3.getY())/2));
+        midPointer12.setX(pointer2.getX()-((pointer2.getX()-pointer1.getY())/2));
+        midPointer12.setY(pointer2.getY()-((pointer2.getY()-pointer1.getY())/2));
+    }
+
+    private ImageView getImageView(int x, int y){
+        ImageView imageView=new ImageView(mContext);
+        LayoutParams layoutParams=new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        imageView.setLayoutParams(layoutParams);
+        imageView.setImageResource(R.drawable.circle);
+        imageView.setX(x);
+        imageView.setY(y);
+        imageView.setOnTouchListener(new TouchListenerImpl());
+        return imageView;
     }
 }
