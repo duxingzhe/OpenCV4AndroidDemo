@@ -62,10 +62,10 @@ public class PolygonView extends FrameLayout {
         midPointer12.setOnTouchListener(new MidPointTouchListenerImpl(pointer1, pointer2));
 
         midPointer34=getImageView(getWidth()/2, getHeight());
-        midPointer34.setOnTouchListener(new MidPointerTouchListenerImpl(pointer3, pointer4));
+        midPointer34.setOnTouchListener(new MidPointTouchListenerImpl(pointer3, pointer4));
 
         midPointer24=getImageView(getWidth(), getHeight()/2);
-        midPointer24.setOnTouchListener(new MidPointerTouchLitenerImpl(pointer2, pointer4));
+        midPointer24.setOnTouchListener(new MidPointTouchListenerImpl(pointer2, pointer4));
 
         addView(pointer1);
         addView(pointer2);
@@ -252,7 +252,7 @@ public class PolygonView extends FrameLayout {
         return pointFMap.size()==4;
     }
 
-    private class TouchLisenerImpl implements OnTouchListener{
+    private class TouchListenerImpl implements OnTouchListener{
         PointF DownPT=new PointF();
         PointF StartPT=new PointF();
 
