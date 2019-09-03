@@ -177,7 +177,7 @@ public class PolygonView extends FrameLayout {
         return imageView;
     }
 
-    public class MidPointTouchListenerImpl implements View.OnClickListener {
+    public class MidPointTouchListenerImpl implements OnTouchListener {
 
         PointF DownPT=new PointF();
         PointF StartPT=new PointF();
@@ -238,6 +238,54 @@ public class PolygonView extends FrameLayout {
                 default:
                     break;
             }
+            invalidate();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        return super.onTouchEvent(event);
+    }
+
+    public boolean isValidShape(Map<Integer, PointF> pointFMap){
+        return pointFMap.size()==4;
+    }
+
+    private class TouchLisenerImpl implements OnTouchListener{
+        PointF DownPT=new PointF();
+        PointF StartPT=new PointF();
+
+        @Override
+        public boolean onTouch(View view, MotionEvent event){
+            int eid=event.getAction();
+            switch(eid){
+                case MotionEvent.ACTION_MOVE:
+                    PointF motionEvent=new PointF(event.getX()-DownPT.x, event.getY()-DownPT.y);
+                    if (((StartPT.x + motionEvent.x + view.getWidth()) < getWidth() && (StartPT.y + motionEvent.y + view.getHeight() < getHeight())) && ((StartPT.x + motionEvent.x) > 0 && ((StartPT.x + motionEvent.x) > 0 && StartPT.y + motionEvent.y > 0))) {
+                        view.setX((int)(StartPT.x=motionEvent.x));
+                        view.setY((int)(StartPT.y+motionEvent.y));
+                        StartPT=new PointF(view.getX(), view.getY());
+                    }
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    DownPT.x=event.getX();
+                    DownPT.y=event.getY();
+                    StartPT=new PointF(view.getX(), view.getY());
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int color=0;
+                    if(isValidShape(getPoints())){
+                        color=getResources().getColor(R.color.blue);
+                    }else{
+                        color=getResources().getColor(R.color.orange);
+                    }
+                    paint.setColor(color);
+                    break;
+                default:
+                    break;
+            }
+
             invalidate();
             return true;
         }
