@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -174,5 +175,71 @@ public class PolygonView extends FrameLayout {
         imageView.setY(y);
         imageView.setOnTouchListener(new TouchListenerImpl());
         return imageView;
+    }
+
+    public class MidPointTouchListenerImpl implements View.OnClickListener {
+
+        PointF DownPT=new PointF();
+        PointF StartPT=new PointF();
+
+        private ImageView mainPointer1;
+        private ImageView mainPointer2;
+
+        public MidPointTouchListenerImpl(ImageView mainPointer1, ImageView mainPointer2){
+            this.mainPointer1=mainPointer1;
+            this.mainPointer2=mainPointer2;
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent event){
+            int eid=event.getAction();
+            switch(eid){
+                case MotionEvent.ACTION_MOVE:
+                    PointF motionEvent=new PointF(event.getX()-DownPT.x, event.getY()-DownPT.y);
+
+                    if(Math.abs(mainPointer1.getX()-mainPointer2.getX())> Math.abs(mainPointer1.getY()-mainPointer2.getY())){
+                        if(((mainPointer2.getY()+motionEvent.y+view.getHeight()<getHeight())&&(mainPointer2.getY()+motionEvent.y>0))){
+                            view.setX((int)(StartPT.y+motionEvent.y));
+                            StartPT=new PointF(view.getX(), view.getY());
+                            mainPointer2.setY((int)(mainPointer2.getY()+motionEvent.y));
+                        }
+                        if(((mainPointer1.getY()+motionEvent.y+view.getHeight()<getHeight())&&(mainPointer1.getY()+motionEvent.y>0))){
+                            view.setX((int)(StartPT.y+motionEvent.y));
+                            StartPT=new PointF(view.getX(), view.getY());
+                            mainPointer1.setY((int)(mainPointer1.getY()+motionEvent.y));
+                        }
+                    }else{
+                        if(((mainPointer2.getY()+motionEvent.y+view.getWidth()<getWidth())&&(mainPointer2.getX()+motionEvent.x>0))){
+                            view.setX((int)(StartPT.x+motionEvent.x));
+                            StartPT=new PointF(view.getX(), view.getY());
+                            mainPointer2.setX((int)(mainPointer2.getX()+motionEvent.x));
+                        }
+                        if(((mainPointer1.getX()+motionEvent.x+view.getWidth()<getWidth())&&(mainPointer1.getX()+motionEvent.x>0))){
+                            view.setX((int)(StartPT.x+motionEvent.x));
+                            StartPT=new PointF(view.getX(), view.getY());
+                            mainPointer1.setY((int)(mainPointer1.getX()+motionEvent.x));
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    DownPT.x=event.getX();
+                    DownPT.y=event.getY();
+                    StartPT=new PointF(view.getX(), view.getY());
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int color=0;
+                    if(isValidShape(getPoints())){
+                        color=getResources().getColor(R.color.blue);
+                    }else{
+                        color=getResources().getColor(R.color.orange);
+                    }
+                    paint.setColor(color);
+                    break;
+                default:
+                    break;
+            }
+            invalidate();
+            return true;
+        }
     }
 }
