@@ -1,5 +1,6 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -132,5 +133,31 @@ public class HomeActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(intent, ScanConstants.PICKFILE_REQUEST_CODE);
+    }
+
+    public void openCamera(){
+        Intent intent=new Intent(this, CameraScreenActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d("", "onActivityResult"+resultCode);
+        Bitmap bitmap=null;
+        if(resultCode== Activity.RESULT_OK){
+            try{
+                switch(requestCode){
+                    case ScanConstants.PICKFILE_REQUEST_CODE:
+                        selectedImage=data.getData();
+                        Intent intent=new Intent(this, PolygonViewScreenActivity.class);
+                        intent.putExtra("imageTest1", selectedImage);
+                        Log.i("test null", selectedImage.toString());
+                        startActivity(intent);
+                        break;
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
