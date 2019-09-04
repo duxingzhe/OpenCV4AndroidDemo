@@ -10,11 +10,13 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.luxuan.stitcher.R;
@@ -159,5 +161,52 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void initNavigationdrawer(){
+
+        navigationView=(NavigationView)findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem){
+
+                int id=menuItem.getItemId();
+
+                switch(id){
+                    case R.id.home:
+                        openCamera();
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.settings:
+                        openMediaContent();
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.docs:
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.logout:
+                        finish();
+                }
+                return true;
+            }
+        });
+
+        drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle actionBarDrawerToggle=new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close){
+            @Override
+            public void onDrawerClosed(View view){
+                onDrawerClosed(view);
+            }
+
+            @Override
+            public void onDrawerOpened(View view){
+                super.onDrawerOpened(view);
+            }
+        };
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
     }
 }
