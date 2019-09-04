@@ -1,5 +1,6 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,10 +14,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.Adapter.DocsAdapter;
 import com.luxuan.stitcher.stitcher.Beans.DocItem;
+import com.luxuan.stitcher.stitcher.Util.ScanConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -94,5 +97,40 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        navigationView.setCheckedItem(0);
+        Filewalker fw=new Filewalker();
+        String dirpath=Environment.getExternalStorageDirectory().toString();
+        File reader=new File(dirpath, "DocumentScanner");
+        fw.walk(reader);
+
+        adapter=new DocsAdapter(this, iPostParams);
+        rvDocs.setAdapter(adapter);
+        rvDocs.setLayoutManager(new GridLayoutManager(this, 2));
+    }
+
+    private class CameraButtonClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+            openCamera();
+        }
+    }
+
+    private class GalleryClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+            openMediaContent();
+        }
+    }
+
+    public void openMediaContent(){
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent, ScanConstants.PICKFILE_REQUEST_CODE);
     }
 }
