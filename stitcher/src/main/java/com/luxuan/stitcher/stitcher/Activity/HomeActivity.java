@@ -1,5 +1,7 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,13 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.Adapter.DocsAdapter;
 import com.luxuan.stitcher.stitcher.Beans.DocItem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -45,12 +52,47 @@ public class HomeActivity extends AppCompatActivity {
         iPostParams=new ArrayList<DocItem>();
 
         Filewalker fw=new Filewalker();
-        String dirpath= Environment.getExternalStorageDirectory();
+        String dirpath= Environment.getExternalStorageDirectory().toString();
         File reader=new File(dirpath, "DocumentScanner");
         fw.walk(reader);
 
         adapter=new DocsAdapter(this, iPostParams);
         rvDocs.setAdapter(adapter);
         rvDocs.setLayoutManager(new GridLayoutManager(this, 2));
+    }
+
+    public class Filewalker{
+
+        public void walk(File root){
+            iPostParams=new ArrayList<>();
+            DocItem postEmail=new DocItem("Dummy Doc", "2019/09/16",null);
+            iPostParams.add(postEmail);
+
+            Calendar c= Calendar.getInstance();
+            SimpleDateFormat df=new SimpleDateFormat("dddd/MM/yy");
+            String formattedDate=df.format(c.getTime());
+
+            File[] list=root.listFiles();
+            if(list!=null){
+                for(File f : list){
+                    if(f.isDirectory()&&!(f.getName().equals("thumbnails"))){
+                        Log.d("", "Dir: "+f.getAbsoluteFile());
+                        postEmail=null;
+                        Bitmap bitmap=null;
+                        File file=new File(Environment.getExternalStorageDirectory(), "/DocumentScanner/thumbnails/"+f.getName()+".jpg");
+
+                        try{
+                            bitmap= BitmapFactory.decodeStream(new FileInputStream(file));
+                        }catch(FileNotFoundException e){
+                            e.printStackTrace();
+                        }
+                        postEmail=new DocItem(f.getName(), formattedDate, bitmap);
+                        iPostParams.add(postEmail);
+                    }else{
+                        Log.d("", "File: "+f.getAbsoluteFile());
+                    }
+                }
+            }
+        }
     }
 }
