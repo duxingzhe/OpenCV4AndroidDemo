@@ -3,10 +3,12 @@ package com.luxuan.stitcher.stitcher.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,9 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Util.Utils;
 import com.luxuan.stitcher.stitcher.widget.PolygonView;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
 public class PolygonViewScreenActivity extends AppCompatActivity {
@@ -26,7 +30,7 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
     private ImageView imageView;
     private Uri uri;
     private PolygonView polygonView;
-    private Uri imageUriFromGallery, imageUriFromCamera, test_uri, imageUrifromBatch;
+    private Uri imageUriFromGallery, imageUriFromCamera, test_uri, imageUriFromBatch;
     private Bitmap bitmap, op, op2, tempBitmap;
     private int status=0;
     private FileOutputStream fos;
@@ -95,6 +99,62 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
         });
 
         submit.setOnClickListener(new ScanButtonClickListener());
+    }
+
+    private Bitmap getBitmap(){
+        Uri uri=getUri();
+        try{
+            bitmap= Utils.getBitmap(PolygonViewScreenActivity.this, uri);
+            getContentResolver().delete(uri, null, null, null);
+            return bitmap;
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private Uri getUri(){
+        imageUriFromGallery=getIntent().getParcelableExtra("imageTest1");
+        imageUriFromCamera=getIntent().getParcelableExtra("imageTest");
+        imageUriFromBatch=getIntent().getParcelableExtra("image2");
+
+        if(imageUriFromGallery!=null&&imageUriFromBatch==null){
+            uri=getIntent().getParcelableExtra("imageTest1");
+            Log.i("uri test gallery", uri.toString());
+        }else {
+            uri=getIntent().getParcelableExtra("image2");
+            Log.i("uri test cameraBatch", uri.toString());
+        }
+
+        test=uri.toString();
+        test1=uri;
+        Log.i("test test", test.toString());
+        Log.i("test test2", test1.toString());
+
+        return uri;
+    }
+
+    private void setBitmap(Bitmap original){
+        scaledBitmap=scaledBitmap(original, sourceFrame.getWidth(), sourceFrame.getHeight());
+        imageView.setImageBitmap(scaledBitmap);
+        new EdgeAsyncTask(scaledBitmap).execute();
+    }
+
+    private Bitmap scaledBitmap(Bitmap bitmap, int width, int height){
+        Matrix matrix=new Matrix();
+        matrix.setRectToRect(new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()), new RectF(0, 0, width, height), Matrix.ScaleToFit.CENTER);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    public static Bitmap rotateImage(Bitmap bitmap, float angle){
+        Matrix matrix=new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private boolean isScanPointsValid(Map<Integer, PointF> points){
+        return points.size()==4;
     }
 
 }
