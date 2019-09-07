@@ -1,11 +1,13 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,8 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.Util.Utils;
@@ -157,4 +159,71 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
         return points.size()==4;
     }
 
+    private class ScanButtonClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            if(status==0){
+                Map<Integer, PointF> points=polygonView.getPoints();
+                if(isScanPointsValid(points)){
+                    new ScanAyncTask(points).execute();
+                }else{
+                    Toast.makeText(PolygonViewScreenActivity.this, "error,", Toast.LENGTH_SHORT).show();
+                }
+            }else if(status==1){
+                Uri uri=Utils.getUri(PolygonViewScreenActivity.this, op2);
+
+                Log.i("testUri", uri.toString());
+                Intent intent=new Intent(PolygonViewScreenActivity.this, ColorImageActivity.class);
+                intent.putExtra("image", uri);
+                startActivity(intent);
+                finish();
+            }
+        }
+    }
+
+    private class ScanAsyncTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private Map<Integer, PointF> points;
+
+        public ScanAsyncTask(Map<Integer, PointF> points){
+            this.points=points;
+        }
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+        }
+
+        @Override
+        public Bitmap doInBackground(Void... params){
+            runOnUiThread(new Runnable(){
+
+                @Override
+                public void run(){
+                    try{
+                        original=Utils.getBitmap(PolygonViewScreenActivity.this, uri);
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+                    op=getScannedBitmap(original, points);
+
+                    Log.d("MainActivity", "Sizes are"+original.getWidth()+" "+original.getHeight());
+                    if(persWidth>persHeight){
+                        op2=Bitmap.createScaledBitmap(op, 1600, 1000, false);
+                    }
+                    imageView.setImageBitmap(op2);
+
+                    status=1;
+                }
+            });
+
+            return original;
+        }
+
+        @Override
+        public void onPostExecute(Bitmap bitmap){
+            super.onPostExecute(bitmap);
+        }
+    }
 }
