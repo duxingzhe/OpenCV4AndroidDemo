@@ -20,12 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Util.OpenCVHelper;
 import com.luxuan.stitcher.stitcher.Util.Utils;
 import com.luxuan.stitcher.stitcher.widget.PolygonView;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 public class PolygonViewScreenActivity extends AppCompatActivity {
 
@@ -225,5 +229,51 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
         public void onPostExecute(Bitmap bitmap){
             super.onPostExecute(bitmap);
         }
+    }
+
+    private Bitmap getScannedBitmap(Bitmap original, Map<Integer, PointF> points){
+
+        int width=original.getWidth();
+        int height=original.getHeight();
+        float xRatio=(float)original.getWidth()/imageView.getWidth();
+        float yRatio=(float)original.getHeight()/imageView.getHeight();
+
+        Log.d("width", width+"");
+        Log.d("height", height+"");
+        Log.d("xRatio", xRatio+"");
+        Log.d("yRatio", yRatio+"");
+
+        int[] newPoints={0, 0, 0, 0, 0, 0, 0, 0};
+        newPoints[0]=(int)((points.get(0).x)*xRatio);
+        newPoints[1]=(int)((points.get(0).y)*yRatio);
+        newPoints[2]=(int)((points.get(1).x)*xRatio);
+        newPoints[3]=(int)((points.get(1).y)*yRatio);
+        newPoints[4]=(int)((points.get(2).x)*xRatio);
+        newPoints[5]=(int)((points.get(2).y)*yRatio);
+        newPoints[6]=(int)((points.get(3).x)*xRatio);
+        newPoints[7]=(int)((points.get(3).y)*yRatio);
+
+        Log.d("OpenCV", "hello stated");
+        Log.d("OpenCV", String.valueOf(newPoints[0]));
+        Log.d("OpenCV", String.valueOf(newPoints[1]));
+        Log.d("OpenCV", String.valueOf(newPoints[2]));
+        Log.d("OpenCV", String.valueOf(newPoints[3]));
+        Log.d("OpenCV", String.valueOf(newPoints[4]));
+        Log.d("OpenCV", String.valueOf(newPoints[5]));
+        Log.d("OpenCV", String.valueOf(newPoints[6]));
+        Log.d("OpenCV", String.valueOf(newPoints[7]));
+
+        persWidth=max(abs(newPoints[2]-newPoints[0]), abs(newPoints[4]-newPoints[0]));
+        persHeight=max(abs(newPoints[3]-newPoints[1]), abs(newPoints[5]-newPoints[1]));
+
+        int[] pixels=new int[width*height];
+        original.getPixels(pixels, 0, width, 0, 0, width, height);
+        Log.d("OpenCV4Android", "Came here");
+        int[] resultPixels= OpenCVHelper.perspective(pixels, newPoints, width, height);
+        Log.d("OpenCV4Android", "CheckPoint");
+        Bitmap result=Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        result.setPixels(resultPixels, 0, width, 0, 0, width, height);
+        polygonView.setVisibility(View.GONE);
+        return result;
     }
 }
