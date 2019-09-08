@@ -81,7 +81,7 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
                 Bitmap rotatedBitmap=rotateImage(((BitmapDrawable)imageView.getDrawable()).getBitmap(), -90);
                 imageView.setImageBitmap(rotatedBitmap);
             }
-        })
+        });
 
         ImageView rotateRight=(ImageView)findViewById(R.id.rotateright);
         rotateRight.setOnClickListener(new View.OnClickListener(){
@@ -114,7 +114,7 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
         Uri uri=getUri();
         try{
             bitmap= Utils.getBitmap(PolygonViewScreenActivity.this, uri);
-            getContentResolver().delete(uri, null, null, null);
+            getContentResolver().delete(uri, null, null);
             return bitmap;
         }catch(IOException e){
             e.printStackTrace();
@@ -173,7 +173,7 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
             if(status==0){
                 Map<Integer, PointF> points=polygonView.getPoints();
                 if(isScanPointsValid(points)){
-                    new ScanAyncTask(points).execute();
+                    new ScanAsyncTask(points).execute();
                 }else{
                     Toast.makeText(PolygonViewScreenActivity.this, "error,", Toast.LENGTH_SHORT).show();
                 }
@@ -323,5 +323,37 @@ public class PolygonViewScreenActivity extends AppCompatActivity {
             orderedPoints=getOutlinePoints(tempBitmap);
         }
         return orderedPoints;
+    }
+
+    private class EdgeAsyncTask extends AsyncTask<Void, Void, Bitmap>{
+
+        public EdgeAsyncTask(Bitmap bitmap){
+
+        }
+
+        @Override
+        public void onPreExecute(){
+            super.onPreExecute();
+            tempBitmap=((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        }
+
+        @Override
+        public Bitmap doInBackground(Void... params){
+
+            pointFs=getEdgePoints(tempBitmap);
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Bitmap bitmap){
+            super.onPostExecute(bitmap);
+            polygonView.setPoints(pointFs);
+            polygonView.setVisibility(View.VISIBLE);
+            int padding=(int) getResources().getDimension(R.dimen.scanPadding);
+            FrameLayout.LayoutParams layoutParams=new FrameLayout.LayoutParams(tempBitmap.getWidth()+2*padding, tempBitmap.getHeight()+2*padding);
+            polygonView.setLayoutParams(layoutParams);
+            grievanceProgressBar.setVisibility(View.GONE);
+        }
     }
 }
