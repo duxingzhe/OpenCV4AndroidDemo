@@ -163,7 +163,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void initNavigationdrawer(){
+    public void initNavigationDrawer(){
 
         navigationView=(NavigationView)findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
