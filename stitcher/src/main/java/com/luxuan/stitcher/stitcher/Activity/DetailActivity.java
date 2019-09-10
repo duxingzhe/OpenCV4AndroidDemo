@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -57,4 +59,32 @@ public class DetailActivity extends AppCompatActivity {
 
         new LoadPhoto(string).execute();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id=item.getItemId();
+
+        if(id==R.id.action_Select){
+            deleteRecursive(file);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteRecursive(File file){
+        if(file.isDirectory()){
+            for(File childFile : file.listFiles()){
+                deleteRecursive(childFile);
+            }
+        }
+
+        file.delete();
+    }
+
 }
