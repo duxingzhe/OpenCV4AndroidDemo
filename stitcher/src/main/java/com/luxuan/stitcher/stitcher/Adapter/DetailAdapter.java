@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Activity.ImageActivity;
 import com.luxuan.stitcher.stitcher.Beans.DetailItem;
 
 import java.util.ArrayList;
@@ -43,10 +44,10 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
 
             @Override
             public void onClick(View view){
-                Intent i=new Intent(mContext, ImageActivity.class);
-                i.putExtra("pathKey", mItems.get(position).getPath());
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(i);
+                Intent intent=new Intent(mContext, ImageActivity.class);
+                intent.putExtra("pathKey", mItems.get(position).getPath());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
             }
         });
     }

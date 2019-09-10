@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Activity.DetailActivity;
 import com.luxuan.stitcher.stitcher.Beans.DocItem;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.ViewHolder>{
 
             @Override
             public void onClick(View view){
-                Intent i=new Intent(mContext, DetailActvity.class);
+                Intent i=new Intent(mContext, DetailActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("folder", mItems.get(position).getName());
                 mContext.startActivity(i);

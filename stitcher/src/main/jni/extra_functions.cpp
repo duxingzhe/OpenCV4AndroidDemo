@@ -216,10 +216,10 @@ JNIEXPORT jobject JNICALL Java_com_luxuan_stitcher_OpenCVHelper_getBlackWhiteBit
 
     cvtColor(mbgra, dst, CV_RGBA2GRAY);
 
-    thresold(dst, dst, 0, 255, THRESH_BINARY|THRESH_OTSU);
+    threshold(dst, dst, 0, 255, THRESH_BINARY|THRESH_OTSU);
     cvtColor(dst, dst, CV_GRAY2BGR);
 
-    jclass java_bitmap_class=(jclass)env_>FindClass("android/graphics/Bitmap");
+    jclass java_bitmap_class=(jclass)env->FindClass("android/graphics/Bitmap");
     jmethodID mid=env->GetMethodID(java_bitmap_class, "getConfig", "()Landroid/graphics/Bitmap$Config;");
     jobject bitmap_config=env->CallObjectMethod(bitmap, mid);
     jobject _bitmap=mat_to_bitmap(env, dst, false, bitmap_config);
