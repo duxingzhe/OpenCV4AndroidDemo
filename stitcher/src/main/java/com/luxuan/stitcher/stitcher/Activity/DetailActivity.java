@@ -1,7 +1,13 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -87,4 +93,41 @@ public class DetailActivity extends AppCompatActivity {
         file.delete();
     }
 
+    private class FDAsyncTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog loadingDialog=new ProgressDialog(DetailActivity.this);
+
+        @Override
+        public void onPreExecute(){
+            super.onPreExecute();
+            loadingDialog.setMessage("Saving as PDF...");
+            loadingDialog.show();
+        }
+
+        @Override
+        public Void doInBackground(Void... params){
+            convertIt(bitmapLists, string);
+
+            file=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/DocumentScanner/"+s+"/example.pdf");
+            Intent target=new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(Uri.fromFile(file), "application/pdf");
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            Intent intent=Intent.createChooser(target, "OpenFile");
+
+            try{
+                startActivity(intent);
+            }catch(ActivityNotFoundException e){
+
+            }
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result){
+            super.onPostExecute(result);
+
+            loadingDialog.dismiss();
+        }
+    }
 }
