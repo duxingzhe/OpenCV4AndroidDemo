@@ -20,13 +20,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.Adapter.DetailAdapter;
 import com.luxuan.stitcher.stitcher.Beans.DetailItem;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
@@ -163,6 +168,37 @@ public class DetailActivity extends AppCompatActivity {
             DetailAdapter adapter=new DetailAdapter(DetailActivity.this, iPostParams);
             rvPictures.setAdapter(adapter);
             rvPictures.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+    }
+
+    private void convertIt(ArrayList<Bitmap> bitmaps, String s){
+        try{
+            Document document=new Document();
+            String dirPath=Environment.getExternalStorageDirectory().toString();
+
+            PdfWriter.getInstance(document, new FileOutputStream(dirPath+"/DocumentScanner/"+s+"/example.pdf"));
+            document.open();
+            Bitmap bitmap;
+
+            for(int i=0;i<bitmaps.size();i++){
+                bitmap=bitmaps.get(i);
+                if(bitmap!=null){
+                    ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                    Image img= Image.getInstance(stream.toByteArray());
+
+                    float scaler=((document.getPageSize().getWidth()-document.leftMargin()
+                        -document.rightMargin()-0)/img.getWidth())*100;
+                    img.scalePercent(scaler);
+                    img.setAlignment(Image.ALIGN_CENTER|Image.ALIGN_TOP);
+
+                    document.add(img);
+                }
+            }
+            document.close();
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }
