@@ -4,22 +4,29 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Adapter.DetailAdapter;
+import com.luxuan.stitcher.stitcher.Beans.DetailItem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
@@ -93,7 +100,7 @@ public class DetailActivity extends AppCompatActivity {
         file.delete();
     }
 
-    private class FDAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class PDFAsyncTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog loadingDialog=new ProgressDialog(DetailActivity.this);
 
         @Override
@@ -128,6 +135,34 @@ public class DetailActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             loadingDialog.dismiss();
+        }
+    }
+
+    public void getFromSdcard(String s){
+        file=new File(Environment.getExternalStorageDirectory(), "/DocumentScanner/"+s);
+        ArrayList<DetailItem> iPostParams=new ArrayList<>();
+        Log.d("DetailActivity", "Check point 1");
+
+        if(file.isDirectory()){
+            Log.d("DetailActivity", "Check point 2");
+            fileLists=file.listFiles();
+
+            for(int i=0;i<fileLists.length;i++){
+                try{
+                    Bitmap bitmap= BitmapFactory.decodeStream(new FileInputStream(fileLists[i]));
+                    if(bitmap!=null){
+                        DetailItem postEmail=new DetailItem(bitmap, fileLists[i].getAbsolutePath());
+                        iPostParams.add(postEmail);
+                        bitmapLists.add(bitmap);
+                    }
+                }catch(FileNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+
+            DetailAdapter adapter=new DetailAdapter(DetailActivity.this, iPostParams);
+            rvPictures.setAdapter(adapter);
+            rvPictures.setLayoutManager(new GridLayoutManager(this, 2));
         }
     }
 }
