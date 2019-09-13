@@ -75,7 +75,7 @@ public class DetailActivity extends AppCompatActivity {
 
         rvPictures=(RecyclerView)findViewById(R.id.rvPics);
 
-        new LoadPhoto(string).execute();
+        new LoadPhotos(string).execute();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class DetailActivity extends AppCompatActivity {
         public Void doInBackground(Void... params){
             convertIt(bitmapLists, string);
 
-            file=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/DocumentScanner/"+s+"/example.pdf");
+            file=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/DocumentScanner/"+string+"/example.pdf");
             Intent target=new Intent(Intent.ACTION_VIEW);
             target.setDataAndType(Uri.fromFile(file), "application/pdf");
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -199,6 +199,57 @@ public class DetailActivity extends AppCompatActivity {
             document.close();
         }catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public class LoadPhotos extends AsyncTask<String, Void, String>{
+        ProgressDialog dialog;
+        ArrayList<DetailItem> iPostParams=new ArrayList<>();
+        private DetailItem postEmail;
+        String s;
+
+        public LoadPhotos(String s){
+            this.s=s;
+        }
+
+        @Override
+        public void onPreExecute(){
+            dialog=ProgressDialog.show(DetailActivity.this,"Loading",
+                    "Loading...", true);
+            dialog.show();
+        }
+
+        @Override
+        public String doInBackground(String... arg0){
+            file=new File(Environment.getExternalStorageDirectory(), "/DocumentScanner/"+s);
+            Log.d("DetailActivity", "Check point 1");
+
+            if(file.isDirectory()) {
+                Log.d("DetailActivity", "Check point 2");
+                fileLists = file.listFiles();
+
+                for (int i = 0; i < fileLists.length; i++) {
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(fileLists[i]));
+                        if (bitmap != null) {
+                            postEmail = new DetailItem(bitmap, fileLists[i].getAbsolutePath());
+                            iPostParams.add(postEmail);
+                            bitmapLists.add(bitmap);
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return String.valueOf(bitmapLists);
+        }
+
+        @Override
+        public void onPostExecute(String result){
+            DetailAdapter adapter=new DetailAdapter(DetailActivity.this, iPostParams);
+            rvPictures.setAdapter(adapter);
+            rvPictures.setLayoutManager(new GridLayoutManager(DetailActivity.this, 2));
+            dialog.dismiss();
         }
     }
 }
