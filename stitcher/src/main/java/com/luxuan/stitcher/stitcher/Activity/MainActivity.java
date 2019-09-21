@@ -1,5 +1,7 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
@@ -10,10 +12,13 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.luxuan.stitcher.R;
 import com.luxuan.stitcher.stitcher.Util.OpenCVHelper;
@@ -23,6 +28,7 @@ import com.luxuan.stitcher.stitcher.widget.PolygonView;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView rotateRight=(ImageView)findViewById(R.id.rotateRight);
+        ImageView rotateRight=(ImageView)findViewById(R.id.rotateright);
         rotateRight.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -160,5 +166,47 @@ public class MainActivity extends AppCompatActivity {
             orderedPoints=getOutlinePoints(tempBitmap);
         }
         return orderedPoints;
+    }
+
+    private Map<Integer, PointF> getOutlinePoints(Bitmap tempBitmap){
+        Map<Integer, PointF> outlinePoints=new HashMap<>();
+        outlinePoints.put(0, new PointF(0, 0));
+        outlinePoints.put(1, new PointF(tempBitmap.getWidth(), 0));
+        outlinePoints.put(2, new PointF(0, tempBitmap.getHeight()));
+        outlinePoints.put(3, new PointF(tempBitmap.getWidth(), tempBitmap.getHeight()));
+
+        return outlinePoints;
+    }
+
+    private void popup_request(final Bitmap bitmap){
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+
+        View promptView=layoutInflater.inflate(R.layout.popup_layout, null);
+
+        AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(MainActivity.this);
+
+        alertDialogBuilder.setView(promptView);
+
+        final EditText inputEditText=(EditText)promptView.findViewById(R.id.userInput);
+
+        alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int id){
+                saveToInternalStorage(bitmap, inputEditText.getText().toString());
+                Toast.makeText(MainActivity.this, "Image saved to "+ inputEditText.getText().toString(), Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int id){
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog=alertDialogBuilder.create();
+
+        alertDialog.show();
     }
 }
