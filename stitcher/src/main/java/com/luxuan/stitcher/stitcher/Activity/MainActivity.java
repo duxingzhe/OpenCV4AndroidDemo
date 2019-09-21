@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,8 +26,10 @@ import com.luxuan.stitcher.stitcher.Util.OpenCVHelper;
 import com.luxuan.stitcher.stitcher.Util.Utils;
 import com.luxuan.stitcher.stitcher.widget.PolygonView;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -208,5 +211,41 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog=alertDialogBuilder.create();
 
         alertDialog.show();
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage, String string){
+        File directory=new File(Environment.getExternalStorageDirectory(), "DocumentScanner" + File.separator + string);
+
+        if(!directory.exists()){
+            directory.mkdirs();
+            File directoryThumb=new File(Environment.getExternalStorageDirectory(), "DocumentScanner"+File.separator+"thumbnails");
+            if(!directoryThumb.exists()){
+                directoryThumb.mkdirs();
+            }
+            File myThumbPath=new File(directoryThumb, string + ".jpg");
+
+            try{
+                FileOutputStream fosThumb=new FileOutputStream(myThumbPath);
+                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fosThumb);
+                fosThumb.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        int time=(int)System.currentTimeMillis();
+        Timestamp tsTemp=new Timestamp(time);
+        String ts=tsTemp.toString();
+        File myPath=new File(directory, ts+".jpg");
+
+        try{
+            fos=new FileOutputStream(myPath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return directory.getAbsolutePath();
     }
 }
