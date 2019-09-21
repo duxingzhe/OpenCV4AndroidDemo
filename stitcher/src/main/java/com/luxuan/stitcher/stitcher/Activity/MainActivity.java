@@ -1,7 +1,9 @@
 package com.luxuan.stitcher.stitcher.Activity;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -14,11 +16,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.luxuan.stitcher.R;
+import com.luxuan.stitcher.stitcher.Util.OpenCVHelper;
 import com.luxuan.stitcher.stitcher.Util.Utils;
 import com.luxuan.stitcher.stitcher.widget.PolygonView;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.luxuan.stitcher.stitcher.Activity.PolygonViewScreenActivity.rotateImage;
@@ -100,5 +105,60 @@ public class MainActivity extends AppCompatActivity {
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed(){
+        finish();
+        super.onBackPressed();
+    }
+
+    private Bitmap scaledBitmap(Bitmap bitmap, int width, int height){
+        Matrix matrix=new Matrix();
+        matrix.setRectToRect(new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()), new RectF(0, 0, width, height), Matrix.ScaleToFit.CENTER);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private Map<Integer, PointF> getEdgePoints(Bitmap tempBitmap){
+        List<PointF> pointFs=getContourEdgePoints(tempBitmap);
+        Map<Integer, PointF> orderedPoints=orderedValidEdgePoints(tempBitmap, pointFs);
+        return orderedPoints;
+    }
+
+    private List<PointF> getContourEdgePoints(Bitmap tempBitmap){
+        int w=tempBitmap.getWidth(), h=tempBitmap.getHeight();
+        int[] pixels=new int[w*h];
+        tempBitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+
+        int[] points= OpenCVHelper.getBoxPoints(pixels, w, h);
+        float x1=points[0];
+        float y1=points[1];
+        float x2=points[2];
+        float y2=points[3];
+
+        float x3=points[4];
+        float y3=points[5];
+        float x4=points[6];
+        float y4=points[7];
+
+        List<PointF> pointFs=new ArrayList<>();
+        pointFs.add(new PointF(x1, y1));
+        pointFs.add(new PointF(x2, y2));
+        pointFs.add(new PointF(x3, y3));
+        pointFs.add(new PointF(x4, y4));
+        return pointFs;
+    }
+
+    private Map<Integer, PointF> orderedValidEdgePoints(Bitmap tempBitmap, List<PointF> pointFs){
+        Map<Integer, PointF> orderedPoints=polygonView.getOrderedPoints(pointFs);
+        if(!polygonView.isValidShape(orderedPoints)){
+            orderedPoints=getOutlinePoints(tempBitmap);
+        }
+        return orderedPoints;
     }
 }
