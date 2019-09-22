@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.luxuan.stitcher.stitcher.Activity.PolygonViewScreenActivity.rotateImage;
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap, op, op2;
     private int status=0;
     private FileOutputStream fos;
-    private float perWidth, perHieght;
+    private float persWidth, persHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,5 +250,65 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return directory.getAbsolutePath();
+    }
+
+    private class ScanButtonClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            if(status==0){
+                Map<Integer, PointF> points=polygonView.getPoints();
+                Log.d("OpenCV4Android", String.valueOf(points.size()));
+                op=getScannedBitmap(bitmap, points);
+
+                Log.d("MainActivity", "Sizes are" +bitmap.getWidth()+" "+bitmap.getHeight());
+                if(persWidth>persHeight){
+                    op2=Bitmap.createScaledBitmap(op, 1600, 1000, false);
+                }else{
+                    op2=Bitmap.createScaledBitmap(op, 100, 1600, false);
+                }
+
+                status=1;
+            }else if(status==1){
+                popup_request(((BitmapDrawable)iv_show_img.getDrawable()).getBitmap());
+            }
+        }
+    }
+
+    private Bitmap getScannedBitmap(Bitmap original, Map<Integer, PointF> points){
+        int width=original.getWidth();
+        int height=original.getHeight();
+        float xRatio=(float)original.getWidth()/iv_show_img.getWidth();
+        float yRatio=(float)original.getHeight()/iv_show_img.getHeight();
+
+        int[] newPoints={0,0,0,0,0,0,0,0};
+        newPoints[0]=(int)((points.get(0).x)*xRatio);
+        newPoints[1]=(int)((points.get(0).y)*xRatio);
+        newPoints[2]=(int)((points.get(1).x)*xRatio);
+        newPoints[3]=(int)((points.get(1).y)*xRatio);
+        newPoints[4]=(int)((points.get(2).x)*xRatio);
+        newPoints[5]=(int)((points.get(2).y)*xRatio);
+        newPoints[6]=(int)((points.get(3).x)*xRatio);
+        newPoints[7]=(int)((points.get(3).y)*xRatio);
+        Log.d("OpenCV", String.valueOf(newPoints[0]));
+        Log.d("OpenCV", String.valueOf(newPoints[1]));
+        Log.d("OpenCV", String.valueOf(points.get(1).x));
+        Log.d("OpenCV", String.valueOf(points.get(1).y));
+        Log.d("OpenCV", String.valueOf(points.get(2).x));
+        Log.d("OpenCV", String.valueOf(points.get(2).y));
+        Log.d("OpenCV", String.valueOf(points.get(3).x));
+        Log.d("OpenCV", String.valueOf(points.get(3).y));
+        persWidth=max(abs(newPoints[2]-newPoints[0]), abs(newPoints[4]-newPoints[0]));
+        persHeight=max(abs(newPoints[3]-newPoints[1]), abs(newPoints[5]-newPoints[1]));
+
+        int[] pixels=new int[width*height];
+        original.getPixels(pixels, 0, width, 0, 0, width, height);
+        Log.d("OpenCV4Android", "Came here");
+        int[] resultPixels=OpenCVHelper.perspective(pixels, newPoints, width, height);
+        Log.d("OpenCV4Android", "Check point");
+        Bitmap result=Bitmap.createBitmap(width,height, Bitmap.Config.RGB_565);
+        result.setPixels(resultPixels, 0, width, 0, 0, width, height);
+        polygonView.setVisibility(View.GONE);
+        return result;
     }
 }
