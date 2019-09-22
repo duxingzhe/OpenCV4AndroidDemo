@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        iv_show_img=(ImageView)findviewById(R.id.iv_show_img);
+        iv_show_img=(ImageView)findViewById(R.id.iv_show_img);
 
         ImageView submitImg=(ImageView)findViewById(R.id.submit);
         submitImg.setOnClickListener(new ScanButtonClickListener());
@@ -310,5 +310,15 @@ public class MainActivity extends AppCompatActivity {
         result.setPixels(resultPixels, 0, width, 0, 0, width, height);
         polygonView.setVisibility(View.GONE);
         return result;
+    }
+
+    private boolean isScanPointsValid(Map<Integer, PointF> points){
+        return points.size()==4;
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle){
+        Matrix matrix=new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 }
