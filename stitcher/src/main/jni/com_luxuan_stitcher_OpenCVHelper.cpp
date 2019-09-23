@@ -162,3 +162,31 @@ vector<Point2f> getPoints(Mat image)
 
     return approxCurve;
 }
+
+Mat doPerspective(Mat inputImage)
+{
+    __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Checkpoint 1");
+    vector<Point2f> points=getPoints(inputImage);
+    __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Checkpoint 2");
+
+    int w1=getDistance(points[0], points[1]);
+    Point p1, p2;
+    int w=inputImage.size().width;
+    int h=inputImage.size().height;
+    if(w>h)
+    {
+        p1=Point(0,h);
+        p2=Point(w, 0);
+    }
+    else
+    {
+        p1=Point(w,0);
+        p2=Point(0,h);
+    }
+    vector<Point2f> dst=pushPoints(Point(0,0), p1, p2, Point(w,h));
+
+    Mat transMatrix=getPerspectiveTransform(points, dst);
+    warpPerspective(inputImage, inputImage, transMatrix, inputImage.size());
+
+    return inputImage;
+}
