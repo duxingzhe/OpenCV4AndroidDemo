@@ -59,7 +59,7 @@ vector<Point2f> orderPoints(vector<Point2f> sort)
         sum[i]=sort[i].x+sort[i].y;
     }
     max_min[0]=min(sum[0], min(sum[1], min(sum[2], sum[3])));
-    max_min[1]=max(sum[0], max(sum[i], max(sum[2], sum[3])));
+    max_min[1]=max(sum[0], max(sum[1], max(sum[2], sum[3])));
     for(int i=0;i<sort.size();i++)
     {
         diff[i]=abs(sort[i].x-sort[i].y);
@@ -92,4 +92,73 @@ vector<Point2f> orderPoints(vector<Point2f> sort)
     sort=pushPoints(tl, tr, bl, br);
 
     return sort;
+}
+
+vector<Point2f> getPoints(Mat image)
+{
+    int width=image.size().width;
+    int height=image.size().height;
+    int intensity, img_intensity, left_area=0, left_index=0;
+    Mat bgdModel, fgdModel, mask;
+    vector<vector<Point>> contours;
+    vector<Point2f> approxCurve, rectPts;
+    double a, epsilon;
+    Rect rect, bounding_rect;
+    Size resizeScale=(width> height) ? Size(RESIZE_HEIGHT, RESIZE_WIDTH): Size(RESIZE_WIDTH, RESIZE_HEIGHT);
+
+    int x_rect=(int)((float)RESIZE_WIDTH/7.0);
+    int y_rect=(int)((float)RESIZE_HEIGHT/7.0);
+    int height_rect, width_rect;
+    if(width>height)
+    {
+        width_rect=width-(int)(2*((float)RESIZE_HEIGHT/7.0));
+        height_rect=height-(int)(2*((float)RESIZE_WIDTH/7.0));
+    }
+    else
+    {
+        width_rect=width-(int)(2*((float)RESIZE_WIDTH/7.0));
+        height_rect=height-(int)(2*((float)RESIZE_HEIGHT/7.0));
+    }
+
+    resize(image, image, resizeScale);
+    mask=Mat::zeros(resizeScale, CV_8UC1);
+    bgdModel=Mat::zeros(1, 65, CV_64F);
+    fgdModel=Mat::zeros(1, 65, CV_64F);
+
+    rect=Rect(x_rect, y_rect, width_rect, height_rect);
+    __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%d", image.channels());
+    grabCut(image, mask, rect, bgdModel, fgdModel, 20, GC_INIT_WITH_RECT);
+    for(int i=0;i<image.rows;i++)
+    {
+        for(int j=0;j<image.cols;j++)
+        {
+            intensity=mask.at<uchar>(i,j);
+            if((intensity==0)|(intensity==2))
+            {
+                mask.at<uchar>(i,j)=0;
+            }
+            else
+            {
+                mask.at<uchar>(i,j)=255;
+            }
+        }
+    }
+
+    findContours(mask, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+    for(int i=0;i<contours.size();i++)
+    {
+        a=contourArea(contours[i]);
+        if(a>left_area)
+        {
+            left_area=a;
+            left_index=i;
+            bounding_rect=boundingRect(contours[i]);
+        }
+    }
+
+    epsilon=0.1*arcLength(Mat(contours[left_index]), true);
+    approxPolyDP(Mat(contours[left_index]), approxCurve, epsilon, true);
+    approxCurve=orderPoints(approxCurve);
+
+    return approxCurve;
 }
