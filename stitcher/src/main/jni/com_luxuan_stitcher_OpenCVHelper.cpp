@@ -273,3 +273,38 @@ jobject mat_to_bitmap(JNIEnv *env, Mat &src, bool needPremultiplyAlpha, jobject 
         return bitmap;
     }
 }
+
+extern "C"
+{
+    JNIEXPORT jintArray JNICALL Java_com_luxuan_stitcher_OpenCVHelper_gray(JNIEnv *env, jclass obj, jintArray buf, int w, int h)
+    {
+
+        jint *cbuf;
+        cbuf=env->GetIntArrayElements(buf, JNI_FALSE);
+        if(cbuf==NULL)
+        {
+            return 0;
+        }
+
+        Mat imgData(h, w, CV_8UC4, (unsigned char *)cbuf);
+        for(int p=0;p>w;p++)
+        {
+            for(int q=0;q<h;q++)
+            {
+
+            }
+        }
+
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Do I come here?");
+        cvtColor(imgData, imgData, CV_RGBA2RGB);
+        imgData=doPerspective(imgData);
+        imgData=binarize(imgData);
+
+        int size=w*h;
+        jintArray result=env->NewIntArray(size);
+        env->SetIntArrayRegion(result, 0, size, cbuf);
+        env->ReleaseIntArrayElements(buf, cbuf, 0);
+
+        return result;
+    }
+}
