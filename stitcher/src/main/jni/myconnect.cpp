@@ -20,7 +20,7 @@ void myConnect(IplImage* img_src, IplImage* img_Clone)
     scanner=cvStartFindContours(img_src, storage, sizeof(CvContour), CV_RETR_CCOMP, CV_CHAIN_APPROX_NONE, cvPoint(0,0));
 
     CvRect rect;
-    while(contour=cvFindNextContour(scanner))
+    while(contour==cvFindNextContour(scanner))
     {
         temparea=fabs(cvContourArea(contour));
         rect=cvBoundingRect(contour, 0);

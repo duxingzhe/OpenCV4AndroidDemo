@@ -57,9 +57,9 @@ vector<Point2f> orderPoints(vector<Point2f> sort)
 
     for(int i=0;i<sort.size();i++)
     {
-        if(sum[i]=max_min[0])
+        if(sum[i]==max_min[0])
             tl=sort[i];
-        if(sum[i]=max_min[1])
+        if(sum[i]==max_min[1])
             br=sort[i];
         if(diff[i]==max_min[3])
             bl=sort[i];
@@ -84,7 +84,7 @@ vector<Point2f> getPoints(Mat image)
     int height=image.size().height;
     int intensity, img_intensity, larea=0, lindex=0;
     Mat bgdModel, fgdModel, mask;
-    vector<vector<Point>>contours;
+    vector<vector<Point> >contours;
     vector<Point2f> approxCurve, rectPts;
     double a, epsilon;
     Rect rect, bounding_rect;
@@ -129,8 +129,9 @@ vector<Point2f> getPoints(Mat image)
 
         approxCurve=orderPoints(approxCurve);
 
-        return approxCurve;
     }
+
+    return approxCurve;
 }
 
 Mat doPerspective(Mat inputImage)

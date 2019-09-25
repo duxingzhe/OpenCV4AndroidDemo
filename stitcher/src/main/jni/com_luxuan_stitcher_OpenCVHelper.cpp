@@ -272,6 +272,7 @@ jobject mat_to_bitmap(JNIEnv *env, Mat &src, bool needPremultiplyAlpha, jobject 
         env->ThrowNew(je, "Unknown exception in JNI code {nMatToBitmap}");
         return bitmap;
     }
+
 }
 
 extern "C"
@@ -341,7 +342,7 @@ extern "C"
 
         jclass java_bitmap_class=(jclass)env->FindClass("android/graphics/Bitmap");
         jmethodID mid=env->GetMethodID(java_bitmap_class, "getConfig", "()Landroid/graphics/Bitmap$Config");
-        jobject bitmap_config(=env->CallObjectMethod(bitmap, mid));
+        jobject bitmap_config=env->CallObjectMethod(bitmap, mid);
         jobject _bitmap=mat_to_bitmap(env, dst, false, bitmap_config);
 
         AndroidBitmap_unlockPixels(env, bitmap);

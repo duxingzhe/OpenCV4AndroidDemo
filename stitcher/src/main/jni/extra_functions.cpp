@@ -222,9 +222,9 @@ JNIEXPORT jobject JNICALL Java_com_luxuan_stitcher_OpenCVHelper_getBlackWhiteBit
     jclass java_bitmap_class=(jclass)env->FindClass("android/graphics/Bitmap");
     jmethodID mid=env->GetMethodID(java_bitmap_class, "getConfig", "()Landroid/graphics/Bitmap$Config;");
     jobject bitmap_config=env->CallObjectMethod(bitmap, mid);
-    jobject _bitmap=mat_to_bitmap(env, dst, false, bitmap_config);
+    jobject _bitmap=mat_to_bitmapp(env, dst, false, bitmap_config);
 
-    AndroidBitmap_unlockPixles(env, bitmap);
+    AndroidBitmap_unlockPixels(env, bitmap);
     return _bitmap;
 }
 

@@ -62,7 +62,7 @@ IplImage* mySideSobel(IplImage* img0)
             G8=G[j+1][i];
             if(G[j][i]>Gsum)
             {
-                if(aH[j][i]>aV[j][i]&&aH[j][i]>aH[j-1][i]&&aH[j+1][i]||aV[j][i]>aH[j][i]&&aV[j][i]>aV[j][i-1]&&aV[j][i]>aV[j][i]>aV[j][i+1])
+                if(aH[j][i]>aV[j][i]&&aH[j][i]>aH[j-1][i]&&aH[j][i]>aH[j+1][i] || aV[j][i]>aH[j][i]&&aV[j][i]>aV[j][i-1]&&aV[j][i]>aV[j][i+1])
                     Data[n]=255;
             }
             else
