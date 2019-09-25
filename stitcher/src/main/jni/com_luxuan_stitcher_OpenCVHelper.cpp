@@ -401,4 +401,57 @@ extern "C"
         env->ReleaseIntArrayElements(buf, cbuf, 0);
         return result;
     }
+
+    JNIEXPORT jintArray JNICALL Java_com_stitcher_OpenCVHelper_perspective(JNIEnv *env, jclass obj, jintArray buf, jintArray pts, int w, int h)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "inside the function");
+        jint *cbuf;
+        cbuf=env->GetIntArrayElements(buf, JNI_FALSE);
+        if(cbuf==NULL)
+        {
+            return 0;
+        }
+
+        int newPoints[8];
+        Mat imgData(h, w, CV_8UC4, (unsigned char *)cbuf);
+        Mat abc;
+
+        cvtColor(imgData, abc, CV_RGBA2RGB);
+        jint *point=env->GetIntArrayElements(pts, JNI_FALSE);
+        if(point==NULL)
+        {
+            return buf;
+        }
+        for(int p=0;p<8;p++)
+        {
+            newPoints[p]=point[p];
+            __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%d", newPoints[p]);
+        }
+        vector<Point2f> points;
+        for(int p=0;p<8;p+=2)
+        {
+            Point2f abc((float)newPoints[p], (float)newPoints[p+1]);
+            points.push_back(abc);
+        }
+
+        int w1=getDistance(points[0], points[1]);
+        Point p1, p2;
+        w=abc.size().width;
+        h=abc.size().height;
+        p1=Point(w,0);p2=Point(0,h);
+
+        vector<Point2f> dst=pushPoints(Point(0,0), p1, p2, Point(w,h));
+
+        Mat transMatrix=getPerspectiveTransform(points, dst);
+        warpPerspective(abc, abc, transMatrix, imgData.size());
+
+        cvtColor(abc, imgData, CV_RGB2RGBA);
+
+        int size=imgData.rows*imgData.cols;
+        jintArray result=env->NewIntArray(size);
+        env->SetIntArrayRegion(result, 0, size, cbuf);
+        env->ReleaseIntArrayElements(buf, cbuf, 0);
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%d %d %d %d", w, h, imgData.row, imgData.col);
+        return result;
+    }
 }
