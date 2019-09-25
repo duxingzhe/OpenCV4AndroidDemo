@@ -72,7 +72,7 @@ vector<Point2f> orderPoints(vector<Point2f> sort)
         {
             tl=sort[i];
         }
-        if(sum[i]=max_min[1])
+        if(sum[i]==max_min[1])
         {
             br=sort[i];
         }
@@ -100,7 +100,7 @@ vector<Point2f> getPoints(Mat image)
     int height=image.size().height;
     int intensity, img_intensity, left_area=0, left_index=0;
     Mat bgdModel, fgdModel, mask;
-    vector<vector<Point>> contours;
+    vector<vector<Point> > contours;
     vector<Point2f> approxCurve, rectPts;
     double a, epsilon;
     Rect rect, bounding_rect;
@@ -451,7 +451,7 @@ extern "C"
         jintArray result=env->NewIntArray(size);
         env->SetIntArrayRegion(result, 0, size, cbuf);
         env->ReleaseIntArrayElements(buf, cbuf, 0);
-        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%d %d %d %d", w, h, imgData.row, imgData.col);
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%d %d %d %d", w, h, imgData.rows, imgData.cols);
         return result;
     }
 }
