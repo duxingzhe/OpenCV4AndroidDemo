@@ -349,4 +349,56 @@ extern "C"
         return _bitmap;
     }
 
+    JNIEXPORT jintArray JNICALL Java_com_luxuan_stitcher_OpenCVHelper_getBoxPoints(JNIEnv *env, jclass obj, jintArray buf, int w, int h)
+    {
+        jint *cbuf;
+        cbuf=env->GetIntArrayElements(buf, JNI_FALSE);
+        if(cbuf==NULL)
+        {
+
+        }
+        Mat imgData(h, w, CV_8UC4, (unsigned char *)cbuf);
+        int originalWidth=imgData.cols;
+        int originalHeight=imgData.rows;
+        int resizedHeight, resizedWidth;
+        if(originalWidth>originalHeight)
+        {
+            resizedWidth=RESIZE_HEIGHT;
+            resizedHeight=RESIZE_WIDTH;
+        }
+        else
+        {
+            resizedWidth=RESIZE_WIDTH;
+            resizedHeight=RESIZE_HEIGHT;
+        }
+
+        cvtColor(imgData, imgData, CV_RGBA2RGB);
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "SIZE %d %d", originalHeight, originalWidth);
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Checkpoint 3xxx");
+        vector<Point2f> points=getPoints(imgData);
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "Checkpoint 3");
+        int point[8]={0,0,0,0,0,0,0,0};
+        int counter=0;
+        for(int i=0;i<points.size();i++)
+        {
+            __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "point before x: %d", (int)points[i].x);
+            point[counter]=(int)points[i].x*(float(originalWidth)/resizedWidth);
+            counter++;
+            __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "point before y: %d", (int)points[i].y);
+            point[counter]=(int)points[i].y*(float(originalHeight)/resizedHeight);
+            counter++;
+        }
+
+        for(int i=0;i<counter;i++)
+        {
+            __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "point %d", point[i]);
+        }
+
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "%d", points.size());
+
+        jintArray result=env->NewIntArray(8);
+        env->SetIntArrayRegion(result, 0, 8, point);
+        env->ReleaseIntArrayElements(buf, cbuf, 0);
+        return result;
+    }
 }
