@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".stitcher.Activity.MainActivity">
+        <activity android:name=".stitcher.Activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,6 +18,12 @@
 
         <activity android:name=".stitcher.Activity.GridViewActivity"></activity>
         <activity android:name=".stitcher.Activity.CameraScreenActivity"></activity>
+        <activity android:name=".stitcher.Activity.ColorImageActivity"></activity>
+        <activity android:name=".stitcher.Activity.PolygonViewScreenActivity"></activity>
+        <activity android:name=".stitcher.Activity.HomeActivity"></activity>
+        <activity android:name=".stitcher.Activity.ImageActivity"></activity>
+        <activity android:name=".stitcher.Activity.ResultActivity"></activity>
+        <activity android:name=".stitcher.Activity.MainActivity"></activity>
     </application>
 
 </manifest>
