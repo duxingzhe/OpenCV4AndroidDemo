@@ -19,6 +19,28 @@ import org.opencv.utils.Converters;
 
 public class Calib3d {
 
+    // C++: enum HandEyeCalibrationMethod
+    public static final int
+            CALIB_HAND_EYE_TSAI = 0,
+            CALIB_HAND_EYE_PARK = 1,
+            CALIB_HAND_EYE_HORAUD = 2,
+            CALIB_HAND_EYE_ANDREFF = 3,
+            CALIB_HAND_EYE_DANIILIDIS = 4;
+
+
+    // C++: enum SolvePnPMethod
+    public static final int
+            SOLVEPNP_ITERATIVE = 0,
+            SOLVEPNP_EPNP = 1,
+            SOLVEPNP_P3P = 2,
+            SOLVEPNP_DLS = 3,
+            SOLVEPNP_UPNP = 4,
+            SOLVEPNP_AP3P = 5,
+            SOLVEPNP_IPPE = 6,
+            SOLVEPNP_IPPE_SQUARE = 7,
+            SOLVEPNP_MAX_COUNT = 7+1;
+
+
     // C++: enum <unnamed>
     public static final int
             CV_ITERATIVE = 0,
@@ -76,28 +98,6 @@ public class Calib3d {
             fisheye_CALIB_FIX_K4 = 1 << 7,
             fisheye_CALIB_FIX_INTRINSIC = 1 << 8,
             fisheye_CALIB_FIX_PRINCIPAL_POINT = 1 << 9;
-
-
-    // C++: enum SolvePnPMethod
-    public static final int
-            SOLVEPNP_ITERATIVE = 0,
-            SOLVEPNP_EPNP = 1,
-            SOLVEPNP_P3P = 2,
-            SOLVEPNP_DLS = 3,
-            SOLVEPNP_UPNP = 4,
-            SOLVEPNP_AP3P = 5,
-            SOLVEPNP_IPPE = 6,
-            SOLVEPNP_IPPE_SQUARE = 7,
-            SOLVEPNP_MAX_COUNT = 7+1;
-
-
-    // C++: enum HandEyeCalibrationMethod
-    public static final int
-            CALIB_HAND_EYE_TSAI = 0,
-            CALIB_HAND_EYE_PARK = 1,
-            CALIB_HAND_EYE_HORAUD = 2,
-            CALIB_HAND_EYE_ANDREFF = 3,
-            CALIB_HAND_EYE_DANIILIDIS = 4;
 
 
     // C++: enum GridType

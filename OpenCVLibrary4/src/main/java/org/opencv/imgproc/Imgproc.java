@@ -157,7 +157,8 @@ public class Imgproc {
             COLORMAP_VIRIDIS = 16,
             COLORMAP_CIVIDIS = 17,
             COLORMAP_TWILIGHT = 18,
-            COLORMAP_TWILIGHT_SHIFTED = 19;
+            COLORMAP_TWILIGHT_SHIFTED = 19,
+            COLORMAP_TURBO = 20;
 
 
     // C++: enum HistCompMethods

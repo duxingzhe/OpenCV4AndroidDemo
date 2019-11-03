@@ -14,10 +14,10 @@ LOCAL_PATH:=$(subst ?,,$(firstword ?$(subst \, ,$(subst /, ,$(call my-dir)))))
 OPENCV_TARGET_ARCH_ABI:=$(TARGET_ARCH_ABI)
 OPENCV_THIS_DIR:=$(patsubst $(LOCAL_PATH)\\%,%,$(patsubst $(LOCAL_PATH)/%,%,$(call my-dir)))
 OPENCV_MK_DIR:=$(dir $(lastword $(MAKEFILE_LIST)))
-OPENCV_3RDPARTY_LIBS_DIR:=$(OPENCV_THIS_DIR)/../jniLibs/3rdparty/libs/$(OPENCV_TARGET_ARCH_ABI)
+OPENCV_3RDPARTY_LIBS_DIR:=$(OPENCV_THIS_DIR)/../3rdparty/libs/$(OPENCV_TARGET_ARCH_ABI)
 OPENCV_BASEDIR:=
 OPENCV_LOCAL_C_INCLUDES:="$(LOCAL_PATH)/$(OPENCV_THIS_DIR)/include/opencv" "$(LOCAL_PATH)/$(OPENCV_THIS_DIR)/include"
-OPENCV_MODULES:=shape highgui videostab ml dnn photo superres videoio imgcodecs video stitching objdetect calib3d features2d imgproc flann core
+OPENCV_MODULES:=highgui shape ml dnn objdetect superres stitching videostab calib3d videoio imgcodecs features2d video photo imgproc flann core
 OPENCV_SUB_MK:=$(call my-dir)/OpenCV-$(TARGET_ARCH_ABI).mk
 
 ifeq ($(OPENCV_LIB_TYPE),)
@@ -43,7 +43,7 @@ ifeq ($(OPENCV_LIB_TYPE),SHARED)
     OPENCV_LIBS_DIR:=$(OPENCV_THIS_DIR)/../libs/$(OPENCV_TARGET_ARCH_ABI)
     OPENCV_LIB_SUFFIX:=so
 else
-    OPENCV_LIBS_DIR:=$(OPENCV_THIS_DIR)/../jniLibs/staticlibs/$(OPENCV_TARGET_ARCH_ABI)
+    OPENCV_LIBS_DIR:=$(OPENCV_THIS_DIR)/../staticlibs/$(OPENCV_TARGET_ARCH_ABI)
     OPENCV_LIB_SUFFIX:=a
     OPENCV_INSTALL_MODULES:=on
 endif

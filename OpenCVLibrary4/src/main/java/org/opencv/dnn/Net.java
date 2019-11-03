@@ -293,7 +293,7 @@ public class Net {
      * @param inpPin descriptor of the second layer input.
      *
      * Descriptors have the following template &lt;DFN&gt;&amp;lt;layer_name&amp;gt;[.input_number]&lt;/DFN&gt;:
-     * - the first part of the template &lt;DFN&gt;layer_name&lt;/DFN&gt; is sting name of the added layer.
+     * - the first part of the template &lt;DFN&gt;layer_name&lt;/DFN&gt; is string name of the added layer.
      * If this part is empty then the network input pseudo layer will be used;
      * - the second optional part of the template &lt;DFN&gt;input_number&lt;/DFN&gt;
      * is either number of the layer input, either label one.

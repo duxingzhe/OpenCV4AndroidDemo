@@ -16,11 +16,11 @@ import org.opencv.utils.Converters;
 
 public class Core {
     // these constants are wrapped inside functions to prevent inlining
-    private static String getVersion() { return "3.4.7"; }
-    private static String getNativeLibraryName() { return "opencv_java347"; }
+    private static String getVersion() { return "3.4.8"; }
+    private static String getNativeLibraryName() { return "opencv_java348"; }
     private static int getVersionMajorJ() { return 3; }
     private static int getVersionMinorJ() { return 4; }
-    private static int getVersionRevisionJ() { return 7; }
+    private static int getVersionRevisionJ() { return 8; }
     private static String getVersionStatusJ() { return ""; }
 
     public static final String VERSION = getVersion();
@@ -62,39 +62,6 @@ public class Core {
             FONT_HERSHEY_SCRIPT_SIMPLEX = 6,
             FONT_HERSHEY_SCRIPT_COMPLEX = 7,
             FONT_ITALIC = 16;
-
-
-    // C++: enum <unnamed>
-    public static final int
-            SVD_MODIFY_A = 1,
-            SVD_NO_UV = 2,
-            SVD_FULL_UV = 4,
-            FILLED = -1,
-            REDUCE_SUM = 0,
-            REDUCE_AVG = 1,
-            REDUCE_MAX = 2,
-            REDUCE_MIN = 3,
-            Hamming_normType = 6,
-            RNG_UNIFORM = 0,
-            RNG_NORMAL = 1,
-            Formatter_FMT_DEFAULT = 0,
-            Formatter_FMT_MATLAB = 1,
-            Formatter_FMT_CSV = 2,
-            Formatter_FMT_PYTHON = 3,
-            Formatter_FMT_NUMPY = 4,
-            Formatter_FMT_C = 5,
-            Param_INT = 0,
-            Param_BOOLEAN = 1,
-            Param_REAL = 2,
-            Param_STRING = 3,
-            Param_MAT = 4,
-            Param_MAT_VECTOR = 5,
-            Param_ALGORITHM = 6,
-            Param_FLOAT = 7,
-            Param_UNSIGNED_INT = 8,
-            Param_UINT64 = 9,
-            Param_UCHAR = 11,
-            Param_SCALAR = 12;
 
 
     // C++: enum LineTypes
@@ -139,6 +106,39 @@ public class Core {
             CMP_LT = 3,
             CMP_LE = 4,
             CMP_NE = 5;
+
+
+    // C++: enum <unnamed>
+    public static final int
+            SVD_MODIFY_A = 1,
+            SVD_NO_UV = 2,
+            SVD_FULL_UV = 4,
+            FILLED = -1,
+            REDUCE_SUM = 0,
+            REDUCE_AVG = 1,
+            REDUCE_MAX = 2,
+            REDUCE_MIN = 3,
+            Hamming_normType = 6,
+            RNG_UNIFORM = 0,
+            RNG_NORMAL = 1,
+            Formatter_FMT_DEFAULT = 0,
+            Formatter_FMT_MATLAB = 1,
+            Formatter_FMT_CSV = 2,
+            Formatter_FMT_PYTHON = 3,
+            Formatter_FMT_NUMPY = 4,
+            Formatter_FMT_C = 5,
+            Param_INT = 0,
+            Param_BOOLEAN = 1,
+            Param_REAL = 2,
+            Param_STRING = 3,
+            Param_MAT = 4,
+            Param_MAT_VECTOR = 5,
+            Param_ALGORITHM = 6,
+            Param_FLOAT = 7,
+            Param_UNSIGNED_INT = 8,
+            Param_UINT64 = 9,
+            Param_UCHAR = 11,
+            Param_SCALAR = 12;
 
 
     // C++: enum Flags

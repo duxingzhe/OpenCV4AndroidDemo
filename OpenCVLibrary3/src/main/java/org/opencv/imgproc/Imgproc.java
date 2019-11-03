@@ -91,6 +91,53 @@ public class Imgproc {
             FLOODFILL_MASK_ONLY = 1 << 17;
 
 
+    // C++: enum <unnamed>
+    public static final int
+            LINE_AA = 16,
+            LINE_8 = 8,
+            LINE_4 = 4,
+            CV_GAUSSIAN_5x5 = 7,
+            CV_SCHARR = -1,
+            CV_MAX_SOBEL_KSIZE = 7,
+            CV_RGBA2mRGBA = 125,
+            CV_mRGBA2RGBA = 126,
+            CV_WARP_FILL_OUTLIERS = 8,
+            CV_WARP_INVERSE_MAP = 16,
+            CV_CHAIN_CODE = 0,
+            CV_LINK_RUNS = 5,
+            CV_POLY_APPROX_DP = 0,
+            CV_CONTOURS_MATCH_I1 = 1,
+            CV_CONTOURS_MATCH_I2 = 2,
+            CV_CONTOURS_MATCH_I3 = 3,
+            CV_CLOCKWISE = 1,
+            CV_COUNTER_CLOCKWISE = 2,
+            CV_COMP_CORREL = 0,
+            CV_COMP_CHISQR = 1,
+            CV_COMP_INTERSECT = 2,
+            CV_COMP_BHATTACHARYYA = 3,
+            CV_COMP_HELLINGER = 3,
+            CV_COMP_CHISQR_ALT = 4,
+            CV_COMP_KL_DIV = 5,
+            CV_DIST_MASK_3 = 3,
+            CV_DIST_MASK_5 = 5,
+            CV_DIST_MASK_PRECISE = 0,
+            CV_DIST_LABEL_CCOMP = 0,
+            CV_DIST_LABEL_PIXEL = 1,
+            CV_DIST_USER = -1,
+            CV_DIST_L1 = 1,
+            CV_DIST_L2 = 2,
+            CV_DIST_C = 3,
+            CV_DIST_L12 = 4,
+            CV_DIST_FAIR = 5,
+            CV_DIST_WELSCH = 6,
+            CV_DIST_HUBER = 7,
+            CV_CANNY_L2_GRADIENT = (1 << 31),
+            CV_HOUGH_STANDARD = 0,
+            CV_HOUGH_PROBABILISTIC = 1,
+            CV_HOUGH_MULTI_SCALE = 2,
+            CV_HOUGH_GRADIENT = 3;
+
+
     // C++: enum HoughModes
     public static final int
             HOUGH_STANDARD = 0,
@@ -143,7 +190,8 @@ public class Imgproc {
             COLORMAP_VIRIDIS = 16,
             COLORMAP_CIVIDIS = 17,
             COLORMAP_TWILIGHT = 18,
-            COLORMAP_TWILIGHT_SHIFTED = 19;
+            COLORMAP_TWILIGHT_SHIFTED = 19,
+            COLORMAP_TURBO = 20;
 
 
     // C++: enum HistCompMethods
@@ -412,53 +460,6 @@ public class Imgproc {
             INTERSECT_NONE = 0,
             INTERSECT_PARTIAL = 1,
             INTERSECT_FULL = 2;
-
-
-    // C++: enum <unnamed>
-    public static final int
-            LINE_AA = 16,
-            LINE_8 = 8,
-            LINE_4 = 4,
-            CV_GAUSSIAN_5x5 = 7,
-            CV_SCHARR = -1,
-            CV_MAX_SOBEL_KSIZE = 7,
-            CV_RGBA2mRGBA = 125,
-            CV_mRGBA2RGBA = 126,
-            CV_WARP_FILL_OUTLIERS = 8,
-            CV_WARP_INVERSE_MAP = 16,
-            CV_CHAIN_CODE = 0,
-            CV_LINK_RUNS = 5,
-            CV_POLY_APPROX_DP = 0,
-            CV_CONTOURS_MATCH_I1 = 1,
-            CV_CONTOURS_MATCH_I2 = 2,
-            CV_CONTOURS_MATCH_I3 = 3,
-            CV_CLOCKWISE = 1,
-            CV_COUNTER_CLOCKWISE = 2,
-            CV_COMP_CORREL = 0,
-            CV_COMP_CHISQR = 1,
-            CV_COMP_INTERSECT = 2,
-            CV_COMP_BHATTACHARYYA = 3,
-            CV_COMP_HELLINGER = 3,
-            CV_COMP_CHISQR_ALT = 4,
-            CV_COMP_KL_DIV = 5,
-            CV_DIST_MASK_3 = 3,
-            CV_DIST_MASK_5 = 5,
-            CV_DIST_MASK_PRECISE = 0,
-            CV_DIST_LABEL_CCOMP = 0,
-            CV_DIST_LABEL_PIXEL = 1,
-            CV_DIST_USER = -1,
-            CV_DIST_L1 = 1,
-            CV_DIST_L2 = 2,
-            CV_DIST_C = 3,
-            CV_DIST_L12 = 4,
-            CV_DIST_FAIR = 5,
-            CV_DIST_WELSCH = 6,
-            CV_DIST_HUBER = 7,
-            CV_CANNY_L2_GRADIENT = (1 << 31),
-            CV_HOUGH_STANDARD = 0,
-            CV_HOUGH_PROBABILISTIC = 1,
-            CV_HOUGH_MULTI_SCALE = 2,
-            CV_HOUGH_GRADIENT = 3;
 
 
     // C++: enum ThresholdTypes

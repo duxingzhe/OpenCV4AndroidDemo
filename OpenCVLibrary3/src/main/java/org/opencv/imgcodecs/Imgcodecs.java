@@ -14,42 +14,6 @@ import org.opencv.utils.Converters;
 
 public class Imgcodecs {
 
-    // C++: enum <unnamed>
-    public static final int
-            CV_LOAD_IMAGE_UNCHANGED = -1,
-            CV_LOAD_IMAGE_GRAYSCALE = 0,
-            CV_LOAD_IMAGE_COLOR = 1,
-            CV_LOAD_IMAGE_ANYDEPTH = 2,
-            CV_LOAD_IMAGE_ANYCOLOR = 4,
-            CV_LOAD_IMAGE_IGNORE_ORIENTATION = 128,
-            CV_IMWRITE_JPEG_QUALITY = 1,
-            CV_IMWRITE_JPEG_PROGRESSIVE = 2,
-            CV_IMWRITE_JPEG_OPTIMIZE = 3,
-            CV_IMWRITE_JPEG_RST_INTERVAL = 4,
-            CV_IMWRITE_JPEG_LUMA_QUALITY = 5,
-            CV_IMWRITE_JPEG_CHROMA_QUALITY = 6,
-            CV_IMWRITE_PNG_COMPRESSION = 16,
-            CV_IMWRITE_PNG_STRATEGY = 17,
-            CV_IMWRITE_PNG_BILEVEL = 18,
-            CV_IMWRITE_PNG_STRATEGY_DEFAULT = 0,
-            CV_IMWRITE_PNG_STRATEGY_FILTERED = 1,
-            CV_IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY = 2,
-            CV_IMWRITE_PNG_STRATEGY_RLE = 3,
-            CV_IMWRITE_PNG_STRATEGY_FIXED = 4,
-            CV_IMWRITE_PXM_BINARY = 32,
-            CV_IMWRITE_EXR_TYPE = 48,
-            CV_IMWRITE_WEBP_QUALITY = 64,
-            CV_IMWRITE_PAM_TUPLETYPE = 128,
-            CV_IMWRITE_PAM_FORMAT_NULL = 0,
-            CV_IMWRITE_PAM_FORMAT_BLACKANDWHITE = 1,
-            CV_IMWRITE_PAM_FORMAT_GRAYSCALE = 2,
-            CV_IMWRITE_PAM_FORMAT_GRAYSCALE_ALPHA = 3,
-            CV_IMWRITE_PAM_FORMAT_RGB = 4,
-            CV_IMWRITE_PAM_FORMAT_RGB_ALPHA = 5,
-            CV_CVTIMG_FLIP = 1,
-            CV_CVTIMG_SWAP_RB = 2;
-
-
     // C++: enum ImwriteEXRTypeFlags
     public static final int
             IMWRITE_EXR_TYPE_HALF = 1,
@@ -101,6 +65,42 @@ public class Imgcodecs {
             IMREAD_REDUCED_GRAYSCALE_8 = 64,
             IMREAD_REDUCED_COLOR_8 = 65,
             IMREAD_IGNORE_ORIENTATION = 128;
+
+
+    // C++: enum <unnamed>
+    public static final int
+            CV_LOAD_IMAGE_UNCHANGED = -1,
+            CV_LOAD_IMAGE_GRAYSCALE = 0,
+            CV_LOAD_IMAGE_COLOR = 1,
+            CV_LOAD_IMAGE_ANYDEPTH = 2,
+            CV_LOAD_IMAGE_ANYCOLOR = 4,
+            CV_LOAD_IMAGE_IGNORE_ORIENTATION = 128,
+            CV_IMWRITE_JPEG_QUALITY = 1,
+            CV_IMWRITE_JPEG_PROGRESSIVE = 2,
+            CV_IMWRITE_JPEG_OPTIMIZE = 3,
+            CV_IMWRITE_JPEG_RST_INTERVAL = 4,
+            CV_IMWRITE_JPEG_LUMA_QUALITY = 5,
+            CV_IMWRITE_JPEG_CHROMA_QUALITY = 6,
+            CV_IMWRITE_PNG_COMPRESSION = 16,
+            CV_IMWRITE_PNG_STRATEGY = 17,
+            CV_IMWRITE_PNG_BILEVEL = 18,
+            CV_IMWRITE_PNG_STRATEGY_DEFAULT = 0,
+            CV_IMWRITE_PNG_STRATEGY_FILTERED = 1,
+            CV_IMWRITE_PNG_STRATEGY_HUFFMAN_ONLY = 2,
+            CV_IMWRITE_PNG_STRATEGY_RLE = 3,
+            CV_IMWRITE_PNG_STRATEGY_FIXED = 4,
+            CV_IMWRITE_PXM_BINARY = 32,
+            CV_IMWRITE_EXR_TYPE = 48,
+            CV_IMWRITE_WEBP_QUALITY = 64,
+            CV_IMWRITE_PAM_TUPLETYPE = 128,
+            CV_IMWRITE_PAM_FORMAT_NULL = 0,
+            CV_IMWRITE_PAM_FORMAT_BLACKANDWHITE = 1,
+            CV_IMWRITE_PAM_FORMAT_GRAYSCALE = 2,
+            CV_IMWRITE_PAM_FORMAT_GRAYSCALE_ALPHA = 3,
+            CV_IMWRITE_PAM_FORMAT_RGB = 4,
+            CV_IMWRITE_PAM_FORMAT_RGB_ALPHA = 5,
+            CV_CVTIMG_FLIP = 1,
+            CV_CVTIMG_SWAP_RB = 2;
 
 
     // C++: enum ImwritePAMFlags

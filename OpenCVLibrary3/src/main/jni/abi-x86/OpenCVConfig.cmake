@@ -25,10 +25,10 @@
 #      - OpenCV_INCLUDE_DIRS             : The OpenCV include directories.
 #      - OpenCV_COMPUTE_CAPABILITIES     : The version of compute capability.
 #      - OpenCV_ANDROID_NATIVE_API_LEVEL : Minimum required level of Android API.
-#      - OpenCV_VERSION                  : The version of this OpenCV build: "3.4.7"
+#      - OpenCV_VERSION                  : The version of this OpenCV build: "3.4.8"
 #      - OpenCV_VERSION_MAJOR            : Major version part of OpenCV_VERSION: "3"
 #      - OpenCV_VERSION_MINOR            : Minor version part of OpenCV_VERSION: "4"
-#      - OpenCV_VERSION_PATCH            : Patch version part of OpenCV_VERSION: "7"
+#      - OpenCV_VERSION_PATCH            : Patch version part of OpenCV_VERSION: "8"
 #      - OpenCV_VERSION_STATUS           : Development status of this build: ""
 #
 #    Advanced variables:
@@ -45,10 +45,10 @@
 # ======================================================
 #  Version variables:
 # ======================================================
-SET(OpenCV_VERSION 3.4.7)
+SET(OpenCV_VERSION 3.4.8)
 SET(OpenCV_VERSION_MAJOR  3)
 SET(OpenCV_VERSION_MINOR  4)
-SET(OpenCV_VERSION_PATCH  7)
+SET(OpenCV_VERSION_PATCH  8)
 SET(OpenCV_VERSION_TWEAK  0)
 SET(OpenCV_VERSION_STATUS "")
 
@@ -113,7 +113,7 @@ if(NOT TARGET ippicv)
   add_library(ippicv STATIC IMPORTED)
   set_target_properties(ippicv PROPERTIES
     IMPORTED_LINK_INTERFACE_LIBRARIES ""
-    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/src/main/3rdparty/libs/x86/libippicv.a"
+    IMPORTED_LOCATION "${OpenCV_INSTALL_PATH}/sdk/native/3rdparty/libs/x86/libippicv.a"
   )
 endif()
 
@@ -125,8 +125,8 @@ set(OpenCV_SHARED OFF)
 # Enables mangled install paths, that help with side by side installs
 set(OpenCV_USE_MANGLED_PATHS FALSE)
 
-set(OpenCV_LIB_COMPONENTS opencv_video;opencv_shape;opencv_highgui;opencv_videostab;opencv_calib3d;opencv_core;opencv_imgcodecs;opencv_ml;opencv_dnn;opencv_features2d;opencv_flann;opencv_photo;opencv_videoio;opencv_superres;opencv_imgproc;opencv_stitching;opencv_objdetect;opencv_java)
-set(__OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/src/main/jni/include" "${OpenCV_INSTALL_PATH}/src/main/jni/include/opencv")
+set(OpenCV_LIB_COMPONENTS opencv_highgui;opencv_features2d;opencv_shape;opencv_imgcodecs;opencv_ml;opencv_videoio;opencv_dnn;opencv_flann;opencv_objdetect;opencv_core;opencv_calib3d;opencv_video;opencv_superres;opencv_photo;opencv_imgproc;opencv_stitching;opencv_videostab;opencv_java)
+set(__OpenCV_INCLUDE_DIRS "${OpenCV_INSTALL_PATH}/sdk/native/jni/include" "${OpenCV_INSTALL_PATH}/sdk/native/jni/include/opencv")
 
 set(OpenCV_INCLUDE_DIRS "")
 foreach(d ${__OpenCV_INCLUDE_DIRS})
